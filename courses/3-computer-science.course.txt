@@ -1,0 +1,33 @@
+# Computer Science   @cs
+  can: Sample sections only, to try out what the course needs. The full map comes later.
+
+!! SAMPLE. The language and the topics are placeholders. Code is written
+!! between backticks.
+
+## Reading code   @cs.read
+   can: Say what a short program does by following it line by line.
+
+### Variables   @cs.read.vars
+    can: Track the value a variable holds as lines run.
+
+- Assignment replaces   @cs.read.vars.assign
+  can: Follow a variable through several assignments.
+  bite: A variable holds one value at a time. Assigning to it again replaces what was there. The right-hand side is worked out first, using the value the variable has at that moment. After `x = 3` and then `x = x + 2`, the variable `x` holds 5.
+  ? numeric: These lines run in order: `x = 4`, then `x = x * 2`, then `x = x - 3`. What does `x` hold at the end?
+    = 5
+    why: 4, then 8, then 5.
+  ? choice: These lines run in order: `a = 2`, then `b = a`, then `a = 7`. What does `b` hold?
+    (x) 2
+    ( ) 7
+    ( ) 9
+    ( ) nothing
+    why: `b = a` copied the value 2. Changing `a` afterwards does not reach back into `b`.
+
+- Names and values   @cs.read.vars.names
+  can: Tell a variable's name from the value it holds.
+  bite: The name is the label on the box, and the value is what is inside. `count = 10` makes a box labeled `count` holding 10. Writing `count` later means "whatever is in the box now".
+  ? row: After `total = 6` and `n = 3`, is each of these a name or a value?
+    | `total`     = name
+    | `6`         = value
+    | `n`         = name
+    | `total / n` = value

@@ -1,0 +1,93 @@
+# French I   @fr
+  can: Sample sections only, to try out what the French course needs. The full map comes later.
+  keys: é è ê ë à â ç î ï ô ù û œ
+
+!! SAMPLE. Three leaves to exercise the vowel chart, the accent keys and
+!! spelling with accents. None of the wording has been reviewed.
+
+## Sounds   @fr.sounds
+   can: Hear and produce the core French vowels.
+
+### Core vowels   @fr.sounds.vowels
+    can: Hold each core vowel steadily enough to light its box.
+
+- Holding a vowel   @fr.sounds.vowels.hold
+  can: Produce a steady French vowel and see how close it lands.
+  bite: A French vowel is held in one place from start to finish, without the glide an English vowel usually has. Say one and hold it. The chart listens and shows which French vowels your sound is near. A clean vowel lights one box strongly. An English-colored one lights it faintly and spills into its neighbors.
+  figure: vowels
+  ? reveal: Hold a French "a" for two seconds. Did its box light clearly, with little light elsewhere?
+    = A steady, open "a" lights the a box almost alone. If "an" lit as well, the sound sat too far back.
+
+## Words   @fr.words
+   can: Recall French words through their English relatives, and spell them exactly.
+
+### Verbs with English relatives   @fr.words.verbs
+    can: Use an English relative to recall a French verb.
+
+- éviter   @fr.words.verbs.eviter
+  can: Recall and spell éviter, accent included.
+  bite: Something inevitable is something that cannot be avoided. French keeps the same root in plain sight: éviter, to avoid. The accent is part of the spelling, just as much as the letters are.
+  ? typed: What cannot be avoided is inevitable. In French, "to avoid" is:
+    = éviter
+  ? choice: Which English word is the closest relative of éviter?
+    (x) inevitable
+    ( ) invite
+    ( ) evict
+    ( ) vital
+    why: Inevitable: that which one cannot éviter.
+  ? typed: Complete the warning from a package: "Pour ____ tout risque d'étouffement, tenir ce sac hors de portée des enfants."
+    = éviter
+    why: To avoid any risk of suffocation, keep this bag out of reach of children.
+
+- Accents are spelling   @fr.words.verbs.accents
+  can: Treat a French accent as a letter that cannot be dropped.
+  bite: In French, é and e are different letters with different sounds. A word written without its accent is misspelled, in the same way an English word is with a wrong vowel. The keys under an answer box type the accented letters.
+  ? choice: A student writes "eviter" for the French verb "to avoid". That answer is:
+    (x) misspelled, because the accent is part of the word
+    ( ) correct, because accents are optional
+    ( ) correct in capitals only
+    ( ) a different verb
+
+## Sentences   @fr.sent
+   can: Build short French sentences and say why each word stands where it does.
+
+### Small words around the verb   @fr.sent.small
+    can: Place object pronouns, contract à with the article, and ask what-questions.
+
+- The pronoun goes before the verb   @fr.sent.small.clitic
+  can: Put a direct object pronoun before the verb and make the participle agree with it.
+  bite: English says "I saw her", with the pronoun after the verb. French puts it before: Je l'ai vue. Because "la" now stands before the participle, the participle agrees with it and takes an e. Point at each word in the sentence to see why it is there.
+  figure: french {see.perf 1s 3f}
+  ? typed: Say in French: "I saw her."
+    = fr{see.perf 1s 3f}
+    why: The pronoun la stands before the verb, loses its vowel before ai, and the participle agrees with it: vue.
+  ? choice: In "Je l'ai vue", which earlier word does the participle "vue" agree with?
+    (x) l' (that is, la)
+    ( ) Je
+    ( ) ai
+    ( ) none: participles after avoir never agree
+    why: A participle after avoir agrees with a direct object that stands before it. Here that is la, feminine, so: vue.
+  ? typed: Say in French: "He did not phone me."
+    = fr{phone.perf.not 3m 1s}
+    why: Ne and pas go around the pronoun and the auxiliary together: ne m'a pas.
+
+- à + le, à + les   @fr.sent.small.au
+  can: Contract à with le and les.
+  bite: À followed by le is written au, and à followed by les is written aux. Before la or l' nothing changes. Point at "aux" in the sentence to open it back into its two words.
+  figure: french {give 1s the.book the.student+}
+  ? choice: "à + les" is written:
+    (x) aux
+    ( ) au
+    ( ) à les
+    ( ) als
+  ? typed: Say in French: "He says hello to the teacher."
+    = fr{say 3m "bonjour" the.teacher}
+    why: À + le professeur contracts: au professeur.
+
+- Asking "what"   @fr.sent.small.que
+  can: Ask a what-question in both of its common forms.
+  bite: "What is he taking?" can be asked two ways. The everyday form keeps the normal word order after qu'est-ce que. The other form swaps verb and subject and joins them with a hyphen. Use the button under the sentence to see both.
+  figure: french {take 3m ?}
+  ? typed: Ask in French: "What is he taking?"
+    = fr{take 3m ?}
+    why: Either form is accepted: Qu'est-ce qu'il prend ? or Que prend-il ?

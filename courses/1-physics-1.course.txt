@@ -1,0 +1,1567 @@
+# Physics I   @phys1
+  can: Reason through the fall semester: the variable table, vector arithmetic, reference frames, extensivity, the fundamental forces, scale factors and extended masses.
+
+!! Named phrases with more than one good wording, called where a prompt asks
+!! for them: <<velchange>>. (Automatic swapping by string match was removed.)
+
+!! Quantity names, each with its symbol and kind. The "Kind hints" helper tints
+!! them by kind and folds a name to its symbol on hover.
+term: position = x | intensive
+term: angle = θ | intensive
+term: velocity = v | intensive
+term: angular velocity = ω | intensive
+term: acceleration = a | intensive
+term: angular acceleration = α | intensive
+term: momentum = p | extensive
+term: angular momentum = L | extensive
+term: force = F | extensive
+term: torque = τ | extensive
+term: mass = m | extensive
+term: moment of inertia = I | extensive
+
+!! ---------------------------------------------------------------------------
+!! DRAFT 9, 22 Nov 2026. Lines starting with !! are notes between Andrew and
+!! Claude. The importer skips them.
+!!
+!! STATUS
+!!   Every branch now has leaves, bites and items. @sf holds a ladder for all
+!!   fifteen neighboring pairs of the variable table.
+!!   Ids changed since draft 1: @table.locate is now the leaf
+!!   @table.rel.locate. Nothing else moved.
+!!
+!! FORMAT, as used below (everything past the sketch in the design document
+!! is a proposal)
+!!   #  course     ##  unit     ###  topic     -  leaf (a bite)
+!!   @id           written by hand, never changed afterwards
+!!   can:          one line saying what the student can do. Shown under the
+!!                 card title, and exported as the objective for that node.
+!!   bite:         the knowledge face of a leaf. $...$ is typeset maths.
+!!   links:        ids this node builds on or feeds into
+!!   [30 cm]       a boxed given, shown enclosed on screen and on paper
+!!   [R]           a boxed given whose value comes from a seed: line
+!!   [m = 50 g | 20 g | ~10..90 g]   a boxed given that declares its own seed.
+!!                 Alternatives: a quantity, lo..hi unit (whole numbers),
+!!                 ~lo..hi unit (friendly numbers built from small primes),
+!!                 each optionally weighted with a trailing *3.
+!!   [= m * r^2 -> g cm²]   a boxed value computed from the seeds
+!!                 A box holds a whole quantity or a seed name declared in
+!!                 that item, never a bare unit, so [m] can only be a seed.
+!!   {x :: note}   a term with a note set under it (ruby text)
+!!   ? kind:       an item. Kinds: choice, numeric, typed, reveal, row,
+!!                 ladder, compound, rank, match
+!!   = answer      the checked answer: a quantity, or an expression over the
+!!                 seeds with an optional display unit (= m * r^2 -> g cm²).
+!!                 A second = line is another accepted answer. Equivalent units pass
+!!                 (0.5 m and 50 cm); a bare number does not.
+!!   ~ answer :: response      a near-answer with its own response (partial)
+!!   or:           another wording of the whole prompt. Any number of them.
+!!   <<a | b>>     a choice of wording inside a prompt, option or row. These nest.
+!!   say:          name = a | b    a named phrase, called <<name>>
+!!                 name(X) = ... X ...    a phrase with a slot, called <<name(angle)>>
+!!   unit:         rad | degrees    answer units offered as buttons. The first
+!!                 is preselected and marked recommended.
+!!   3 m/s² down   a quantity may end in a direction word (up/down, left/right,
+!!                 clockwise/counterclockwise, north/south, east/west,
+!!                 forward/backward). 3 m/s² down + 1 m/s² up = 2 m/s² down.
+!!   slider:       0 | 1 | 2    answer by a slider with these detents
+!!                 factor 1/4 | 1/2 | 1 | 2 | 4    also shown as a word and a percentage
+!!                 factor powers 81    1/6561, 1/81, 1/9, 1, 9, 81, 6561
+!!   term:         name = symbol | kind    a quantity name for the kind hints
+!!   figure:       on a leaf or an item, a small moving diagram:
+!!                   roll radius 80 cm            a wheel rolling, arc beside angle
+!!                   spin 3 s⁻² clockwise         a wheel spinning up from rest
+!!                   components 3 m/s right, 10 m/s down
+!!                   rings (30 g, 15 cm) ...      a pulley; it spins once answered
+!!                   components 1.8 kN; axes A, B    axes that can be dragged round
+!!                   table [order|kind|frame|length]  the variable table as a lattice
+!!   why:          the worked solution
+!!   seed:         name = first value | other values     or     name = lo..hi
+!!                 The first value is what a student meets first.
+!!   vary:         which layers a reroll may touch: numbers, units, unknown
+!!   (x) ( )       right and wrong options of a choice item
+!!
+!!   row:       one stem, then one line per box:      | variant   = answer
+!!   ladder:    an anchor pair, then one line per rung. The ? marks the side
+!!              the student fills in. Every rung is checked on its own.
+!!              The checker also knows the answer a student gets by going the
+!!              wrong way through the factor, and replies with the units that
+!!              answer would carry.
+!!   compound:  numbered steps. Each step names the leaf it belongs to, so a
+!!              step answered in breakdown counts toward that leaf's ring.
+!! ---------------------------------------------------------------------------
+
+
+## The variable table   @table
+   can: Place the ten dynamic variables in one table and move between neighbors with a single factor.
+   !! Source: Unit 1. The table has fifteen neighboring pairs. Each one is a
+   !! ladder in @sf, and each topic here links to its ladders.
+
+### The ten variables   @table.vars
+    can: Say what each of x, v, a, p, F and θ, ω, α, L, τ measures.
+
+? match: Match each variable to what it measures.
+  | velocity             = how quickly position changes
+  | acceleration         = how quickly velocity changes
+  | momentum             = velocity with the inertia factor counted in
+  | force                = how quickly momentum changes
+  | angular velocity     = how quickly angle changes
+  | torque               = how quickly angular momentum changes
+
+- Position and angle   @table.vars.pos
+  can: Say what position x and angle θ measure and in what units.
+  bite: Position x says where something is along a path, as a length in meters. Angle θ says how far around a chosen center it is, as a bare number in radians. Neither involves time or an inertia factor, so they are the geometric variables.
+  ? choice: Which pair are the geometric variables, involving neither time nor inertia?
+    or: Which two variables are of temporal order zero?
+    or: Two of the ten variables say only where something is. Which two?
+    (x) x and θ
+    ( ) v and ω
+    ( ) p and L
+    ( ) F and τ
+    why: Position and angle only say where. Everything else in the table is built from them with time, an inertia factor, or both.
+
+- Velocity and angular velocity   @table.vars.vel
+  can: Say what velocity v and angular velocity ω measure and in what units.
+  bite: Velocity v is how quickly position changes: meters gained each second, m/s. Angular velocity ω is how quickly angle changes: radians gained each second, written s⁻¹ because the radian is a bare number.
+  ? typed: Which variable is the time-rate of angle?
+    or: What do we call how quickly an angle changes?
+    or: Angle gained each second is which variable?
+    = angular velocity
+    ~ ω :: Yes. Its name is angular velocity.
+  ? choice: In what unit is angular velocity written?
+    (x) s⁻¹
+    ( ) m/s
+    ( ) s⁻²
+    ( ) rad
+    why: Radians per second, and the radian is a bare number, so only "per second" is left.
+
+- Acceleration and angular acceleration   @table.vars.acc
+  can: Say what acceleration a and angular acceleration α measure and in what units.
+  bite: Acceleration a is how quickly velocity changes: m/s gained each second, m/s². Angular acceleration α is how quickly angular velocity changes, s⁻². Each is a time-rate of a time-rate.
+  ? reveal: Say in one sentence what acceleration measures.
+    or: Define acceleration in words, without a formula.
+    or: What is an acceleration the time-rate of, and what does that mean in plain words?
+    = How quickly velocity changes: the m/s gained each second.
+  ? choice: An object keeps a steady [5 m/s]. What is its acceleration?
+    (x) 0 m/s²
+    ( ) 5 m/s²
+    ( ) 5 m/s
+    ( ) It cannot be known.
+    why: Acceleration is the change in velocity each second, and the velocity is not changing.
+
+- Momentum and angular momentum   @table.vars.mom
+  can: Say what momentum p and angular momentum L measure and in what units.
+  bite: Momentum p is velocity with the inertia factor counted in: mass times velocity, kg m/s. Angular momentum L is the same for turning: moment of inertia times angular velocity, kg m²/s. Two objects at one velocity share that velocity, and the heavier one has more momentum.
+  ? numeric: What is the momentum of a [m = 4 kg | 2..9 kg] object moving at [v = 3 m/s | 2..8 m/s]?
+    = m * v
+    why: {[m] :: inertia factor} × {[v] :: velocity}.
+  ? numeric: What is the angular momentum of a wheel with moment of inertia [I = 17 kg m² | 4 kg m² | 12 kg m²] turning at [w = 2 s⁻¹ | 3..9 s⁻¹]?
+    = I * w
+    why: {[I] :: inertia factor} × {[w] :: angular velocity}.
+
+- Force and torque   @table.vars.imp
+  can: Say what force F and torque τ measure and in what units.
+  bite: Force F is acceleration with the inertia factor counted in: mass times acceleration, kg m/s². It is also how quickly momentum changes. Torque τ is the same for turning: moment of inertia times angular acceleration, kg m²/s², and how quickly angular momentum changes.
+  ? numeric: What force gives a [m = 5 kg | 2..9 kg] object an acceleration of [a = 3 m/s² | 2..8 m/s²]?
+    = m * a
+    = m * a -> N
+    why: {[m] :: inertia factor} × {[a] :: acceleration}.
+  ? choice: {be force timerate(?variable)}
+    or: {buildup a.force ?variable over a.duration}
+    or: {tell a.force timerate:how(?quantity)}
+    (x) momentum
+    ( ) velocity
+    ( ) acceleration
+    ( ) position
+    why: Force is to momentum what acceleration is to velocity: the amount gained each second.
+
+### Three relations   @table.rel
+    can: Sort the variables by frame, by kind and by temporal order, and find one from its three traits.
+
+? match: Match each word to its meaning.
+  | intensive            = shared by every part of a rigid object
+  | extensive            = adds up over the parts to give the whole
+  | temporal order       = how many times "per second" has been applied
+  | path frame           = progress told as a length along the path
+  | angular frame        = progress told as an angle about a chosen center
+
+- Path frame or angular frame   @table.rel.frame
+  can: Sort the ten variables into path-frame and angular-frame.
+  bite: Every variable has a partner in the other frame. Along a path: x, v, a, p, F. Around a center: θ, ω, α, L, τ. The partners play the same role, and a radius stands between them.
+  links: @frame.arcangle @sf.radius
+  ? row: Name the angular-frame partner of:
+    | velocity         = angular velocity
+    | force            = torque
+    | momentum         = angular momentum
+    | position         = angle
+    | acceleration     = angular acceleration
+
+- Intensive or extensive   @table.rel.kind
+  can: Sort the ten variables into intensive and extensive.
+  bite: Intensive variables are shared by every part of a rigid object: x, θ, v, ω, a, α. Extensive variables have the inertia factor counted in, so they depend on how much object there is, and the parts add up to the whole: p, L, F, τ.
+  links: @ext.shared @ext.total @sf.inertia
+  ? row: Intensive or extensive?
+    | angular velocity     = intensive
+    | torque               = extensive
+    | acceleration         = intensive
+    | momentum             = extensive
+    | angular momentum     = extensive
+
+- Temporal order   @table.rel.order
+  can: Sort the ten variables by temporal order zero, one and two.
+  bite: Count how many times "per second" has been applied. Order zero: x, θ. Order one: v, ω, p, L. Order two: a, α, F, τ. Going up an order is taking a time-rate. Going down is letting the quantity build up over a duration.
+  links: @frame.rates @sf.time
+  ? row: What is the temporal order of:
+    slider: -1 | 0 | 1 | 2 | 3
+    | angular momentum     = 1
+    | force                = 2
+    | angle                = 0
+    | angular acceleration = 2
+    | velocity             = 1
+
+- Three traits, one variable   @table.rel.locate
+  can: Name the one variable that sits where three given traits meet.
+  bite: Frame, kind and order together pick out a single cell of the table. Angular, extensive, order two can only be torque. Two cells are empty: there is no extensive variable of order zero in this table, and that gap is where center of mass will go.
+  figure: table
+  links: @mass.com
+  ? row: Which variable is:
+    | angular, extensive, order two?     = torque
+    | path, intensive, order one?        = velocity
+    | path, extensive, order one?        = momentum
+    | angular, intensive, order zero?    = angle
+    | angular, intensive, order two?     = angular acceleration
+    | path, extensive, order two?        = force
+
+### The three factors   @table.factors
+    can: Name the factor that separates any two neighbors in the table.
+    !! Unit 1 names two factors, time duration and inertia factor. The radius
+    !! is added here as the third, for the frame relation.
+
+- Time duration   @table.factors.time
+  can: Use a time duration to go between neighboring temporal orders.
+  bite: A rate held for a duration builds up a change in the quantity one order below. An acceleration held for some seconds gives a change in velocity. A force held for some seconds gives a change in momentum. The duration is the factor, and it is the same move in every column of the table.
+  links: @sf.time
+  ? row: Held for a duration, what does each of these build up a change in?
+    | velocity             = position
+    | acceleration         = velocity
+    | force                = momentum
+    | torque               = angular momentum
+    | angular velocity     = angle
+
+- Inertia factor   @table.factors.inertia
+  can: Use a mass or a moment of inertia to go between an intensive variable and its extensive partner.
+  bite: Multiplying by the inertia factor crosses from intensive to extensive. Mass does it in the path frame: v to p, a to F. Moment of inertia does it in the angular frame: ω to L, α to τ. Dividing crosses back.
+  links: @sf.inertia @table.words.inertia
+  ? row: Which inertia factor stands between:
+    | acceleration and force?                    = mass
+    | angular velocity and angular momentum?     = moment of inertia
+    | velocity and momentum?                     = mass
+    | angular acceleration and torque?           = moment of inertia
+
+- Radius   @table.factors.radius
+  can: Use a radius to go between a path-frame variable and its angular partner.
+  bite: For motion around a center, the radius crosses between frames. Position, velocity and acceleration along the arc are their angular partners times the radius. For the extensive pair it runs the other way: angular momentum is momentum along the arc times the radius, and torque is force along the arc times the radius.
+  links: @sf.radius @frame.radius
+  ? choice: A force of [20 kg m/s²] acts along the rim of a wheel of radius [0.15 m]. How do you get the torque?
+    (x) multiply the force by the radius
+    ( ) divide the force by the radius
+    ( ) multiply by the radius squared
+    ( ) the torque equals the force
+    why: Torque is the force along the arc times the radius: 3 kg m²/s². The units confirm it.
+
+### Pathways   @table.path
+    can: Find a one-step or two-step route across the table and say which givens it needs.
+
+- One step   @table.path.one
+  can: Go from one variable to a neighbor with the single factor between them.
+  bite: Find the two variables in the table. If they are neighbors, exactly one factor separates them, and the units tell you whether to multiply or divide.
+  links: @sf.idea.use
+  ? numeric: {accelerate object at [a = 3 m/s² | 2..6 m/s²] for [t = 4 s | 2..5 s]} {change velocity(it) by ?}
+    = a * t
+    why: {[a] :: acceleration} × {[t] :: duration}. One step down in temporal order.
+  ? numeric: A wheel's angular momentum changes by [= tq * t] in [t]. What steady torque did that?
+    = tq
+    why: {[= tq * t] :: change in angular momentum} ÷ {[t] :: duration}. One step up.
+    seed: tq = 51 kg m²/s² | 34 kg m²/s² | 12 kg m²/s² | 85 kg m²/s²
+          t = 4 s | 2 s | 5 s | 10 s
+
+- Two steps   @table.path.two
+  can: Go between variables two cells apart, and see that both routes agree.
+  bite: Variables two cells apart need two factors, and there are two routes. From acceleration to a change in momentum you can cross to force first and then build up over the duration, or build up a change in velocity first and then cross to momentum. Both routes multiply by the same two factors, so they agree.
+  ? compound: {accelerate object(mass=[m = 5 kg | 2..9 kg]) at [a = 3 m/s² | 2..6 m/s²] for [t = 4 s | 2..5 s]} {change momentum(it) by ?}
+    1. @sf.inertia.path   Cross to force: {[m] :: mass} × {[a] :: acceleration}?      = m * a
+    2. @sf.time.imp       Build up over the duration: {force :: step 1} × {[t] :: duration}?      = m * a * t
+    = m * a * t
+  ? compound: By the other route. {accelerate object(mass=[m = 5 kg | 2..9 kg]) at [a = 3 m/s² | 2..6 m/s²] for [t = 4 s | 2..5 s]} {change momentum(it) by ?}
+    1. @sf.time.acc       Build up a velocity change: {[a] :: acceleration} × {[t] :: duration}?      = a * t
+    2. @sf.inertia.mom    Cross to momentum: {[m] :: mass} × {velocity change :: step 1}?      = m * a * t
+    = m * a * t
+  ? numeric: A wheel with moment of inertia [I = 17 kg m² | 4 kg m² | 12 kg m²] has an angular acceleration of [al = 3 s⁻² | 2..6 s⁻²] for [t = 2 s | 2..5 s]. How much does its angular momentum change?
+    = I * al * t
+    why: Two factors: {[I] :: inertia factor} and {[t] :: duration}, in either order.
+
+- Is the inertia factor needed?   @table.path.need
+  can: Decide whether a problem needs the mass or moment of inertia at all.
+  bite: If the start and the finish are both intensive, or both extensive, the route never crosses the inertia factor, and a mass given in the problem is not used. Check where the two variables sit before reaching for it.
+  ? choice: A [5 kg] object accelerates at [3 m/s²] for [4 s]. You want its <<change in velocity | velocity change>>. Is the mass needed?
+    or: Asked only for the <<velocity change | gain in velocity>> of a [5 kg] object that accelerates at [3 m/s²] for [4 s], do you need its mass?
+    (x) No. Acceleration and velocity are both intensive.
+    ( ) Yes. Every motion problem needs the mass.
+    ( ) Yes. Velocity is extensive.
+    ( ) Only if the object is turning.
+    why: Acceleration to velocity is one step in temporal order. The route stays on the intensive side, so the 5 kg is never used. The change is 12 m/s.
+  ? row: Is the inertia factor needed to go from:
+    | acceleration to velocity change?            = no
+    | acceleration to momentum change?            = yes
+    | force to momentum change?                   = no
+    | torque to angular acceleration?             = yes
+    | angular velocity to angle covered?          = no
+
+### The words   @table.words
+    can: Use the course's words for the table precisely.
+
+? match: Match each of the course's words to what it names.
+  | inertia factor       = mass and moment of inertia, taken together
+  | impetus              = force and torque, taken together
+  | time duration        = the factor between neighboring temporal orders
+  | radius               = the factor between a path-frame quantity and its angular partner
+
+- Inertia factor   @table.words.inertia
+  can: Use "inertia factor" for mass and moment of inertia together.
+  bite: Mass and moment of inertia do the same job in two frames: each says how much impetus it takes to get a given acceleration. "Inertia factor" names them together. Mass is the inertia factor along a path, and moment of inertia is the inertia factor around a center.
+  ? reveal: What do mass and moment of inertia have in common, and what is the word for the two together?
+    or: Mass and moment of inertia are two cases of one idea. Name the idea and say what the two share.
+    = Each is what an intensive variable is multiplied by to give its extensive partner, in its own frame. Together they are the inertia factor.
+
+- Impetus   @table.words.impetus
+  can: Use "impetus" for force and torque together.
+  bite: Position, velocity, acceleration and momentum each have one name that serves both frames, with "angular" added when needed. Force and torque are the one pair with two unrelated names. In this course "impetus" names them together, to complete the pattern.
+  ? typed: What single word does this course use for force and torque together?
+    or: Force and torque are the two kinds of what?
+    or: Give the frame-neutral name that covers both force and torque.
+    = impetus
+
+- "Linear", with care   @table.words.linear
+  can: Explain why "path-frame" is safer than "linear".
+  bite: The path-frame variables are often called linear, but the path does not have to be a straight line. Motion along a curved arc still has a path-frame velocity in m/s. What separates the frames is the kind of quantity, a length or a bare angle, and the shape of the path does not decide it.
+  links: @frame.arcangle
+  ? choice: A runner goes round a curved track at [6 m/s]. Is 6 m/s a path-frame or an angular-frame quantity?
+    (x) Path-frame. It is a length per second, whatever the shape of the path.
+    ( ) Angular-frame, because the track is curved.
+    ( ) Neither, because the track is curved.
+    ( ) Both at once.
+    why: Metres per second measures progress along the path. The angular-frame partner would be in s⁻¹.
+
+
+## Vector arithmetic   @vec
+   can: Add and scale quantities that have directions, with directions on one axis as like terms and directions on different axes as unlike terms.
+   !! From this year's early practice. No trigonometry, by design.
+
+### Directions as like and unlike terms   @vec.terms
+    can: Tell which directed quantities combine into one term and which must stay apart.
+
+- A direction works like a unit   @vec.terms.dir
+  can: Read a direction word as part of a quantity, the way a unit is.
+  bite: In [3 m/s² down], the word "down" belongs to the quantity just as m/s² does. It says which way the quantity points along one axis. Up and down share an axis, so "up" is "down" with the opposite sign: [2 m/s² up] and [−2 m/s² down] are one and the same quantity.
+  ? choice: Which of these is the same quantity as [2 m/s² up]?
+    (x) −2 m/s² down
+    ( ) 2 m/s² down
+    ( ) −2 m/s² up
+    ( ) 2 m/s² right
+    why: Reversing the direction word and the sign together changes nothing.
+  ? row: Do these two directions lie on the same axis?
+    | up and down             = yes
+    | up and right            = no
+    | left and right          = yes
+    | forward and down        = no
+    | forward and backward    = yes
+
+- Like terms combine   @vec.terms.like
+  can: Add quantities that lie along one axis.
+  bite: Quantities along the same axis are like terms, so they combine into one. Opposite directions work against each other: [3 m/s² down] + [1 m/s² up] = [2 m/s² down]. It is the same move as 3x − 1x = 2x, with the direction in the place of x.
+  ? numeric: What is [a = 3 m/s² down | 5 m/s² down | 8 m/s² down | 6 m/s² down] + [b = 1 m/s² up | 2 m/s² up | 4 m/s² up]?
+    = a + b -> m/s²
+    why: Same axis, opposite ways, so the sizes subtract and the larger one keeps its direction: [= a + b -> m/s²].
+  ? numeric: What is [p = 4 m right | 7 m right | 10 m right] + [q = 6 m left | 9 m left | 12 m left] + [r = 1 m right | 3 m right]?
+    = p + q + r -> m
+    why: Collect the terms going right, then take off the one going left: [= p + r -> m] against [q].
+
+- Unlike terms stay apart   @vec.terms.unlike
+  can: Keep quantities along different axes as separate terms.
+  bite: Up and right lie on different axes, so [3 m right] and [4 m up] are unlike terms. They do not merge into one number, any more than 3x + 4y does. The sum is simply "3 m right and 4 m up", two terms side by side. A third axis, forward and backward, adds a third kind of term.
+  ? choice: What is [3 m right] + [4 m up]?
+    (x) 3 m right and 4 m up. It stays as two terms.
+    ( ) 7 m
+    ( ) 7 m up and right
+    ( ) 1 m up
+    why: Different axes are unlike terms, like 3x + 4y.
+  ? row: Like terms or unlike terms?
+    | [2 N up] and [5 N down]                   = like
+    | [2 N up] and [5 N right]                  = unlike
+    | [3 m/s forward] and [3 m/s backward]      = like
+    | [4 m left] and [4 m forward]              = unlike
+
+### Adding and scaling   @vec.arith
+    can: Add vectors axis by axis and scale a vector by a single factor.
+
+- Adding axis by axis   @vec.arith.add
+  can: Add two vectors by collecting like terms on each axis.
+  bite: To add vectors, collect the like terms on each axis and leave the axes apart. ([3 m right] and [2 m up]) + ([5 m left] and [4 m up]) gives [2 m left] and [6 m up].
+  ? row: A walk goes [a = 3 m right | 6 m right | 8 m right] and [b = 2 m up | 1 m up | 5 m up], then [c = 5 m left | 4 m left | 10 m left] and [d = 4 m up | 3 m up | 7 m down]. What is the total displacement:
+    | along the left and right axis?       = a + c -> m
+    | along the up and down axis?          = b + d -> m
+    why: Left and right: [a] + [c]. Up and down: [b] + [d]. The two answers stay side by side as one displacement.
+
+- The net of opposing forces   @vec.arith.net
+  can: Find a net force from forces along one axis, and the acceleration it gives.
+  bite: Forces on one object along one axis are like terms. A hanging block with [44 N up] of tension and [49 N down] of weight has a net force of [5 N down]. The relative slack in the tension is what lets it move downward.
+  links: @ext.eqacc.g @table.vars.imp
+  ? numeric: A hanging block feels a tension of [T = 44 N up | 30 N up | 90 N up] and a weight of [W = 49 N down | 39.2 N down | 98 N down]. What is the net force on it?
+    = T + W -> N
+    why: [T] + [W] = [= T + W -> N].
+  ? numeric: A [m = 5 kg | 4 kg | 10 kg] block hangs from a rope. Gravity pulls it with [= m * g -> N] and the tension in the rope is [T = 44 N up | 30 N up | 90 N up]. What is its acceleration?
+    = (T + m * g) / m -> m/s²
+    why: Net force [= T + m * g -> N], shared over [m].
+    seed: g = 9.8 m/s² down
+
+- Scaling keeps the direction   @vec.arith.scale
+  can: Multiply a directed quantity by a factor that has no direction.
+  bite: A factor with no direction of its own, such as a duration or a mass, changes the size of a directed quantity and leaves its direction alone. A velocity of [3 m/s down] held for [4 s] gives a displacement of [12 m down].
+  links: @sf.time.vd @sf.time.comp
+  ? numeric: A velocity of [v = 3 m/s down | 4 m/s up | 6 m/s left] is held for [t = 4 s | 2 s | 5 s]. What displacement does that give?
+    = v * t -> m
+    why: {[v] :: velocity} × {[t] :: duration}. The direction carries through.
+
+### Components on a coordinate system   @vec.comp
+    can: Read a vector as parts along two chosen axes, and say when trigonometry is and is not needed.
+
+- Reading components   @vec.comp.read
+  can: Describe how a vector's components depend on the axes chosen.
+  bite: Any vector can be told as two parts along two chosen axes. The axes are a choice: turn them, and the same vector reads as different parts, while its size and where it points have not changed. When it lies exactly along one axis, its part along the other is zero.
+  figure: components 1.8 kN; axes A, B
+  ? choice: A coordinate system is turned while a force stays exactly as it is. What changes?
+    (x) the force's components along the axes
+    ( ) the force's magnitude
+    ( ) the way the force points in space
+    ( ) nothing at all
+    why: The components are readings against the axes. The force itself is the same.
+  ? reveal: A force reads 1.8 kN forward in A and 0 kN in B. How does it lie relative to the axes?
+    = Exactly along the forward A direction, with no part along B.
+
+- When trigonometry is needed   @vec.comp.trig
+  can: Say which vector problems need trigonometry and which do not.
+  bite: Adding, subtracting and scaling vectors given by their parts needs no trigonometry at all. It is only called for when going between straight-line information (parts along axes) and angular information (a length with a tilt). Reaching for it elsewhere adds steps that cancel again, like bringing in a mass that the problem never needed.
+  links: @table.path.need @frame.arcangle.kinds
+  ? row: Is trigonometry needed to:
+    | add two vectors that are given by their parts?                        = no
+    | find the parts of a vector given its length and its tilt?             = yes
+    | find a net force from forces given as up, down, left and right?       = no
+    | find a vector's tilt from its two parts?                              = yes
+    | scale a velocity by a duration?                                       = no
+
+
+## Reference frames   @frame
+   can: Tell a path frame from an angular frame and move between them through the radius.
+   !! Source: Unit 2.
+
+### Arc length versus angle   @frame.arcangle
+    can: Explain why an arc length and an angle are different kinds of quantity even when they trace the same shape.
+
+- Same shape, different kinds   @frame.arcangle.kinds
+  can: Tell an arc length from an angle drawn on the same curve.
+  bite: An arc and the angle it spans can be drawn with one stroke of the pen, yet they are different kinds of quantity. The arc is a length: stretch the picture and it grows. The angle is a bare number: stretch the picture and it stays the same.
+  links: @sf.idea.equiv
+  ? choice: A drawing of a circle with a marked arc is enlarged to twice its size. What happens to the arc length and to the angle?
+    (x) The arc length doubles and the angle stays the same.
+    ( ) Both double.
+    ( ) Both stay the same.
+    ( ) The angle doubles and the arc length stays the same.
+    why: Arc length is a length and scales with the picture. Angle is arc over radius, and both doubled.
+
+- A chosen center   @frame.arcangle.center
+  can: Describe progress along a path either as a distance or as an angle seen from a chosen center.
+  bite: Progress along any path can be told as a distance. Choose a center, and the same progress can also be told as the angle swept as seen from there. The center is a choice. Move it, and the same motion sweeps a different angle.
+  ? reveal: A car drives 100 m along a road. What extra thing must you choose before you can say what angle it covered?
+    = A center to measure the angle around. The distance does not depend on it, and the angle does.
+
+### Angle as arc over radius   @frame.ratio
+    can: Find an angle by dividing an arc length by the radius from a chosen center.
+    links: @sf.radius.pos @sf.radius.sizes
+
+- The definition   @frame.ratio.def
+  can: Find an angle as arc length over radius.
+  bite: An angle is the arc length measured against the radius: how many radii fit along the arc. A length over a length leaves a bare number, and that is why an angle has no dimension.
+  figure: roll radius 80 cm
+  links: @sf.idea.ratio
+  ? numeric: An arc of [= R * th -> cm] lies on a circle of radius [R]. What angle does it cover?
+    = th -> rad
+    why: {[= R * th -> cm] :: arc} ÷ {[R] :: radius}. The centimeters cancel.
+    seed: R = 80 cm | 50 cm | 20 cm | 40 cm
+          th = 0.3 rad | 0.5 rad | 1.2 rad | 2 rad
+  ? numeric: An arc is exactly as long as the radius of its circle. What angle does it cover?
+    or: {subtend:p arc({equal length(_) the.radius}) ?angle}
+    or: How large is the angle when arc length over radius comes to exactly 1?
+    = 1 rad
+    unit: rad | degrees | revolutions
+    why: Arc over radius is 1, and that is what a radian is. Answered in radians there is nothing to work out, which is why it is the unit to reach for here.
+
+- Radians and revolutions   @frame.ratio.rev
+  can: Go between radians and revolutions.
+  bite: One full revolution is an arc equal to the whole circumference, which is 2π radii. So one revolution is 2π radians, about 6.28, on any circle.
+  links: @sf.idea.units
+  ? row: Write in radians:
+    | [1 revolution]         = 6.2832 rad
+    | [0.25 revolutions]     = 1.5708 rad
+    | [0.5 revolutions]      = 3.1416 rad
+    | [3 revolutions]        = 18.850 rad
+    why: Multiply the revolutions by 2π.
+    vary: numbers, unknown
+
+### Concentric circles   @frame.concentric
+    can: Compare equal path speed with equal angular speed on circles of different size.
+
+- Same angular speed   @frame.concentric.rigid
+  can: Find the path speeds of points that turn together at different radii.
+  bite: Points on one rigid object, like the hand of a clock, stay lined up and finish a turn together. They share one angular speed. Their path speeds differ in proportion to their radii: a point twice as far out covers twice the arc in the same time.
+  links: @sf.radius.vel @ext.angular
+  ? numeric: A rigid bar turns about one end. A point [r1 = 0.5 m | 0.2 m | 0.25 m] from that end moves at [v = 3 m/s | 2 m/s | 5 m/s]. How fast does a point [r2 = 2 m | 1 m | 1.5 m] from the end move?
+    = v / r1 * r2
+    why: Shared angular speed: {[v]} ÷ {[r1]} = [= v / r1]. At [r2] that is [= v / r1 * r2].
+  ? choice: Two points on a spinning disk, one near the center and one at the rim. What do they share?
+    or: A point near the hub and a point on the rim of a turning disk have which quantity in common?
+    (x) angular velocity
+    ( ) path speed
+    ( ) arc length covered each second
+    ( ) nothing
+    why: They complete each turn together. The rim point covers more arc doing it.
+
+- Same path speed   @frame.concentric.path
+  can: Compare the angular speeds of objects moving equally fast on circles of different size.
+  bite: Two runners at the same path speed on different circles do not stay lined up. The larger circle has more circumference, so its runner takes longer to get round and has the smaller angular speed. This is why track lanes are staggered: the outer lanes are longer.
+  ? numeric: Two runners each move at [v = 6 m/s | 4 m/s | 8 m/s | 12 m/s], one on a circle of radius [r1 = 2 m | 1 m] and one on a circle of radius [r2 = 6 m | 4 m | 8 m]. What is the angular speed of the runner on the larger circle?
+    = v / r2
+    why: {[v] :: path speed} ÷ {[r2] :: radius}. The inner runner has [= v / r1].
+  ? numeric: A track's bend is a half circle. One lane has radius [r1 = 36 m | 30 m | 40 m] and another [r2 = 42 m | 45 m | 48 m]. How much longer is the outer lane's bend?
+    = pi * (r2 - r1) -> m
+    why: Half a revolution is π radians. The arcs are π × [r1] and π × [r2], so the difference is π × [= r2 - r1 -> m].
+
+### Time-rates in both frames   @frame.rates
+    can: Read m, m/s, m/s² beside rad, s⁻¹, s⁻² as the same ladder of time-rates in two frames.
+
+- Time-rates of angle   @frame.rates.ang
+  can: Find an angular velocity or angular acceleration as a time-rate.
+  bite: Angular velocity is angle gained each second. Angular acceleration is angular velocity gained each second. They are built from angle in exactly the way velocity and acceleration are built from position.
+  figure: spin 3 s⁻² clockwise
+  links: @table.vars.vel @table.vars.acc @sf.time.ang
+  ? numeric: A wheel turns steadily through [= w * t -> rad] in [t]. What is its angular velocity?
+    = w
+    why: {[= w * t -> rad] :: angle} ÷ {[t] :: duration}.
+    seed: w = 1.5 s⁻¹ | 2 s⁻¹ | 0.5 s⁻¹ | 3 s⁻¹
+          t = 4 s | 2 s | 6 s | 10 s
+  ? numeric: A wheel's angular velocity rises steadily from [w0 = 2 s⁻¹ | 1..5 s⁻¹] to [= w0 + al * t] in [t]. What is its angular acceleration?
+    = al
+    why: The change is [= al * t], gained over [t].
+    seed: al = 3 s⁻² | 2 s⁻² | 5 s⁻²
+          t = 4 s | 2 s | 3 s
+
+- Units side by side   @frame.rates.units
+  can: Match the units of the path-frame and angular-frame variables.
+  bite: Path frame: m, m/s, m/s². Angular frame: rad, s⁻¹, s⁻². The radian is a bare number, so it drops out of the written unit and only the seconds remain. RPM is another angular velocity unit: revolutions per minute.
+  links: @sf.idea.units
+  ? row: Which variable has this unit?
+    | s⁻²        = angular acceleration
+    | m/s        = velocity
+    | s⁻¹        = angular velocity
+    | kg m²/s²   = torque
+    | kg m/s     = momentum
+
+### Where the radius enters   @frame.radius
+    can: Say where each variable sits by its power of length, and so which way the radius enters between partners.
+    links: @table.factors.radius @mass.ring.I
+
+- Powers of length   @frame.radius.count
+  can: Place each variable by the power of length in its dimension, and read the frame relation off the difference.
+  bite: Count the powers of length in each variable's unit. Angle, angular velocity and angular acceleration have none: they sit at degree 0. Position, velocity and acceleration have one, and so do momentum and force, since mass brings no length with it: degree 1. Angular momentum and torque have two: degree 2. So crossing from the path frame to the angular frame lowers an intensive variable by one degree, from 1 to 0, and raises an extensive variable by one degree, from 1 to 2. That is why the radius divides in the first case and multiplies in the second. The inertia factors account for the difference: mass sits at degree 0 and moment of inertia at degree 2.
+  figure: table length
+  ? row: At which power of length does each variable sit?
+    slider: 0 | 1 | 2
+    | angular velocity        = 0
+    | velocity                = 1
+    | momentum                = 1
+    | angular momentum        = 2
+    | angular acceleration    = 0
+    | torque                  = 2
+    | mass                    = 0
+    | moment of inertia       = 2
+    why: Read it from the unit. s⁻¹ and s⁻² have no meters. m/s, kg m/s and kg m/s² have one. kg m²/s and kg m²/s² have two.
+  ? choice: Going from the path frame to the angular frame, what happens to a variable's power of length?
+    (x) It drops by one for an intensive variable and rises by one for an extensive one.
+    ( ) It drops by one for every variable.
+    ( ) It rises by one for every variable.
+    ( ) It stays the same.
+    why: Velocity (degree 1) goes to angular velocity (degree 0). Momentum (degree 1) goes to angular momentum (degree 2). The two extra degrees on the extensive side are the two factors of radius in the moment of inertia.
+  ? choice: On a circle of radius [0.5 m], which is right?
+    (x) arc velocity = angular velocity × 0.5 m, and torque = force × 0.5 m
+    ( ) arc velocity = angular velocity × 0.5 m, and torque = force ÷ 0.5 m
+    ( ) arc velocity = angular velocity ÷ 0.5 m, and torque = force × 0.5 m
+    ( ) arc velocity = angular velocity ÷ 0.5 m, and torque = force ÷ 0.5 m
+    why: Each product climbs one degree of length: s⁻¹ times m gives m/s, and kg m/s² times m gives kg m²/s².
+
+
+## Extensivity   @ext
+   can: Reason about a rigid object in parts: what the parts share and what adds up.
+   !! Source: Unit 3.
+
+### A rigid object in parts   @ext.parts
+    can: Describe a partitioned rigid object and why its parts cannot slide against each other.
+
+- One object, many parts   @ext.parts.rigid
+  can: Say what it means for a partitioned object to stay rigid, and name the variable that rigidity holds at zero.
+  bite: Picture a solid disk divided like a pie chart, the slices painted different colors or cut and glued back. It is still one rigid object. Rigid means no slice moves relative to another. In the language of the variable table: the relative displacement between any two parts, their $\Delta x$ measured one from the other, is zero at all times. The whole object may still turn, and how to describe that turning is a separate choice.
+  ? reveal: A disk is cut into slices and glued back together. What must be true of the slices for it to count as one rigid object?
+    or: What condition makes a set of glued slices count as a single rigid object?
+    = None of them moves relative to any other. Whatever change in position one has, they all have, so the relative displacement between any two is zero.
+  ? choice: "No part moves relative to any other." Which variable is that sentence setting to zero?
+    or: Rigidity is a statement that one variable, taken between any two parts, is always zero. Which one?
+    (x) the relative displacement between the parts, Δx
+    ( ) the velocity of each part, v
+    ( ) the momentum of each part, p
+    ( ) the net force on each part, F
+    why: The parts may all move, with a shared velocity, and each has its own momentum and force. What stays zero is the change in position of one part as measured from another.
+
+### Shared quantities   @ext.shared
+    can: Explain why velocity and acceleration are shared by every part and by the whole.
+
+- Shared velocity and acceleration   @ext.shared.va
+  can: State the velocity or acceleration of a part from that of the whole.
+  bite: If no part moves relative to another, every part has the same change in position, so every part has the same velocity and the same acceleration. These are shared by the parts and by the whole. The size of the part does not come into it.
+  links: @table.rel.kind
+  ? numeric: A [M = 12 kg | 8 kg | 20 kg] disk slides along at [v = 3 m/s | 2..9 m/s]. One slice is a quarter of the disk. What is the velocity of that slice?
+    = v
+    ~ v / 4 :: Velocity is shared, so it is not divided among the parts. A quarter slice moves exactly as fast as the disk.
+    why: Velocity is intensive. Every part has the whole's velocity.
+  ? choice: A rigid block accelerates at [2 m/s²]. It is made of a large part and a small part. Which has the greater acceleration?
+    or: One rigid block, accelerating at [2 m/s²], consists of a large part and a small part. Which part accelerates more?
+    (x) Neither. They share it.
+    ( ) the large part
+    ( ) the small part
+    ( ) It depends on their masses.
+    why: Otherwise one would pull away from the other and the block would not be rigid.
+
+- No "total velocity"   @ext.shared.nototal
+  can: Say which quantities have a total and which have a shared value.
+  bite: We speak of a shared velocity and a shared acceleration, and of a total momentum and a total force. Adding up the velocities of the slices gives a number that depends on how many slices you happened to cut, so it means nothing physical.
+  ? row: Shared or total?
+    | velocity         = shared
+    | momentum         = total
+    | acceleration     = shared
+    | net force        = total
+    | mass             = total
+
+### Total quantities   @ext.total
+    can: Add the momentum or force of the parts to get the whole, and find a part's share from its extent.
+
+? match: Match each word to its meaning.
+  | shared               = one value that every part and the whole have in common
+  | total                = the sum of the values of the parts
+  | rigid                = no part moves relative to any other
+  | proportional to extent    = a part with a quarter of the mass has a quarter of it
+
+- The parts sum to the whole   @ext.total.add
+  can: Add the extensive quantities of the parts to get the whole.
+  bite: Each part's momentum is its own mass times the shared velocity. Add them up, and because the velocity is common it comes out of the sum: the total momentum is the total mass times the shared velocity. The same holds for force with the shared acceleration. However the object is partitioned, the parts sum to the same whole.
+  links: @mass.inertia.sum
+  ? numeric: A rigid object is made of parts of [m1 = 2 kg | 1..4 kg], [m2 = 3 kg | 5..6 kg] and [m3 = 7 kg | 8..10 kg], all moving at [v = 3 m/s | 2..5 m/s]. What is its total momentum?
+    = (m1 + m2 + m3) * v
+    why: Add the parts, or at once: {[= m1 + m2 + m3] :: total mass} × {[v] :: shared velocity}.
+
+- A part's share   @ext.total.share
+  can: Find a part's momentum or force from its share of the whole.
+  bite: Since the velocity is shared, a part's momentum is in proportion to its mass. A slice with a quarter of the mass carries a quarter of the momentum and feels a quarter of the net force.
+  ? numeric: A [M = 12 kg | 8 kg | 20 kg] disk has a total momentum of [p = 36 kg m/s | 24 kg m/s | 60 kg m/s | 48 kg m/s]. One slice is a quarter of the disk. What is the momentum of that slice?
+    = p / 4
+    why: A quarter of the mass, the same velocity, so a quarter of the momentum.
+  ? numeric: A net force of [F = 24 kg m/s² | 36 kg m/s² | 60 kg m/s²] acts on a [M = 12 kg | 6 kg] rigid disk. What net force acts on a slice of mass [ms = 3 kg | 2 kg | 1 kg]?
+    = F / M * ms
+    why: Shared acceleration: [= F / M]. The slice needs {[ms]} × {[= F / M]}.
+
+### Equal acceleration   @ext.eqacc
+    can: Conclude that two objects with the same acceleration feel forces proportional to their masses, as in surface gravity.
+
+- Forces in proportion to mass   @ext.eqacc.prop
+  can: Compare the forces on two objects that accelerate together.
+  bite: If two separate objects have the same acceleration, the force on each must be in proportion to its mass. Ten times the mass needs ten times the force to keep up.
+  ? numeric: Two objects accelerate side by side at the same rate. One has a mass of [m1 = 2 kg | 3 kg | 4 kg] and feels [= m1 * a]. The other has a mass of [m2 = 6 kg | 8 kg | 10 kg]. What force does it feel?
+    = m2 * a
+    why: The shared acceleration is [a], so the second needs {[m2]} × {[a]}. Force in proportion to mass.
+    seed: a = 5 m/s² | 2 m/s² | 3 m/s²
+
+- Surface gravity   @ext.eqacc.g
+  can: Explain why all objects fall with the same acceleration near the ground.
+  bite: Near the Earth's surface, gravity pulls on each object in proportion to its mass. That is exactly the condition for equal acceleration, so everything in free fall shares about 9.8 m/s² downward. This shared value is the surface gravity.
+  links: @force.calc.g
+  ? numeric: What is the gravitational force on a [m = 5 kg | 2..12 kg] object near the Earth's surface, where free fall is [g]?
+    = m * g
+    why: {[m] :: mass} × {[g] :: surface gravity}, downward. In newtons the number is the same.
+    seed: g = 9.8 m/s²
+  ? choice: A [1 kg] ball and a [10 kg] ball are dropped together, with no air in the way. Which is right?
+    (x) The heavier ball feels ten times the force, and they fall together.
+    ( ) They feel the same force, and they fall together.
+    ( ) The heavier ball feels ten times the force and falls ten times as fast.
+    ( ) They feel the same force, and the lighter one falls faster.
+    why: Force in proportion to mass is what equal acceleration requires.
+
+### Equal force   @ext.eqforce
+    can: Conclude that two objects under equal forces accelerate in inverse proportion to their masses, as around a barycenter.
+    links: @force.third
+
+- Accelerations in inverse proportion   @ext.eqforce.inv
+  can: Compare the accelerations of two objects that feel forces of equal size.
+  bite: If two objects feel forces of the same size, the one with more mass accelerates less, in inverse proportion. Three times the mass, a third of the acceleration.
+  ? numeric: Two carts push off each other, so each feels a force of the same size. The [m1 = 2 kg | 1 kg | 3 kg] cart accelerates at [a1 = 9 m/s² | 6 m/s² | 12 m/s²]. What is the size of the acceleration of the [m2 = 6 kg | 4 kg | 12 kg] cart?
+    = m1 * a1 / m2
+    why: The force on each is [= m1 * a1]. Shared over [m2], that gives [= m1 * a1 / m2].
+
+- Around a barycenter   @ext.eqforce.bary
+  can: Explain why a planet barely moves while its moon swings round.
+  bite: A planet and its moon pull on each other with forces of equal size. The moon, with little mass, accelerates a great deal. The planet accelerates too, but only slightly. Both circle a common point, the barycenter, which sits close to the heavier body.
+  links: @force.third.acc @mass.com
+  ? numeric: The Earth has about [81] times the mass of the Moon, and each pulls the other with equal force. The Moon's acceleration is how many times the Earth's?
+    slider: factor powers 81
+    = 81
+    why: Equal force, so acceleration in inverse proportion to mass.
+  ? reveal: The Earth pulls the Moon exactly as hard as the Moon pulls the Earth. Why does it look as if only the Moon is being moved?
+    = The forces are equal and the masses are not. The same force gives the Earth about 1/81 of the Moon's acceleration, too little to notice.
+
+### The angular counterparts   @ext.angular
+    can: Apply shared and total to angular velocity, angular momentum, angular acceleration and torque.
+
+- Shared and total, turning   @ext.angular.rot
+  can: State what the parts of a turning rigid object share and what adds up.
+  bite: Everything said about the sliding disk holds for a turning one. The parts share one angular velocity and one angular acceleration. Each part has its own moment of inertia, and so its own angular momentum and its own torque, and those sum to the whole.
+  links: @frame.concentric.rigid @mass.inertia.sum
+  ? numeric: A wheel turning at [w = 5 s⁻¹ | 2..8 s⁻¹] is made of two parts with moments of inertia [I1 = 6 kg m² | 3..9 kg m²] and [I2 = 2 kg m² | 1..4 kg m²]. What is its total angular momentum?
+    = (I1 + I2) * w
+    why: {[= I1 + I2] :: total inertia factor} × {[w] :: shared angular velocity}.
+
+
+## Fundamental forces   @force
+   can: Name the four forces, calculate with the two universal ones, and read the third law off their form.
+   !! Source: Unit 4. Forces here are in newtons where a constant is quoted
+   !! in newtons. 1 N is 1 kg m/s². Say if you would rather see kg m/s²
+   !! throughout.
+
+### The four forces   @force.four
+    can: Rank the four fundamental forces by strength and say which have infinite range.
+
+? match: Match each term to its meaning.
+  | infinite range       = weakens with distance but never reaches zero
+  | fundamental force    = one of the four that every observed force comes down to
+  | relative strength    = how strong a force is, with the strong nuclear force set to 1
+  | order of magnitude   = one factor of ten
+
+- Four forces   @force.four.names
+  can: Name the four fundamental forces.
+  bite: Every force ever observed comes down to four: gravity, the electromagnetic force, the strong nuclear force and the weak nuclear force. The two nuclear forces act only inside atomic nuclei, so everything you can see or feel being pushed or pulled is gravity or electromagnetism.
+  ? reveal: Name the four fundamental forces.
+    or: List the four fundamental forces of nature.
+    or: Every observed force comes down to four. What are they?
+    = Gravity, electromagnetic, strong nuclear, weak nuclear.
+  ? choice: Which two fundamental forces account for every force in an everyday mechanics problem?
+    (x) gravity and electromagnetism
+    ( ) gravity and friction
+    ( ) the strong and weak nuclear forces
+    ( ) electromagnetism and the strong nuclear force
+    why: The nuclear forces do not reach beyond the nucleus. Friction is electromagnetic.
+
+- Relative strength   @force.four.strength
+  can: Put the four forces in order of strength.
+  bite: Strongest first: strong nuclear, then electromagnetic at about a hundredth of that, then the weak force some eleven orders of magnitude further down, then gravity another twenty-five orders below that. Gravity is by far the weakest. It dominates at large scales only because it always attracts and is never cancelled.
+  ? rank: Drag each force to its mark on the band of relative strength, with the strong nuclear force set to 1.
+    scale: log
+    | strong nuclear      = 1
+    | electromagnetic     = 1e-2
+    | weak nuclear        = 1e-13
+    | gravity             = 1e-38
+    why: Electromagnetism is about a hundredth of the strong force. The weak force is eleven orders of magnitude below that, and gravity another twenty-five below the weak force.
+  ? choice: Which is the weakest of the four fundamental forces?
+    or: Of the four fundamental forces, which has the smallest relative strength?
+    or: Order the four fundamental forces by strength. Which comes last?
+    (x) gravity
+    ( ) the weak nuclear force
+    ( ) electromagnetism
+    ( ) the strong nuclear force
+    why: Gravity is weaker than the weak force by about twenty-five orders of magnitude.
+
+- Range   @force.four.range
+  can: Say which forces reach across any distance and which do not.
+  bite: Gravity and electromagnetism have infinite range. They weaken with the square of the separation but never reach zero, so every mass pulls on every other mass in the universe. The strong and weak forces have an extremely short, finite range, which is why they never appear in a Newtonian problem.
+  ? row: Infinite range or short range?
+    | gravity                  = infinite
+    | strong nuclear           = short
+    | electromagnetic          = infinite
+    | weak nuclear             = short
+
+### Electromagnetism in everyday forces   @force.em
+    can: Trace contact, friction, tension and muscle forces back to electromagnetic interaction.
+
+- Contact forces   @force.em.contact
+  can: Identify everyday pushes and pulls as electromagnetic.
+  bite: When you press on a table, the charges in your hand and in the table repel before the atoms can overlap. That is all a contact force is. Friction, tension in a rope, the stiffness of a solid, surface tension, glue, and each step in the working of a muscle are electromagnetic interactions between charges.
+  ? row: Which fundamental force is behind:
+    | friction between a box and the floor?        = electromagnetic
+    | tension in a rope?                           = electromagnetic
+    | an apple falling from a tree?                = gravity
+    | a muscle contracting?                        = electromagnetic
+    | a chair holding you up?                      = electromagnetic
+
+- The one exception   @force.em.gravity
+  can: Pick out gravity as the everyday force that is not electromagnetic.
+  bite: One everyday force cannot be explained by charges: the pull toward the ground. Weight is gravity. In an ordinary mechanics problem, every other force on the diagram is electromagnetic.
+  ? choice: A book rests on a table. Two forces act on it. What are their fundamental origins?
+    (x) gravity downward, electromagnetic upward
+    ( ) gravity both ways
+    ( ) electromagnetic both ways
+    ( ) gravity downward, strong nuclear upward
+    why: Weight is gravity. The table's push is a contact force, so it is electromagnetic.
+
+### Two laws, one pattern   @force.laws
+    can: Set Newton's law of gravitation beside Coulomb's law and name what each proportionality says.
+
+- Universal gravitation   @force.laws.grav
+  can: State Newton's law of universal gravitation in words and symbols.
+  bite: Any two masses attract. The force is in proportion to each mass, and in inverse proportion to the square of their separation. A constant, G, sets the scale: $F = G\,m_1 m_2 / r^2$.
+  ? reveal: State in words what the gravitational force between two objects depends on.
+    or: Put Newton's law of universal gravitation into a sentence.
+    or: Read $F = G\,m_1 m_2 / r^2$ aloud as a statement about proportions.
+    = It is proportional to each of the two masses and inversely proportional to the square of the distance between them.
+
+- Coulomb's law   @force.laws.coul
+  can: State Coulomb's law in words and symbols.
+  bite: Any two charges push or pull on each other. The force is in proportion to each charge, and in inverse proportion to the square of their separation. A constant, k, sets the scale: $F = k\,q_1 q_2 / r^2$. Like charges repel and unlike charges attract.
+  ? reveal: State in words what the electric force between two charges depends on.
+    or: Put Coulomb's law into a sentence.
+    or: Read $F = k\,q_1 q_2 / r^2$ aloud as a statement about proportions.
+    = It is proportional to each of the two charges and inversely proportional to the square of the distance between them.
+  ? choice: Gravity only ever attracts. What about the electric force?
+    (x) It attracts unlike charges and repels like charges.
+    ( ) It only attracts.
+    ( ) It only repels.
+    ( ) It attracts like charges and repels unlike charges.
+
+- The shared pattern   @force.laws.pattern
+  can: Point out what the two laws have in common and the one place they differ.
+  bite: Lay the two laws side by side and they are the same sentence. A constant, times one object's amount, times the other's, over separation squared. Mass plays the part in one that charge plays in the other. They differ only in the constant, and in the fact that charge comes in two signs.
+  ? row: In the gravitation law, what plays the part of:
+    | the charges q₁ and q₂ in Coulomb's law?     = the masses
+    | the constant k?                             = G
+  ? reveal: What do the gravitation law and Coulomb's law have in common?
+    = Both are a constant times the two objects' amounts (masses or charges), divided by the square of their separation.
+
+### Calculating with the laws   @force.calc
+    can: Find a gravitational or electrostatic force, and say how it changes when a mass, a charge or the separation is scaled.
+    links: @sf.idea
+
+- Scaling a law   @force.calc.scale
+  can: Say how the force changes when one quantity in the law is scaled.
+  bite: You rarely need the constant to answer "what happens if". The force follows each mass or charge directly, and follows the separation as an inverse square. Double a mass and the force doubles. Double the separation and the force drops to a quarter.
+  ? row: Two masses attract with a certain force. By what factor is the force multiplied if:
+    slider: factor 1/9 | 1/4 | 1/3 | 1/2 | 1 | 2 | 3 | 4 | 9
+    | one mass is doubled?                = 2
+    | both masses are doubled?            = 4
+    | the separation is doubled?          = 0.25
+    | the separation is tripled?          = 0.1111
+    | the separation is halved?           = 4
+    why: Direct with each mass. Inverse square with separation: 1/2², 1/3², and 1/(1/2)² which is 4.
+  ? numeric: Two charges repel with [F = 36 N | 18 N | 72 N | 90 N]. One charge is doubled and the separation is tripled. What is the force now?
+    = F * 2 / 9 -> N
+    why: Times 2 for the charge, times 1/9 for the separation.
+
+- A full calculation   @force.calc.full
+  can: Calculate a gravitational or electrostatic force from the law.
+  bite: Put the amounts and the separation into the law and carry the units, including the units of the constant. G is 6.67 × 10⁻¹¹ N m²/kg². k is 8.99 × 10⁹ N m²/C². The kg² or C² and the m² cancel and newtons are left.
+  ? numeric: Two [1000 kg] masses sit [1 m] apart. What gravitational force does each feel? Use G = 6.67 × 10⁻¹¹ N m²/kg².
+    = 6.67e-5 N
+    why: G × {[1000 kg]} × {[1000 kg]} ÷ {[1 m]}². A million times G.
+  ? numeric: Charges of [2 × 10⁻⁶ C] and [3 × 10⁻⁶ C] sit [0.3 m] apart. What force does each feel? Use k = 8.99 × 10⁹ N m²/C².
+    = 0.599 N
+    why: k × {6 × 10⁻¹² C²} ÷ {0.09 m²}.
+
+- Surface gravity from the law   @force.calc.g
+  can: Find the acceleration of free fall from a planet's mass and radius.
+  bite: Divide the gravitation law through by the mass of the falling object and that mass is gone. What is left is an acceleration that depends only on the planet: G times the planet's mass over its radius squared. The falling object's own mass was never needed.
+  links: @ext.eqacc.g @table.path.need
+  ? numeric: The Earth has a mass of [5.97 × 10²⁴ kg] and a radius of [6.37 × 10⁶ m]. What acceleration does its gravity give an object at the surface? Use G = 6.67 × 10⁻¹¹ N m²/kg².
+    = 9.81 m/s²
+    why: G × {[5.97 × 10²⁴ kg]} ÷ {[6.37 × 10⁶ m]}². N/kg is the same as m/s².
+  ? choice: To find the acceleration of an object falling at the Earth's surface from the law of gravitation, which of these is not needed?
+    (x) the mass of the falling object
+    ( ) the mass of the Earth
+    ( ) the radius of the Earth
+    ( ) the constant G
+    why: The object's mass is a common factor of the force and of its inertia, so it divides out.
+
+### The third law from symmetry   @force.third
+    can: Explain equal and opposite forces from the symmetry of the two expressions, and unequal accelerations from unequal masses.
+
+- A symmetric expression   @force.third.sym
+  can: Explain why the two objects in either law feel forces of equal size.
+  bite: In both laws the two objects enter in the same way. Swap them, and the expression is unchanged. So the force on the first from the second has the same size as the force on the second from the first, pointing the opposite way. That is Newton's third law, read straight off the formula.
+  ? choice: The Earth pulls on a falling apple. How does the apple's pull on the Earth compare?
+    or: A falling apple is attracted by the Earth. Compare the force that the apple exerts on the Earth.
+    (x) the same size, opposite direction
+    ( ) much smaller, because the apple is small
+    ( ) zero
+    ( ) the same size, same direction
+    why: Both masses appear in the law in the same way, so it gives one size for both.
+  ? reveal: How does the form of the law of gravitation show Newton's third law?
+    = The two masses are multiplied, so swapping the objects changes nothing. Each feels a force of the same size, toward the other.
+
+- Equal forces, unequal accelerations   @force.third.acc
+  can: Resolve the puzzle of equal forces that do not look equal.
+  bite: It does not look as if the apple moves the Earth. The forces really are equal. What differs is the acceleration, which is the force per unit of mass. The same force shared over the Earth's enormous mass gives an acceleration far too small to see. The intuition that says "unequal" is about acceleration, and it has been filed under the wrong word.
+  links: @ext.eqforce.inv @ext.eqforce.bary
+  ? numeric: A [m = 0.2 kg | 0.1 kg | 0.5 kg | 0.3 kg] apple falls at [g]. With what force does the apple pull the Earth upward?
+    = m * g -> N
+    why: The Earth pulls the apple with {[m]} × {[g]}. The apple pulls back equally.
+    seed: g = 9.8 m/s²
+
+### Universal constants   @force.const
+    can: Say what G, the Coulomb constant and the elementary charge each fix.
+
+- Constants of proportionality   @force.const.Gk
+  can: Say what job G and k do in their laws.
+  bite: A proportionality says how a force scales. A constant turns it into an actual number of newtons. G does this for gravity and k for electricity. They are universal: the same value everywhere, for every pair of objects. They are scale factors with units, between a combination of amounts and distance on one side and a force on the other.
+  links: @sf.idea.dim
+  ? choice: Is the constant G dimensionless?
+    (x) No. It has units, N m²/kg², so that the law comes out as a force.
+    ( ) Yes. It is a pure number.
+    ( ) Yes, because it is universal.
+    ( ) It depends on the objects.
+    why: kg² over m² is not a force. The constant's units make up the difference.
+
+- The elementary charge   @force.const.e
+  can: Say what the elementary charge is and how the coulomb relates to it.
+  bite: Charge comes in indivisible steps. The smallest is the elementary charge, the size of the charge on one proton or one electron: 1.60 × 10⁻¹⁹ C. The coulomb is simply a very large number of these, about 6.24 × 10¹⁸.
+  ? numeric: How much charge do [5 × 10¹⁸] protons carry? The elementary charge is 1.60 × 10⁻¹⁹ C.
+    = 0.8 C
+    why: {[5 × 10¹⁸]} × {1.60 × 10⁻¹⁹ C}.
+  ? choice: Which of these charges is impossible for an isolated object?
+    (x) half an elementary charge
+    ( ) one elementary charge
+    ( ) three elementary charges
+    ( ) zero
+    why: Charge only comes in whole steps of the elementary charge.
+
+
+## Scale factors   @sf
+   can: Find the factor between two equivalent quantities and use it in either direction.
+   !! Source: this year's scale-factor test. Its own numbers are each item's
+   !! first value, so the first thing a student meets is something they have
+   !! already done.
+
+### What a scale factor is   @sf.idea
+    can: Say what a ratio is, find a factor from one pair, and tell whether it has a dimension.
+
+? match: Match each word to its meaning.
+  | ratio                = one quantity measured against another
+  | scale factor         = the one quantity that carries you between two equivalent quantities
+  | dimensionless        = said of a factor whose units cancel completely
+  | equivalent           = different in kind, yet each fixes the other in a given setting
+
+- Ratio   @sf.idea.ratio
+  can: Say what the word ratio means.
+  bite: A ratio is one quantity measured against another: how much of the first there is for each one of the second. Scaling both parts by the same number leaves the ratio alone, so 3 to 7 and 9 to 21 are one ratio written twice.
+  ? reveal: What does the word ratio mean?
+    or: Explain what a ratio is, in your own words.
+    or: What are you saying about two quantities when you state their ratio?
+    = One quantity divided by another: how much of the first for each one of the second. It does not change when both are scaled together (3 to 7 is the same ratio as 9 to 21).
+  ? choice: Which pair has the same ratio as [3] to [7]?
+    (x) 9 to 21
+    ( ) 7 to 3
+    ( ) 6 to 10
+    ( ) 13 to 17
+    why: Tripling both parts gives 9 to 21. Adding the same number to both parts (6 to 10, 13 to 17) changes the ratio, and 7 to 3 is the ratio turned over.
+  ? numeric: Triangle A has length [L = 3 cm | 2 cm | 5 cm | 4 cm] and height [h = 7 cm | 9 cm | 11 cm]. Triangle B has the same proportions and length [= k * L -> cm]. What is the height of B?
+    = k * h -> cm
+    why: B's length is [k] times A's, so its height is too: [k] × [h].
+    seed: k = 3 | 2 | 5 | 10
+
+- Not equal, but equivalent   @sf.idea.equiv
+  can: Explain how two quantities of different kinds can stand for each other in one setting.
+  bite: On one particular wheel, [24 cm] of arc and [0.3 rad] of angle describe the same turn. They are not equal, because one is a length and the other is a bare number. They are equivalent: on this wheel, knowing either one tells you the other. What ties them together belongs to the wheel, so it is the same for every other pair on that wheel.
+  ? reveal: On one wheel, 24 cm of arc goes with 0.3 rad of angle. Why is it wrong to write 24 cm = 0.3 rad, and what is right to say?
+    or: A classmate writes 24 cm = 0.3 rad for a certain wheel. What is wrong with the equals sign, and what should be said instead?
+    = They are different kinds of quantity, so they cannot be equal. They are equivalent on this wheel: each one fixes the other through the wheel's radius.
+  ? choice: On one wheel, [24 cm] of arc goes with [0.3 rad]. What is the same for every other arc and angle pair on this wheel?
+    (x) the arc divided by the angle
+    ( ) the arc minus the angle
+    ( ) the arc
+    ( ) the angle
+    why: Arc and angle both change from pair to pair. Their ratio is the radius, and the radius belongs to the wheel.
+
+- Finding the factor   @sf.idea.find
+  can: Find a scale factor by dividing one member of a pair by the other, units included.
+  bite: One pair is enough. Divide one quantity by the other and carry the units through the division: {[51 kg m²/s²] :: torque} over {[3 s⁻²] :: angular acceleration} is {17 kg m² :: the factor}. Dividing the other way round gives the same factor turned over, and either is a correct answer.
+  ? numeric: In one setting, a torque of [tau] goes with an angular acceleration of [alpha]. What is the scale factor between them?
+    = tau / alpha
+    = alpha / tau
+    why: {[tau] :: torque} ÷ {[alpha] :: angular acceleration}. The s⁻² cancels and kg m² is left.
+    seed: I = 17 kg m² | 4 kg m² | 12 kg m² | 0.5 kg m²
+          alpha = 3 s⁻² | 2..6 s⁻²
+          tau = I * alpha
+  ? numeric: On one circle, an arc of [= R * th -> cm] goes with an angle of [th]. What is the scale factor between them?
+    = R -> cm
+    = 1 / R
+    why: {[= R * th -> cm] :: arc} ÷ {[th] :: angle, a bare number} leaves a length.
+    seed: R = 80 cm | 50 cm | 25 cm | 40 cm
+          th = 0.3 rad | 0.5 rad | 0.2 rad | 1.5 rad
+  ? numeric: A velocity of [= d / T -> m/s] goes with a displacement of [d]. What is the scale factor between them?
+    = 1 / T
+    = T
+    why: {[= d / T -> m/s] :: velocity} ÷ {[d] :: displacement}. The meters cancel and "per second" is left. Turned over, it is [T].
+    seed: T = 0.2 s | 0.5 s | 2 s | 0.1 s
+          d = 0.6 m | 1.2 m | 3 m | 0.4 m
+
+- Dimensionless or not   @sf.idea.dim
+  can: Decide whether a scale factor is a pure number or a quantity with its own unit.
+  bite: Divide the units along with the numbers. If they cancel completely, the factor is a pure number and it compares two quantities of the same kind, such as the two components of one velocity. If a unit is left over, the factor is a quantity in its own right and it carries you from one kind to another: a radius, an inertia factor, a time duration.
+  ? row: Is the scale factor between these two dimensionless?
+    | [3 m/s] and [−10 m/s]          = yes
+    | [24 cm] and [0.3 rad]          = no
+    | [51 kg m²/s²] and [3 s⁻²]      = no
+    | [0.6 m] and [−2 m]             = yes
+    | [3 m/s] and [0.6 m]            = no
+    why: Same unit on both sides cancels to a pure number. Otherwise something is left: a length, kg m², a time.
+  ? reveal: A scale factor comes out as 17 kg m². It has units. What does that tell you about the two quantities it joins?
+    or: Suppose the factor between two quantities is not a pure number but 17 kg m². What follows about the two quantities?
+    = They are different kinds of quantity. The factor is itself a physical quantity (here a moment of inertia) and it is what turns one kind into the other.
+
+- Using the factor in both directions   @sf.idea.use
+  can: Go either way through a scale factor and check the direction by the units.
+  bite: The factor is multiplied in one direction and divided in the other. The units say which. With a factor of 17 kg m², an angular acceleration in s⁻² must be multiplied to become a torque in kg m²/s², and a torque must be divided to come back. If the units of your answer look strange, you went the wrong way.
+  ? numeric: The factor between torque and angular acceleration is [I]. What angular acceleration goes with a torque of [= I * a]?
+    = a
+    ~ I * I * a :: The factor was multiplied in. Look at the units that gives. Torque to angular acceleration divides.
+    why: {[= I * a] :: torque} ÷ {[I] :: factor} = [a].
+    seed: I = 17 kg m² | 4 kg m² | 12 kg m² | 5 kg m²
+          a = 5 s⁻² | 3 s⁻² | 0.6 s⁻² | 20 s⁻²
+  ? numeric: The factor between torque and angular acceleration is [I]. What torque goes with an angular acceleration of [a]?
+    = I * a
+    ~ a / I :: The factor was divided out. Look at the units that gives. Angular acceleration to torque multiplies.
+    why: {[a] :: angular acceleration} × {[I] :: factor} = [= I * a].
+    seed: I = 17 kg m² | 4 kg m² | 12 kg m² | 5 kg m²
+          a = 0.6 s⁻² | 3 s⁻² | 5 s⁻² | 20 s⁻²
+
+- Units on the way through   @sf.idea.units
+  can: Re-express a quantity in another unit before or after using a factor.
+  bite: A quantity can be re-expressed at any moment without changing it: 0.4 m is 40 cm, one revolution is 2π radians, one minute is 60 seconds. Do it as a step of its own, either before the factor or after, so the factor only ever meets the units it was found in.
+  ? row: Re-express:
+    | [x = 0.4 m | 0.7 m | 2.5 m | 0.06 m] in centimeters                                        = x -> cm
+    | [x = 0.6 mm | 4 mm | 25 mm | 0.3 mm] in centimeters                                        = x -> cm
+    | [x = 0.25 revolutions | 0.5 revolutions | 2 revolutions | 0.75 revolutions] in radians     = x -> rad
+    | [x = 1.5 RPM | 30 RPM | 0.5 RPM | 12 RPM] in radians per second                            = x -> s⁻¹
+    | [x = 0.45 RPM per second | 3 RPM per second | 60 RPM per second] in s⁻²                    = x -> s⁻²
+    why: Centimeters: 100 to the meter, 10 mm to the centimeter. Revolutions: times 2π. Per minute to per second: divide by 60.
+
+
+### The radius, between arc and angle   @sf.radius
+    can: Use a circle's radius as the factor between path-frame and angular-frame quantities.
+    links: @frame.ratio.def @frame.concentric.rigid @table.factors.radius
+
+- Arc coverage and angle coverage   @sf.radius.pos
+  can: Go between an arc length and the angle it covers on a circle of known radius.
+  bite: On a circle, arc length over angle is the radius. So the radius is the scale factor between how far along the path and how far around the center: {[24 cm] :: arc} ÷ {[0.3 rad] :: angle} = {80 cm :: radius}. It is a length, so it is not dimensionless.
+  figure: roll radius 80 cm
+  ? ladder: arc coverage (path length) <-> angle coverage
+    anchor: [24 cm] <-> [0.3 rad]
+    factor: 80 cm
+    dimensionless: no
+    | 10 m     <-> ?                 = 12.5 rad
+    | 4.8 cm   <-> ?                 = 0.06 rad
+    | 0.6 mm   <-> ?                 = 0.00075 rad
+    | 0.4 m    <-> ?                 = 0.5 rad
+    | ?        <-> 1 rad             = 80 cm
+    | ?        <-> 0.25 revolutions  = 125.66 cm
+    | ?        <-> 3 rad             = 240 cm
+    | ?        <-> 1 revolution      = 502.65 cm
+    why: Left to right, divide by 80 cm, after writing the arc in centimeters. Right to left, multiply by 80 cm, after writing the angle in radians.
+    seed: R = 80 cm | 50 cm | 25 cm | 2 m
+    vary: numbers, units
+
+- Arc velocity and angular velocity   @sf.radius.vel
+  can: Go between a speed along the arc and an angular velocity on the same circle.
+  bite: Both sides are now time-rates, and the same radius still joins them: {[8 m/s] :: arc velocity} ÷ {[10 s⁻¹] :: angular velocity} = {0.8 m :: radius}. Taking a time-rate of both members of a pair leaves the factor between them unchanged.
+  links: @frame.rates
+  ? ladder: arc velocity <-> angular velocity
+    anchor: [8 m/s] <-> [10 s⁻¹]
+    factor: 0.8 m
+    dimensionless: no
+    | 30 m/s   <-> ?           = 37.5 s⁻¹
+    | ?        <-> 1.2 s⁻¹     = 0.96 m/s
+    | ?        <-> 1.5 RPM     = 0.12566 m/s
+    | ?        <-> 18 s⁻¹      = 14.4 m/s
+    | ?        <-> 0.22 RPM    = 0.018431 m/s
+    | ?        <-> 2.4 s⁻¹     = 1.92 m/s
+    why: Multiply an angular velocity in s⁻¹ by 0.8 m. An RPM value is first written in s⁻¹: times 2π, over 60.
+    seed: R = 0.8 m | 0.5 m | 2 m | 0.25 m
+    vary: numbers, units
+
+- Arc acceleration and angular acceleration   @sf.radius.acc
+  can: Go between an acceleration along the arc and an angular acceleration on the same circle.
+  bite: One more time-rate, and the radius is still the factor: {[1000 m/s²] :: arc acceleration} ÷ {[1250 s⁻²] :: angular acceleration} = {0.8 m :: radius}. One wheel, one radius, three rows of the table.
+  ? ladder: arc acceleration <-> angular acceleration
+    anchor: [1000 m/s²] <-> [1250 s⁻²]
+    factor: 0.8 m
+    dimensionless: no
+    | 1.08 m/s²  <-> ?                    = 1.35 s⁻²
+    | ?          <-> 3.9 s⁻²              = 3.12 m/s²
+    | ?          <-> 8.7 s⁻²              = 6.96 m/s²
+    | ?          <-> 0.45 RPM per second  = 0.037699 m/s²
+    | ?          <-> 1.0 s⁻²              = 0.8 m/s²
+    | 1.0 m/s²   <-> ?                    = 1.25 s⁻²
+    why: Angular to arc, multiply by 0.8 m. Arc to angular, divide. RPM per second is first written in s⁻²: times 2π, over 60.
+    seed: R = 0.8 m | 0.5 m | 2 m | 0.25 m
+    vary: numbers, units
+
+- Momentum and angular momentum   @sf.radius.mom
+  can: Go between a momentum along the arc and an angular momentum about the center.
+  bite: For the extensive pairs the radius works the other way up. Momentum along the arc times the radius gives angular momentum about the center: {[3 kg m²/s] :: angular momentum} ÷ {[6 kg m/s] :: momentum} = {0.5 m :: radius}.
+  links: @frame.radius.count
+  ? ladder: momentum along the arc <-> angular momentum
+    anchor: [6 kg m/s] <-> [3 kg m²/s]
+    factor: 0.5 m
+    dimensionless: no
+    | 20 kg m/s    <-> ?               = 10 kg m²/s
+    | 0.8 kg m/s   <-> ?               = 0.4 kg m²/s
+    | ?            <-> 7 kg m²/s       = 14 kg m/s
+    | ?            <-> 250 g m²/s      = 500 g m/s
+    why: Momentum to angular momentum, multiply by 0.5 m. Back again, divide.
+    seed: R = 0.5 m | 0.8 m | 2 m | 0.25 m
+    vary: numbers, units
+
+- Force and torque   @sf.radius.imp
+  can: Go between a force along the arc and the torque it gives about the center.
+  bite: A force directed along the arc, such as a rope coming off a pulley, gives a torque equal to the force times the radius at which it acts: {[3 kg m²/s²] :: torque} ÷ {[20 kg m/s²] :: force} = {0.15 m :: radius}. The same force further out gives more torque.
+  links: @mass.alpha.net @frame.radius.count
+  ? ladder: force along the arc <-> torque
+    anchor: [20 kg m/s²] <-> [3 kg m²/s²]
+    factor: 0.15 m
+    dimensionless: no
+    | 40 kg m/s²   <-> ?                    = 6 kg m²/s²
+    | 2 kg m/s²    <-> ?                    = 0.3 kg m²/s²
+    | ?            <-> 1.5 kg m²/s²         = 10 kg m/s²
+    | ?            <-> 30 000 g cm²/s²      = 2000 g cm/s²
+    why: Force to torque, multiply by 0.15 m. Back again, divide. For the last rung write the radius as 15 cm.
+    seed: R = 0.15 m | 0.5 m | 0.1 m | 2 m
+    vary: numbers, units
+
+- One arc on different circles   @sf.radius.sizes
+  can: Find the angle an arc covers on a given circle, or the circle on which it covers a given angle.
+  bite: The same arc covers a large angle on a small circle and a small angle on a large one. Angle is arc over radius, so radius is arc over angle. Write both lengths in one unit first, and write an angle given in revolutions as radians.
+  ? row: How much angle does a [s = 30 cm | 60 cm | 12 cm | 45 cm] arc cover on:
+    | a [R = 1 m | 2 m | 3 m] radius circle?       = s / R -> rad
+    | a [R = 1 cm | 2 cm | 5 cm] radius circle?    = s / R -> rad
+    | a [R = 15 m | 10 m | 60 m] radius circle?    = s / R -> rad
+    why: {[s] :: arc} over the radius, with both written in centimeters.
+  ? row: On what size circle does a [s = 30 cm | 60 cm | 12 cm | 45 cm] arc cover:
+    | [th = 3 rad | 2 rad | 6 rad]?                                        = s / th -> cm
+    | [th = 0.5 revolutions | 0.25 revolutions | 2 revolutions]?           = s / th -> cm
+    | [th = 15 rad | 10 rad | 30 rad]?                                     = s / th -> cm
+    why: {[s] :: arc} over the angle in radians. One revolution is 2π radians.
+
+
+### The inertia factor, between impetus and acceleration   @sf.inertia
+    can: Use a mass or a moment of inertia as the factor between an impetus and the acceleration it gives.
+    links: @table.factors.inertia @mass.alpha.find
+
+- Torque and angular acceleration   @sf.inertia.rot
+  can: Go between a torque and an angular acceleration through the moment of inertia.
+  bite: For one rigid object turning about one axis, torque over angular acceleration is always the same amount: the object's moment of inertia. {[51 kg m²/s²] :: torque} ÷ {[3 s⁻²] :: angular acceleration} = {17 kg m² :: moment of inertia}. A larger factor means the same torque buys less angular acceleration.
+  ? ladder: torque <-> angular acceleration
+    anchor: [51 kg m²/s²] <-> [3 s⁻²]
+    factor: 17 kg m²
+    dimensionless: no
+    | 3.4 kg m²/s²  <-> ?           = 0.2 s⁻²
+    | 85 kg m²/s²   <-> ?           = 5 s⁻²
+    | ?             <-> 0.6 s⁻²     = 10.2 kg m²/s²
+    | ?             <-> 210 s⁻²     = 3570 kg m²/s²
+    | ?             <-> 10.8 s⁻²    = 183.6 kg m²/s²
+    why: Torque to angular acceleration, divide by 17 kg m². Back again, multiply.
+    seed: I = 17 kg m² | 4 kg m² | 12 kg m² | 0.5 kg m²
+    vary: numbers
+
+- Force and acceleration   @sf.inertia.path
+  can: Go between a force and an acceleration through the mass.
+  bite: The path-frame partner of the leaf beside this one. For one object, force over acceleration is always its mass: {[12 kg m/s²] :: force} ÷ {[3 m/s²] :: acceleration} = {4 kg :: mass}.
+  ? ladder: force <-> acceleration
+    anchor: [12 kg m/s²] <-> [3 m/s²]
+    factor: 4 kg
+    dimensionless: no
+    | 20 kg m/s²   <-> ?            = 5 m/s²
+    | 1 kg m/s²    <-> ?            = 0.25 m/s²
+    | ?            <-> 9.8 m/s²     = 39.2 kg m/s²
+    | ?            <-> 0.5 m/s²     = 2 kg m/s²
+    | ?            <-> 150 cm/s²    = 6 kg m/s²
+    why: Force to acceleration, divide by 4 kg. Back again, multiply. 150 cm/s² is 1.5 m/s².
+    seed: m = 4 kg | 5 kg | 0.5 kg | 20 kg
+    vary: numbers, units
+
+- Velocity and momentum   @sf.inertia.mom
+  can: Go between a velocity and a momentum through the mass.
+  bite: One temporal order down from force and acceleration, the same mass is still the factor: {[12 kg m/s] :: momentum} ÷ {[3 m/s] :: velocity} = {4 kg :: mass}.
+  ? ladder: velocity <-> momentum
+    anchor: [3 m/s] <-> [12 kg m/s]
+    factor: 4 kg
+    dimensionless: no
+    | 10 m/s     <-> ?               = 40 kg m/s
+    | 0.5 m/s    <-> ?               = 2 kg m/s
+    | 250 cm/s   <-> ?               = 10 kg m/s
+    | ?          <-> 100 kg m/s      = 25 m/s
+    why: Velocity to momentum, multiply by 4 kg. Back again, divide. 250 cm/s is 2.5 m/s.
+    seed: m = 4 kg | 5 kg | 0.5 kg | 20 kg
+    vary: numbers, units
+
+- Angular velocity and angular momentum   @sf.inertia.angmom
+  can: Go between an angular velocity and an angular momentum through the moment of inertia.
+  bite: And the same in the angular frame: {[34 kg m²/s] :: angular momentum} ÷ {[2 s⁻¹] :: angular velocity} = {17 kg m² :: moment of inertia}.
+  ? ladder: angular velocity <-> angular momentum
+    anchor: [2 s⁻¹] <-> [34 kg m²/s]
+    factor: 17 kg m²
+    dimensionless: no
+    | 10 s⁻¹     <-> ?               = 170 kg m²/s
+    | 30 RPM     <-> ?               = 53.407 kg m²/s
+    | ?          <-> 8.5 kg m²/s     = 0.5 s⁻¹
+    | ?          <-> 51 kg m²/s      = 3 s⁻¹
+    why: Angular velocity to angular momentum, multiply by 17 kg m². Back again, divide. 30 RPM is π s⁻¹.
+    seed: I = 17 kg m² | 4 kg m² | 12 kg m² | 0.5 kg m²
+    vary: numbers, units
+
+? compound: A pulley's mass distribution can be approximated as a [m1 = 30 g | 20 g | 40 g | 50 g] ring [r1 = 15 cm | 12 cm | 20 cm] in radius, a [m2 = 10 g | 5 g | 20 g] ring [r2 = 7 cm | 5 cm | 8 cm] in radius and a [m3 = 2 g | 4 g | 6 g] ring [r3 = 10 cm | 9 cm | 11 cm] in radius, all joined together. In a given scenario, two ropes coming off it give a total torque of [tq = 10 000 g cm²/s² | 5000 g cm²/s² | 20 000 g cm²/s² | 12 000 g cm²/s²] clockwise on the pulley's rotation. What is the pulley's angular acceleration?
+  figure: rings ([m1], [r1]) ([m2], [r2]) ([m3], [r3])
+  seed: I = m1 * r1^2 + m2 * r2^2 + m3 * r3^2
+  1. @mass.ring.I       Moment of inertia of the [m1] ring at [r1]?      = m1 * r1^2 -> g cm²
+  2. @mass.ring.I       Moment of inertia of the [m2] ring at [r2]?      = m2 * r2^2 -> g cm²
+  3. @mass.ring.I       Moment of inertia of the [m3] ring at [r3]?      = m3 * r3^2 -> g cm²
+  4. @mass.inertia.sum  The rings are joined. What is the pulley's moment of inertia?      = I -> g cm²
+  5. @sf.inertia.rot    {torque :: [tq]} over {moment of inertia :: step 4}?      = tq / I -> s⁻²
+  = tq / I -> s⁻²
+  !! The harder version, with the torque worked out from the two ropes, is
+  !! the compound item under @mass.alpha.
+
+
+### The time duration, between temporal orders   @sf.time
+    can: Use a duration as the factor between any quantity and the one a temporal order below it.
+    links: @table.factors.time
+
+- Velocity and displacement   @sf.time.vd
+  can: Go between a velocity and a displacement, as vectors, through a time duration.
+  bite: Hold a velocity for a set time and it gives a displacement. The duration is the factor: {[3 m/s] :: velocity} ÷ {[0.6 m] :: displacement} = 5 s⁻¹, or turned over, 0.2 s. One duration scales both components alike, so the same factor is used on each.
+  ? ladder: velocity <-> displacement
+    anchor: [⟨3 m/s, −10 m/s⟩] <-> [⟨0.6 m, −2 m⟩]
+    factor: 5 s⁻¹
+    dimensionless: no
+    | ⟨30 m/s, −100 m/s⟩       <-> ?                     = ⟨6 m, −20 m⟩
+    | ⟨12 m/s, −40 m/s⟩        <-> ?                     = ⟨2.4 m, −8 m⟩
+    | ⟨58 m/s, 2 m/s⟩          <-> ?                     = ⟨11.6 m, 0.4 m⟩
+    | ⟨0 m/s, 500 m/s⟩         <-> ?                     = ⟨0 m, 100 m⟩
+    | ?                        <-> ⟨8 m, 22 m⟩           = ⟨40 m/s, 110 m/s⟩
+    | ?                        <-> ⟨15 cm, 0 cm⟩         = ⟨0.75 m/s, 0 m/s⟩
+    | ⟨30 mi/min, 90 mi/min⟩   <-> ?                     = ⟨0.1 mi, 0.3 mi⟩
+    | ?                        <-> ⟨−8 km, −22 km⟩       = ⟨−40 km/s, −110 km/s⟩
+    why: Velocity to displacement, multiply each component by 0.2 s. Back again, multiply by 5 s⁻¹. For miles per minute, 0.2 s is 1/300 of a minute, so 30 mi/min gives 0.1 mi.
+    seed: T = 0.2 s | 0.5 s | 2 s | 0.1 s
+    vary: numbers, units
+
+- Acceleration and velocity change   @sf.time.acc
+  can: Go between an acceleration and the change in velocity it gives over a duration.
+  bite: Hold an acceleration for a set time and it builds up a change in velocity. The duration is the factor: {[10 m/s] :: velocity change} ÷ {[2.5 m/s²] :: acceleration} = {4 s :: duration}.
+  ? ladder: acceleration <-> velocity change
+    anchor: [2.5 m/s²] <-> [10 m/s]
+    factor: 4 s
+    dimensionless: no
+    | 9.8 m/s²   <-> ?            = 39.2 m/s
+    | 0.5 m/s²   <-> ?            = 2 m/s
+    | ?          <-> 60 m/s       = 15 m/s²
+    | ?          <-> 1 m/s        = 0.25 m/s²
+    why: Acceleration to velocity change, multiply by 4 s. Back again, divide.
+    seed: T = 4 s | 0.2 s | 2 s | 10 s
+    vary: numbers
+
+- Angular velocity and angle, angular acceleration and angular velocity   @sf.time.ang
+  can: Use a duration between neighboring temporal orders in the angular frame.
+  bite: The duration does the same job in the angular frame. An angular velocity held for 4 s gives an angle covered. An angular acceleration held for 4 s gives a change in angular velocity.
+  links: @frame.rates.ang
+  ? ladder: angular velocity <-> angle covered
+    anchor: [1.5 s⁻¹] <-> [6 rad]
+    factor: 4 s
+    dimensionless: no
+    | 10 s⁻¹     <-> ?                 = 40 rad
+    | 30 RPM     <-> ?                 = 12.566 rad
+    | ?          <-> 2 rad             = 0.5 s⁻¹
+    | ?          <-> 1 revolution      = 1.5708 s⁻¹
+    why: Multiply an angular velocity in s⁻¹ by 4 s. 30 RPM is π s⁻¹, so 4 s of it is 4π rad, two revolutions.
+    seed: T = 4 s | 0.2 s | 2 s | 10 s
+    vary: numbers, units
+  ? ladder: angular acceleration <-> angular velocity change
+    anchor: [3 s⁻²] <-> [12 s⁻¹]
+    factor: 4 s
+    dimensionless: no
+    | 0.25 s⁻²   <-> ?             = 1 s⁻¹
+    | ?          <-> 100 s⁻¹       = 25 s⁻²
+    | ?          <-> 60 RPM        = 1.5708 s⁻²
+    why: Multiply an angular acceleration by 4 s. 60 RPM is 2π s⁻¹.
+    seed: T = 4 s | 0.2 s | 2 s | 10 s
+    vary: numbers, units
+
+- Impetus and momentum change   @sf.time.imp
+  can: Go between a force or torque and the change in momentum or angular momentum it gives over a duration.
+  bite: The extensive side follows the same rule. A force held for a set time builds up a change in momentum, and a torque builds up a change in angular momentum. The duration is the factor both times.
+  ? ladder: force <-> momentum change
+    anchor: [5 kg m/s²] <-> [20 kg m/s]
+    factor: 4 s
+    dimensionless: no
+    | 49 kg m/s²    <-> ?               = 196 kg m/s
+    | 0.2 kg m/s²   <-> ?               = 0.8 kg m/s
+    | ?             <-> 3 kg m/s        = 0.75 kg m/s²
+    why: Force to momentum change, multiply by 4 s. Back again, divide.
+    seed: T = 4 s | 0.2 s | 2 s | 10 s
+    vary: numbers
+  ? ladder: torque <-> angular momentum change
+    anchor: [51 kg m²/s²] <-> [204 kg m²/s]
+    factor: 4 s
+    dimensionless: no
+    | 10.2 kg m²/s²   <-> ?                = 40.8 kg m²/s
+    | ?               <-> 34 kg m²/s       = 8.5 kg m²/s²
+    | ?               <-> 1 kg m²/s        = 0.25 kg m²/s²
+    why: Torque to angular momentum change, multiply by 4 s. Back again, divide.
+    seed: T = 4 s | 0.2 s | 2 s | 10 s
+    vary: numbers
+
+- Two kinds of factor in one pair   @sf.time.comp
+  can: Tell the factor between the components of one vector from the factor between two different quantities.
+  bite: The pair ⟨3 m/s, −10 m/s⟩ and ⟨0.6 m, −2 m⟩ holds two different factors. Between the two components of the velocity it is 3 over −10, which is −0.3: a pure number that says which way the velocity points. Between the velocity and the displacement it is 5 s⁻¹, which has a unit. The displacement's components are also in the ratio −0.3, because scaling a vector by a duration does not turn it.
+  figure: components 3 m/s right, 10 m/s down
+  ? numeric: What is the scale factor between the components of the velocity [⟨3 m/s, −10 m/s⟩]?
+    = −0.3
+    ~ −3.33 :: Correct, with the components taken in the other order.
+    why: 3 m/s over −10 m/s. The units cancel.
+  ? numeric: What is the scale factor between the components of the displacement [⟨0.6 m, −2 m⟩]?
+    = −0.3
+    ~ −3.33 :: Correct, with the components taken in the other order.
+    why: 0.6 m over −2 m. It matches the velocity's, as it must.
+  ? choice: A velocity and the displacement it gives have the same ratio between their components. Why?
+    (x) One duration multiplies both components, so the direction is unchanged.
+    ( ) The two components always have the same size.
+    ( ) Velocity and displacement have the same units.
+    ( ) It is a coincidence of these numbers.
+    why: Multiplying both components by 0.2 s changes how long the arrow is and leaves where it points.
+  ? reveal: In this pair, which factor is dimensionless and which is not, and what does each one tell you?
+    = Between components: −0.3, dimensionless, the direction of the vector. Between velocity and displacement: 5 s⁻¹ (or 0.2 s), not dimensionless, how long the velocity was held.
+
+
+## Extended masses   @mass
+   can: Treat a rigid object as a collection of rings and find how it responds to a torque.
+   !! Source: Unit 7.
+
+### Center of mass   @mass.com
+    can: Find a center of mass as a mass-weighted average of positions, and tell a weighted sum from a weighted average.
+
+- Weighted sum and weighted average   @mass.com.avg
+  can: Tell a weighted sum from a weighted average.
+  bite: Multiply each position by the mass sitting there and add: that is a weighted sum, in kg m. Divide it by the total mass and you have a weighted average, back in meters. The masses are the "weights" here in the statistical sense of the word, which is separate from weight as the pull of gravity.
+  ? numeric: A [m1 = 2 kg | 1..4 kg] mass sits at [x1 = 0 m | 1 m | 2 m] and a [m2 = 6 kg | 4 kg | 8 kg] mass at [x2 = 4 m | 6 m | 10 m]. What is the mass-weighted sum of their positions?
+    = m1 * x1 + m2 * x2
+    why: {[m1]} × {[x1]} + {[m2]} × {[x2]}.
+  ? choice: What is the difference between a weighted sum and a weighted average?
+    (x) The average is the sum divided by the total of the weights.
+    ( ) They are the same thing.
+    ( ) The sum is the average divided by the total of the weights.
+    ( ) The average ignores the weights.
+
+- Finding a center of mass   @mass.com.find
+  can: Find the center of mass of point masses on a line.
+  bite: The center of mass is the mass-weighted average position. It sits nearer the heavier masses. It is the missing extensive cell of order zero in the variable table, once the total mass is divided back out.
+  links: @table.rel.locate @ext.eqforce.bary
+  ? numeric: A [m1 = 2 kg | 1 kg | 3 kg] mass sits at [x1 = 0 m] and a [m2 = 6 kg | 3 kg | 9 kg] mass at [x2 = 4 m | 8 m | 12 m]. Where is their center of mass?
+    = (m1 * x1 + m2 * x2) / (m1 + m2)
+    why: {[= m1 * x1 + m2 * x2] :: weighted sum} ÷ {[= m1 + m2] :: total mass}. It sits nearer the heavier mass.
+  ? numeric: Masses of [1 kg], [2 kg] and [5 kg] sit at [0 m], [3 m] and [10 m]. Where is their center of mass?
+    = 7 m
+    why: Weighted sum 0 + 6 + 50 = 56 kg m, over 8 kg.
+    vary: numbers
+
+### Center of mass and momentum   @mass.ensemble
+    can: Relate the motion of the center of mass to the total momentum of the collection.
+
+- The velocity of the whole   @mass.ensemble.p
+  can: Find the velocity of a collection's center of mass from its total momentum.
+  bite: Total momentum is the mass-weighted sum of the velocities, just as the center of mass comes from the mass-weighted sum of the positions. They are the same construction one temporal order apart. So the total momentum over the total mass is the velocity of the center of mass: the one velocity that speaks for the whole collection.
+  links: @ext.total.add @table.rel.order
+  ? numeric: A [m1 = 2 kg] mass moves at [v1 = 3 m/s | 5 m/s] and a [m2 = 6 kg] mass at [v2 = 1 m/s | 3 m/s] in the same direction. How fast does their center of mass move?
+    = (m1 * v1 + m2 * v2) / (m1 + m2)
+    why: Total momentum [= m1 * v1 + m2 * v2], over [= m1 + m2].
+
+### Moment of inertia as a sum   @mass.inertia
+    can: Build a rigid object's moment of inertia by adding mr² over its parts.
+
+- A point mass about an axis   @mass.inertia.point
+  can: Find the moment of inertia of a point mass at a given distance from an axis.
+  bite: A point mass has an inertia factor for turning about an axis: its mass times the square of its distance from the axis. The same mass counts for more the further out it sits, and the distance counts twice.
+  links: @frame.radius.count
+  ? numeric: What is the moment of inertia of a [m = 3 kg | 2..6 kg] point mass [r = 2 m | 3 m | 0.5 m | 10 m] from the axis?
+    = m * r^2
+    why: {[m] :: mass} × {[r] :: distance}².
+  ? choice: A point mass is moved to twice its distance from the axis. Its moment of inertia becomes:
+    or: Doubling a point mass's distance from the axis makes its moment of inertia:
+    (x) four times as large
+    ( ) twice as large
+    ( ) half as large
+    ( ) unchanged
+    why: The distance enters squared.
+
+- Adding the parts   @mass.inertia.sum
+  can: Add the moments of inertia of parts joined into one rigid object.
+  bite: Moment of inertia is extensive. When parts are joined rigidly about one axis, their moments of inertia add, just as their masses do. A pulley made of three rings has the three ring values summed.
+  links: @ext.total.add @ext.angular.rot
+  ? numeric: Three rings about the same axis have moments of inertia [a = 6750 g cm² | ~1000..9000 g cm²], [b = 490 g cm² | ~100..900 g cm²] and [c = 200 g cm² | ~100..900 g cm²]. They are joined into one rigid pulley. What is its moment of inertia?
+    = a + b + c -> g cm²
+    why: Extensive quantities of the parts sum to the whole: [a] + [b] + [c].
+  ? choice: Two rings are joined into one rigid wheel. Which of these do you add to get the wheel's value?
+    (x) their moments of inertia
+    ( ) their angular accelerations
+    ( ) their angular velocities
+    ( ) their radii
+    why: Moment of inertia is extensive, so it adds. Angular velocity and angular acceleration are shared by every part of a rigid object.
+
+### Rings as building blocks   @mass.ring
+    can: Find a ring's moment of inertia from its mass and radius, and its radius from the other two.
+
+- A ring's moment of inertia   @mass.ring.I
+  can: Find the moment of inertia of a ring from its mass and radius.
+  bite: All of a ring's mass sits at one distance from the axis, so its moment of inertia is simply its mass times that radius squared: $I = m r^2$. The radius counts twice, so a ring ten times wider has a hundred times the moment of inertia. Keep the units exactly as they multiply: grams with square centimeters is fine.
+  ? row: How much moment of inertia does a [m = 50 g | 20 g | 4 g | 30 g] ring of mass have:
+    | at a radial size of [r = 5 cm | 3 cm | 7 cm | 10 cm]?     = m * r^2 -> g cm²
+    | at a radial size of [r = 50 cm | 30 cm | 20 cm]?          = m * r^2 -> g cm²
+    | at a radial size of [r = 3 m | 2 m | 5 m]?                = m * r^2 -> g m²
+    why: {[m] :: mass} × {radius squared}. The radius counts twice.
+
+- What size ring   @mass.ring.size
+  can: Find the radius of a ring from its moment of inertia and its mass.
+  bite: Dividing a ring's moment of inertia by its mass leaves the square radius, in m². That already tells you the size. Its square root is the radius itself, in meters.
+  links: @mass.gyr.msr
+  ? row: What size ring has [I = 500 g m² | 200 g m² | 900 g m²] moment of inertia:
+    | with mass [m = 1 kg | 2 kg | 4 kg]?        = sqrt(I / m) -> m
+                                                 ~ I / m :: That is the square radius, and it does carry the size. Its root is the radius.
+    | with mass [m = 3 kg | 5 kg | 0.5 kg]?      = sqrt(I / m) -> m
+                                                 ~ I / m :: That is the square radius, and it does carry the size. Its root is the radius.
+    | with mass [m = 5 g | 2 g | 8 g]?           = sqrt(I / m) -> m
+                                                 ~ I / m :: That is the square radius, and it does carry the size. Its root is the radius.
+    why: Write the mass in grams. {[I] :: moment of inertia} ÷ {mass} gives the square radius in m². Then take the root.
+
+### Mean square radius and radius of gyration   @mass.gyr
+    can: Find an object's mean square radius and radius of gyration, and name the single ring that would turn the same way.
+
+? match: Match each term to its definition.
+  | center of mass       = the mass-weighted average position
+  | moment of inertia    = the mass-weighted sum of square radius
+  | mean square radius   = moment of inertia divided by total mass
+  | radius of gyration   = the square root of the mean square radius
+
+- Mean square radius   @mass.gyr.msr
+  can: Find an object's mean square radius from its moment of inertia and mass.
+  bite: Moment of inertia is a mass-weighted sum of square radius. Divide by the total mass and it becomes a mass-weighted average: the mean square radius. It is to moment of inertia what center of mass is to the weighted sum of positions.
+  links: @mass.com.avg
+  ? numeric: A pulley has a moment of inertia of [I = 7440 g cm² | 5000 g cm² | 9600 g cm²] and a mass of [M = 42 g | 40 g | 50 g | 30 g]. What is its mean square radius?
+    = I / M -> cm²
+    why: {[I] :: moment of inertia} ÷ {[M] :: mass}.
+
+- Radius of gyration   @mass.gyr.k
+  can: Find an object's radius of gyration.
+  bite: The square root of the mean square radius is a length: the radius of gyration. It is a kind of average distance of the mass from the axis, the root mean square.
+  ? numeric: A pulley has a mean square radius of [q = 177.14 cm² | 144 cm² | 225 cm² | 90 cm²]. What is its radius of gyration?
+    = sqrt(q) -> cm
+    why: The square root of [q].
+  ? numeric: A wheel has a moment of inertia of [I = 18 kg m² | 32 kg m² | 50 kg m²] and a mass of [M = 2 kg | 8 kg]. What is its radius of gyration?
+    = sqrt(I / M)
+    ~ I / M :: That is the mean square radius. Its root is the radius of gyration.
+    why: {[I]} ÷ {[M]} = [= I / M], and the root of that.
+
+- The equivalent ring   @mass.gyr.ring
+  can: Replace any rigid object by a single ring that turns the same way.
+  bite: For turning about an axis, all that matters about an object is its mass and its radius of gyration. So any object can be swapped for one ring of the same mass at that radius, and nothing about its rotation changes. This is why rings are the building blocks.
+  ? choice: A pulley of mass [42 g] has a radius of gyration of [13.31 cm]. Which single ring responds to a torque exactly as the pulley does?
+    (x) a 42 g ring of radius 13.31 cm
+    ( ) a 42 g ring at the pulley's outer radius
+    ( ) a 13.31 g ring of radius 42 cm
+    ( ) no single ring can
+    why: Same mass, same mean square radius, so the same moment of inertia.
+
+### Shape factors   @mass.shapes
+    can: Explain the constant in front of mr² for a disk, sphere or rod from where its mass sits.
+    !! Unit 7 names disks, spheres and rods. Trim to what was reached.
+
+- Why a disk is less than a ring   @mass.shapes.disk
+  can: Explain why a solid disk has a smaller moment of inertia than a ring of the same mass and radius.
+  bite: A solid disk is like a ring whose mass has been spread inward, all the way to the axis. On average its mass sits closer in, so its mean square radius is smaller than the outer radius squared. For a uniform disk it is exactly half: $I = \tfrac12 M R^2$.
+  ? numeric: What is the moment of inertia of a uniform solid disk of mass [M = 2 kg | 4 kg | 6 kg] and radius [R = 0.3 m | 0.5 m | 0.2 m]?
+    = M * R^2 / 2
+    ~ M * R^2 :: That is the ring's value. A solid disk has half of it.
+    why: Half of {[M]} × {[R]}².
+  ? numeric: What is the radius of gyration of a uniform solid disk of radius [R = 0.3 m | 0.5 m | 0.2 m | 1 m]?
+    = R / sqrt(2)
+    why: The mean square radius is half of [= R^2], and its root is about 71 % of the outer radius.
+
+- Reading a shape factor   @mass.shapes.table
+  can: Read the number in front of MR² as a statement about where the mass sits.
+  bite: The number in front is the mean square radius as a fraction of the outer radius squared. Ring: 1, all the mass at the rim. Solid disk: 1/2. Solid sphere: 2/5, with still more of its mass near the axis. A thin rod turning about its center: 1/12 of its length squared.
+  ? row: A ring, a solid disk and a solid sphere have the same mass and the same outer radius. Which has:
+    | the largest moment of inertia?       = ring
+    | the smallest moment of inertia?      = sphere
+  ? choice: A ring and a solid disk of equal mass and radius are given the same torque. Which gains angular velocity faster?
+    (x) the disk
+    ( ) the ring
+    ( ) they tie
+    ( ) it depends on the torque
+    why: The disk has half the moment of inertia, so the same torque gives it twice the angular acceleration.
+
+### Torque over moment of inertia   @mass.alpha
+    can: Find a rigid object's angular acceleration from the forces on it and its moment of inertia.
+    links: @sf.inertia.rot @sf.radius.imp
+
+- Net torque   @mass.alpha.net
+  can: Combine several torques on one object into a net torque with a sense.
+  bite: Torque is extensive, so torques on one object combine. Those turning it the same way add. Those turning it opposite ways subtract, and the larger one decides the sense, clockwise or counterclockwise. A force pulling down on the right of the axis turns it clockwise. The same force on the left turns it counterclockwise.
+  links: @ext.angular.rot
+  ? numeric: One rope gives a pulley [t1 = 30 000 g cm²/s² clockwise | 50 000 g cm²/s² clockwise | 24 000 g cm²/s² clockwise] and another gives [t2 = 20 000 g cm²/s² counterclockwise | 10 000 g cm²/s² counterclockwise | 15 000 g cm²/s² counterclockwise]. What is the net torque, with its direction?
+    = t1 + t2 -> g cm²/s²
+    why: [t1] + [t2] = [= t1 + t2 -> g cm²/s²]. Opposite senses, so the sizes subtract, and the larger one decides the direction.
+  ? choice: Two ropes hang off opposite sides of a pulley and both pull downward. Their torques:
+    (x) oppose each other
+    ( ) add
+    ( ) are both clockwise
+    ( ) are both zero
+    why: Down on the right turns it clockwise. Down on the left turns it counterclockwise.
+
+- Angular acceleration from torque   @mass.alpha.find
+  can: Find the angular acceleration of a rigid object from the net torque and its moment of inertia.
+  bite: Angular acceleration is the net torque shared out over the moment of inertia. Torque over moment of inertia: the kg m² cancels and s⁻² is left. More moment of inertia, less angular acceleration from the same torque.
+  links: @sf.inertia.rot
+  ? numeric: A net torque of [= I * al] acts on a wheel with a moment of inertia of [I = 17 kg m² | 4 kg m² | 12 kg m²]. What is its angular acceleration?
+    = al
+    why: {[= I * al] :: net torque} ÷ {[I] :: moment of inertia}.
+    seed: al = 3 s⁻² | 2 s⁻² | 5 s⁻² | 0.5 s⁻²
+
+? compound: A pulley's mass distribution can be approximated as a [m1 = 30 g | 20 g | 40 g | 50 g] ring [r1 = 15 cm | 12 cm | 20 cm] in radius, a [m2 = 10 g | 5 g | 20 g] ring [r2 = 7 cm | 5 cm | 8 cm] in radius and a [m3 = 2 g | 4 g | 6 g] ring [r3 = 10 cm | 9 cm | 11 cm] in radius, all joined together. Two ropes come off it, both pulling downward with [F = 20 g m/s² | 10 g m/s² | 40 g m/s² | 50 g m/s²]: one at the outer radius, [r1], on the right, and one at the middle radius, [r3], on the left. What is the pulley's angular acceleration, and which way?
+  figure: rings ([m1], [r1]) ([m2], [r2]) ([m3], [r3]); force [F] down at [r1] on the right; force [F] down at [r3] on the left
+  seed: I = m1 * r1^2 + m2 * r2^2 + m3 * r3^2
+  1. @sf.idea.units     Re-express [F] in g cm/s².      = F -> g cm/s²
+  2. @sf.radius.imp     Torque from the right-hand rope: {force :: step 1} × {[r1] :: radius}?      = F * r1 -> g cm²/s²
+  3. @sf.radius.imp     Torque from the left-hand rope: {force :: step 1} × {[r3] :: radius}?      = F * r3 -> g cm²/s²
+  4. @mass.alpha.net    They turn the pulley opposite ways. What is the size of the net torque?      = F * r1 - F * r3 -> g cm²/s²
+  5. @mass.ring.I       Moment of inertia of the [m1] ring at [r1]?      = m1 * r1^2 -> g cm²
+  6. @mass.ring.I       Moment of inertia of the [m2] ring at [r2]?      = m2 * r2^2 -> g cm²
+  7. @mass.ring.I       Moment of inertia of the [m3] ring at [r3]?      = m3 * r3^2 -> g cm²
+  8. @mass.inertia.sum  The rings are joined. What is the pulley's moment of inertia?      = I -> g cm²
+  9. @mass.alpha.find   {net torque :: step 4} over {moment of inertia :: step 8}?      = (F * r1 - F * r3) / I -> s⁻² clockwise
+  = (F * r1 - F * r3) / I -> s⁻² clockwise
+  why: Clockwise, because the right-hand rope has the longer radius and so the larger torque.

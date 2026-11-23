@@ -1,0 +1,35 @@
+# Math III   @m3
+  can: Sample sections only, to try out what the course needs. The full map comes later.
+
+!! SAMPLE. Topic and wording are placeholders.
+
+## Exponents and logarithms   @m3.exp
+   can: Move between an exponential statement and its logarithm.
+
+### What a logarithm is   @m3.exp.log
+    can: Read a logarithm as a question about an exponent.
+
+- A logarithm is an exponent   @m3.exp.log.def
+  can: Evaluate a simple logarithm by asking what power is needed.
+  bite: $\log_2 32$ asks a question: to what power must 2 be raised to give 32? Since $2^5 = 32$, the answer is 5. A logarithm is an exponent, found by working backwards from the result.
+  ? numeric: What is $\log_2 32$?
+    = 5
+    why: $2^5 = 32$.
+  ? numeric: What is $\log_3 81$?
+    = 4
+    why: $3^4 = 81$.
+  ? row: By what factor does $2^x$ grow when $x$ increases by:
+    slider: factor 2 | 3 | 4 | 6 | 8 | 9 | 16
+    | 1?     = 2
+    | 3?     = 8
+    | 4?     = 16
+    why: Each step of 1 in the exponent multiplies by 2.
+
+- Two statements, one fact   @m3.exp.log.pair
+  can: Rewrite an exponential statement as a logarithmic one.
+  bite: $2^5 = 32$ and $\log_2 32 = 5$ say the same thing. The base stays the base, and the exponent and the logarithm are the same number.
+  ? match: Match each exponential statement to the logarithm that says the same thing.
+    | $2^3 = 8$         = $\log_2 8 = 3$
+    | $3^2 = 9$         = $\log_3 9 = 2$
+    | $10^2 = 100$      = $\log_{10} 100 = 2$
+    | $2^6 = 64$        = $\log_2 64 = 6$
