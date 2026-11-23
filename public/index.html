@@ -193,13 +193,14 @@ code { font: .92em ui-monospace, "SF Mono", Menlo, Consolas, monospace; backgrou
 .figwrap.vowels { display: grid; gap: 10px; justify-items: stretch; max-width: 520px; }
 .vchart { position: relative; height: 330px; margin: 22px 30px 26px; border-left: 2px solid var(--line); border-bottom: 2px solid var(--line); }
 .vbox { position: absolute; width: 44px; height: 36px; margin: -18px 0 0 -22px; border-radius: 10px; border: 1.5px solid var(--line); display: grid; place-items: center; --g: 0;
-  background: hsl(44 95% 56% / calc(var(--g) * .5)); box-shadow: 0 0 calc(var(--g) * 26px) hsl(44 95% 55% / calc(var(--g) * .9)); }
-.vbox b { font-size: 1.1rem; line-height: 1; opacity: calc(.14 + var(--g) * .86); text-shadow: 0 0 calc(var(--g) * 10px) hsl(44 100% 60%); }
+  background: hsl(44 95% 56% / calc(var(--g) * .35)); border-color: color-mix(in srgb, hsl(40 90% 45%) calc(var(--g) * 100%), var(--line)); }
+/* Dormant, the letter reads like disabled text. Hit, it darkens to full ink and thickens, with a smudge trailing off it. */
+.vbox b { font-size: 1.15rem; line-height: 1; color: color-mix(in srgb, var(--ink) calc(var(--g) * 100%), var(--muted)); opacity: calc(.5 + var(--g) * .5);
+  -webkit-text-stroke: calc(var(--g) * .9px) currentColor;
+  text-shadow: calc(var(--g) * 1.5px) calc(var(--g) * 1px) calc(var(--g) * 2px) color-mix(in srgb, var(--ink) calc(var(--g) * 55%), transparent), calc(var(--g) * 4px) calc(var(--g) * 2.5px) calc(var(--g) * 6px) color-mix(in srgb, var(--ink) calc(var(--g) * 32%), transparent), calc(var(--g) * 8px) calc(var(--g) * 5px) calc(var(--g) * 11px) color-mix(in srgb, var(--ink) calc(var(--g) * 16%), transparent); }
 .vbox span { position: absolute; bottom: -15px; font-size: .68rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-.vtrace { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.vdot { position: absolute; border-radius: 50%; pointer-events: none; }
-.vdot.now { width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; background: var(--ink); opacity: .3; }
-.vdot.avg { width: 46px; height: 46px; margin: -23px 0 0 -23px; background: radial-gradient(circle, hsl(215 80% 45% / .75) 0, hsl(215 80% 50% / .4) 30%, hsl(215 80% 55% / 0) 70%); }
+.vtrace { position: absolute; inset: -34px; width: calc(100% + 68px); height: calc(100% + 68px); pointer-events: none; }
+.vdot { position: absolute; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; background: var(--ink); opacity: .6; pointer-events: none; }
 /* signed-in line and teacher view */
 .who { font-size: var(--fs-s); color: var(--muted); max-width: 30ch; } .who.in { color: var(--good); font-weight: 600; } .who.off { color: var(--notyet); }
 .clsnote { font-size: var(--fs-s); font-weight: 700; font-variant-numeric: tabular-nums; min-width: 0; } .clsnote:empty { display: none; }
@@ -2600,75 +2601,51 @@ if (typeof document !== 'undefined') (() => {
   const VOWELS = [['i', 270, 2250], ['é', 370, 2050], ['è', 530, 1800], ['a', 750, 1350], ['o', 520, 1000], ['ô', 380, 800], ['ou', 300, 760], ['u', 270, 1850], ['eu', 380, 1450], ['œu', 520, 1400], ['an', 620, 950], ['on', 430, 720], ['in', 620, 1550]].map(([letter, f1, f2]) => ({ letter, f1, f2 }));
   const vowelFigure = () => {
     const el = $('div', 'figwrap vowels'), bar = $('div', 'figbar'), chart = $('div', 'vchart'), read = $('div', 'quiet vread', 'Press Listen, then hold one vowel for a second or two.');
-    const go = btn('btn primary', 'Listen'), tune = btn('btn', 'Tune to my voice'); let scale = 1, mode = 'auto', lf0 = null;
-    // A tuning is two anchors from this speaker: a for the first resonance and i for the second.
-    let cal = null; try { cal = JSON.parse(localStorage.getItem('ctree.voice') || 'null'); } catch (e) { /* none kept */ }
+    const go = btn('btn primary', 'Listen'); let scale = 1, mode = 'auto', lf0 = null;
+    // No tuning to prompted vowels: a learner's own "a" or "i" would then be rewarded as the target.
     const voices = $('div', 'seg');
-    const chips = () => { voices.replaceChildren(...[['Auto, from pitch', 'auto']].concat(cal ? [['My voice', 'mine']] : [], [['Lower voice', 1], ['Higher voice', 1.17], ['Child', 1.3]]).map(([name, k]) => { const b = btn('segb', name); b.setAttribute('aria-checked', String(mode === k)); b.onclick = () => { mode = k; chips(); }; return b; })); };
-    if (cal) mode = 'mine'; chips(); bar.append(go, voices, tune);
+    const chips = () => { voices.replaceChildren(...[['Auto, from pitch', 'auto'], ['Lower voice', 1], ['Higher voice', 1.17], ['Child', 1.3]].map(([name, k]) => { const b = btn('segb', name); b.setAttribute('aria-checked', String(mode === k)); b.onclick = () => { mode = k; chips(); }; return b; })); };
+    chips(); bar.append(go, voices);
     const lx = f2 => 100 * (Math.log(2500) - Math.log(f2)) / (Math.log(2500) - Math.log(620)), ly = f1 => 100 * (Math.log(f1) - Math.log(230)) / (Math.log(860) - Math.log(230));
-    const cv = document.createElement('canvas'); cv.className = 'vtrace'; chart.append(cv);
+    const GW = 92, GH = 62, PAD = 34, cv = document.createElement('canvas'); cv.className = 'vtrace'; cv.width = GW; cv.height = GH; chart.append(cv);
     const boxes = VOWELS.map(v => { const b = $('div', 'vbox', '<b>' + v.letter + '</b><span></span>'); b.style.left = lx(v.f2) + '%'; b.style.top = ly(v.f1) + '%'; chart.append(b); return b; });
-    const now = $('i', 'vdot now'), avg = $('i', 'vdot avg'); now.hidden = avg.hidden = true; chart.append(avg, now);
+    const now = $('i', 'vdot'); now.hidden = true; chart.append(now);
     el.append(bar, chart, read);
-    let an = null, stream = null, ctx = null, buf = null, last = 0, quiet = 0, sm = null, task = null;
-    const s = VOWELS.map(() => 0), heat = VOWELS.map(() => 0), recent = [], tail = [];
-    const calm = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const stop = () => { if (stream) stream.getTracks().forEach(t => t.stop()); if (ctx) ctx.close(); an = stream = ctx = null; task = null; go.textContent = 'Listen'; };
-    const listen = then => {
+    let an = null, stream = null, ctx = null, buf = null, last = 0;
+    const s = VOWELS.map(() => 0);
+    const stop = () => { if (stream) stream.getTracks().forEach(t => t.stop()); if (ctx) ctx.close(); an = stream = ctx = null; go.textContent = 'Listen'; };
+    go.onclick = () => {
+      if (an) return stop();
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { read.textContent = 'This browser gives the page no microphone.'; return; }
-      navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: true } }).then(st => { stream = st; ctx = new (window.AudioContext || window.webkitAudioContext)(); an = ctx.createAnalyser(); an.fftSize = 2048; buf = new Float32Array(an.fftSize); ctx.createMediaStreamSource(st).connect(an); lf0 = null; go.textContent = 'Stop listening'; read.textContent = 'Listening.'; if (then) then(); })
+      navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: true } }).then(st => { stream = st; ctx = new (window.AudioContext || window.webkitAudioContext)(); an = ctx.createAnalyser(); an.fftSize = 2048; buf = new Float32Array(an.fftSize); ctx.createMediaStreamSource(st).connect(an); lf0 = null; go.textContent = 'Stop listening'; read.textContent = 'Listening.'; })
         .catch(() => { read.textContent = 'The microphone could not be opened. A preview page is not allowed to use it. On the deployed site the browser asks for permission.'; });
     };
-    go.onclick = () => (an ? stop() : listen());
-    const med = xs => { const v = xs.slice().sort((p, q) => p - q); return v[v.length >> 1]; };
-    tune.onclick = () => { const begin = () => { task = { steps: [['a', 'ah'], ['i', 'ee, as in "see"']], at: 0, got: [], f1: [], f2: [] }; }; if (an) begin(); else listen(begin); };
-    const tuning = (m, base) => {
-      // raw readings against the pitch-based scale; half a second of steady vowel per anchor
-      const st = task.steps[task.at]; read.textContent = 'Tuning ' + (task.at + 1) + ' of 2: hold a long "' + st[1] + '". ' + '●'.repeat(Math.floor(task.f1.length / 6));
-      if (!m) return; task.f1.push(Math.log(m.f1)); task.f2.push(Math.log(m.f2)); if (task.f1.length < 30) return;
-      task.got.push([med(task.f1), med(task.f2)]); task.f1 = []; task.f2 = []; task.at++;
-      if (task.at < task.steps.length) return;
-      const A = VOWELS.find(v => v.letter === 'a'), I = VOWELS.find(v => v.letter === 'i'), lim = r => Math.max(0.75, Math.min(1.35, r));
-      cal = { k: base, r1: lim(Math.exp(task.got[0][0]) / A.f1), r2: lim(Math.exp(task.got[1][1]) / I.f2) }; try { localStorage.setItem('ctree.voice', JSON.stringify(cal)); } catch (e) { /* this visit only */ }
-      task = null; mode = 'mine'; chips(); read.textContent = 'Tuned to your voice. It is kept on this device.';
-    };
-    const paint = (t, dt) => {
-      const w = chart.clientWidth, h = chart.clientHeight, dpr = window.devicePixelRatio || 1; if (!w) return;
-      if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
-      const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
-      // heat left on the vowels that were hit: a glow, and rings that drift outward while it lasts
-      VOWELS.forEach((v, i) => { const q = heat[i]; if (q < 0.02) return; const x = lx(v.f2) / 100 * w, y = ly(v.f1) / 100 * h, R = 26 + 54 * q;
-        const gr = g.createRadialGradient(x, y, 4, x, y, R); gr.addColorStop(0, 'hsla(30, 95%, 55%, ' + 0.5 * q + ')'); gr.addColorStop(1, 'hsla(30, 95%, 55%, 0)'); g.fillStyle = gr; g.beginPath(); g.arc(x, y, R, 0, 7); g.fill();
-        if (!calm) for (let j = 0; j < 2; j++) { const ph = ((t / 2600) + j / 2) % 1; g.strokeStyle = 'hsla(30, 95%, 52%, ' + 0.45 * q * (1 - ph) + ')'; g.lineWidth = 1.5; g.beginPath(); g.arc(x, y, 24 + ph * (20 + 50 * q), 0, 7); g.stroke(); } });
-      // the comet tail: where the steady dot has been over the last second and a half
-      while (tail.length && t - tail[0].t > 1600) tail.shift();
-      g.lineCap = 'round';
-      for (let i = 1; i < tail.length; i++) { const p = tail[i - 1], q = tail[i]; if (p.gap || q.gap) continue; const age = 1 - (t - q.t) / 1600; g.strokeStyle = 'hsla(215, 70%, 45%, ' + 0.5 * age * age + ')'; g.lineWidth = 1 + 9 * age * age; g.beginPath(); g.moveTo(p.x / 100 * w, p.y / 100 * h); g.lineTo(q.x / 100 * w, q.y / 100 * h); g.stroke(); }
+    // Two warmth fields on a coarse grid over the chart, each spreading a little and cooling every frame.
+    // foot: a footprint wherever the live dot lands, gone in about a second; together they are its trail and a map of where it has been.
+    // heat: fed inside a vowel's box while that vowel is hit, slower to cool, spreading only just past the box's outline.
+    const foot = new Float32Array(GW * GH), heat = new Float32Array(GW * GH), tmp = new Float32Array(GW * GH), img = cv.getContext('2d').createImageData(GW, GH);
+    const spread = (v, D, keep) => { for (let y = 0; y < GH; y++) for (let x = 0; x < GW; x++) { const i = y * GW + x, c = v[i]; tmp[i] = (c + D * ((x ? v[i - 1] : c) + (x < GW - 1 ? v[i + 1] : c) + (y ? v[i - GW] : c) + (y < GH - 1 ? v[i + GW] : c) - 4 * c)) * keep; } v.set(tmp); };
+    const field = (m, p, dt) => {
+      const w = chart.clientWidth, h = chart.clientHeight; if (!w) return; const W = w + 2 * PAD, H = h + 2 * PAD, f = dt * 60;
+      const gx = pc => (PAD + pc / 100 * w) / W * GW, gy = pc => (PAD + pc / 100 * h) / H * GH;
+      spread(foot, Math.min(0.2, 0.05 * f), Math.exp(-dt / 0.9)); spread(heat, Math.min(0.2, 0.014 * f), Math.exp(-dt / 3.2));
+      if (m) { const cx = gx(lx(m.f2)), cy = gy(ly(m.f1)); for (let y = Math.max(0, Math.floor(cy - 3)); y <= Math.min(GH - 1, Math.ceil(cy + 3)); y++) for (let x = Math.max(0, Math.floor(cx - 3)); x <= Math.min(GW - 1, Math.ceil(cx + 3)); x++) { const d2 = (x - cx) * (x - cx) + (y - cy) * (y - cy), i = y * GW + x; foot[i] = Math.min(1, foot[i] + 0.34 * Math.exp(-d2 / 1.6)); } }
+      if (p) VOWELS.forEach((v, k) => { const q = p[k] * p[k]; if (q < 0.01) return; const cx = gx(lx(v.f2)), cy = gy(ly(v.f1)), rx = 22 / W * GW, ry = 18 / H * GH; for (let y = Math.max(0, Math.round(cy - ry)); y <= Math.min(GH - 1, Math.round(cy + ry)); y++) for (let x = Math.max(0, Math.round(cx - rx)); x <= Math.min(GW - 1, Math.round(cx + rx)); x++) { const i = y * GW + x; heat[i] = Math.min(1, heat[i] + q * dt * 2.2); } });
+      for (let i = 0; i < GW * GH; i++) { const v = Math.min(1, foot[i] * 0.9 + heat[i] * 0.75); img.data[4 * i] = 245; img.data[4 * i + 1] = 166 + 40 * v; img.data[4 * i + 2] = 35; img.data[4 * i + 3] = 215 * v; }
+      cv.getContext('2d').putImageData(img, 0, 0);
     };
     clock.add({ el, rest: 0, draw: () => {
       const t = performance.now(), dt = Math.min(0.1, (t - (last || t)) / 1000); last = t;
       let m = null, A = null; if (an) { an.getFloatTimeDomainData(buf); A = Core.analyze(buf, ctx.sampleRate); }
       // The pitch is followed slowly, in octaves, so one misread frame cannot move the references.
       if (A && A.f0) lf0 = lf0 === null ? Math.log(A.f0) : lf0 * 0.94 + Math.log(A.f0) * 0.06;
-      const base = lf0 !== null ? Core.tractScale(Math.exp(lf0)) : 1, mine = mode === 'mine' && cal && !task;
-      scale = task || mode === 'auto' ? base : mine ? cal.k : mode;
+      scale = mode === 'auto' ? (lf0 !== null ? Core.tractScale(Math.exp(lf0)) : 1) : mode;
       if (A) { m = Core.vowelFit(A, scale); if (m && m.fit > 8) m = null; }   // a poor fit is a consonant or noise, not a vowel
-      if (task) { tuning(m, base); }
-      if (m && mine) { m.f1 /= cal.r1; m.f2 /= cal.r2; }
-      if (m) {
-        quiet = 0; recent.push([Math.log(m.f1), Math.log(m.f2)]); if (recent.length > 5) recent.shift();
-        // the steady dot: the middle of the last five readings, then eased toward
-        const c = [med(recent.map(r => r[0])), med(recent.map(r => r[1]))]; sm = sm ? [sm[0] + (c[0] - sm[0]) * 0.2, sm[1] + (c[1] - sm[1]) * 0.2] : c;
-        tail.push({ t, x: lx(Math.exp(sm[1])), y: ly(Math.exp(sm[0])) });
-      } else if (++quiet > 8 && sm) { sm = null; recent.length = 0; tail.push({ t, gap: true }); }
-      const p = sm ? Core.vowelMap({ f1: Math.exp(sm[0]), f2: Math.exp(sm[1]) }, VOWELS, 1) : null;
-      s.forEach((v, i) => { s[i] = p ? v * 0.72 + p[i] * 0.28 : v * 0.88; heat[i] = Math.min(1, heat[i] * Math.exp(-dt / 5) + (p ? p[i] * p[i] * dt * 1.4 : 0)); const b = boxes[i]; b.style.setProperty('--g', s[i].toFixed(3)); b.lastChild.textContent = s[i] > 0.04 ? Math.round(s[i] * 100) + '%' : ''; });
-      now.hidden = !m; avg.hidden = !sm;
-      if (m) { now.style.left = lx(m.f2) + '%'; now.style.top = ly(m.f1) + '%'; }
-      if (sm) { avg.style.left = lx(Math.exp(sm[1])) + '%'; avg.style.top = ly(Math.exp(sm[0])) + '%'; }
-      if (m && !task) read.textContent = 'First resonance ' + Math.round(m.f1 * scale) + ' Hz, second ' + Math.round(m.f2 * scale) + ' Hz.' + (lf0 !== null ? ' Pitch about ' + Math.round(Math.exp(lf0) / 5) * 5 + ' Hz.' : '') + (mine ? ' Read against your tuned voice.' : mode === 'auto' ? ' References moved ' + (scale >= 1 ? 'up ' : 'down ') + Math.round(Math.abs(scale - 1) * 100) + '%.' : '');
-      paint(t, dt);
+      const p = m ? Core.vowelMap(m, VOWELS, 1) : null;
+      s.forEach((v, i) => { s[i] = p ? v * 0.72 + p[i] * 0.28 : v * 0.88; const b = boxes[i]; b.style.setProperty('--g', s[i].toFixed(3)); b.lastChild.textContent = s[i] > 0.04 ? Math.round(s[i] * 100) + '%' : ''; });
+      now.hidden = !m; if (m) { now.style.left = lx(m.f2) + '%'; now.style.top = ly(m.f1) + '%'; }
+      if (m) read.textContent = 'First resonance ' + Math.round(m.f1 * scale) + ' Hz, second ' + Math.round(m.f2 * scale) + ' Hz.' + (lf0 !== null ? ' Pitch about ' + Math.round(Math.exp(lf0) / 5) * 5 + ' Hz.' : '') + (mode === 'auto' && Math.abs(scale - 1) >= 0.005 ? ' References moved ' + (scale >= 1 ? 'up ' : 'down ') + Math.round(Math.abs(scale - 1) * 100) + '%.' : '');
+      field(m, p, dt);
     } });
     return { el };
   };
