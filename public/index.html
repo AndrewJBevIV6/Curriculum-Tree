@@ -196,7 +196,10 @@ code { font: .92em ui-monospace, "SF Mono", Menlo, Consolas, monospace; backgrou
   background: hsl(44 95% 56% / calc(var(--g) * .5)); box-shadow: 0 0 calc(var(--g) * 26px) hsl(44 95% 55% / calc(var(--g) * .9)); }
 .vbox b { font-size: 1.1rem; line-height: 1; opacity: calc(.14 + var(--g) * .86); text-shadow: 0 0 calc(var(--g) * 10px) hsl(44 100% 60%); }
 .vbox span { position: absolute; bottom: -15px; font-size: .68rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-.vdot { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--ink); opacity: .55; }
+.vtrace { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.vdot { position: absolute; border-radius: 50%; pointer-events: none; }
+.vdot.now { width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; background: var(--ink); opacity: .3; }
+.vdot.avg { width: 46px; height: 46px; margin: -23px 0 0 -23px; background: radial-gradient(circle, hsl(215 80% 45% / .75) 0, hsl(215 80% 50% / .4) 30%, hsl(215 80% 55% / 0) 70%); }
 /* signed-in line and teacher view */
 .who { font-size: var(--fs-s); color: var(--muted); max-width: 30ch; } .who.in { color: var(--good); font-weight: 600; } .who.off { color: var(--notyet); }
 .clsnote { font-size: var(--fs-s); font-weight: 700; font-variant-numeric: tabular-nums; min-width: 0; } .clsnote:empty { display: none; }
@@ -2014,7 +2017,7 @@ const Core = (() => {
 
   // ---------- formants: the first two resonances of a held vowel, by linear prediction ----------
   // samples: mono floats. Returns { f1, f2, level } or null when the frame is too quiet or shows no clear pair.
-  const formants = (samples, rate) => {
+  const analyze = (samples, rate) => {
     const dec = Math.max(1, Math.round(rate / 11025)), sr = rate / dec, n = Math.floor(samples.length / dec);
     if (n < 256) return null;
     const x = new Float64Array(n); let e = 0;
@@ -2036,8 +2039,43 @@ const Core = (() => {
     // With a high voice the harmonics stand far apart and one resonance can show as two neighboring
     // harmonic peaks. Peaks closer than about one and a quarter harmonics are read as one, at their weighted middle.
     if (f0 && f0 > 150) { const merged = []; peaks.forEach(p => { const q = merged[merged.length - 1]; if (q && p[0] - q[0] < 1.25 * f0) { const w = q[1] + p[1]; merged[merged.length - 1] = [(q[0] * q[1] + p[0] * p[1]) / w, w]; } else merged.push(p.slice()); }); peaks = merged; }
-    if (peaks.length < 2) return null;
-    return { f1: peaks[0][0], f2: peaks[1][0], level, f0 };
+    return { peaks, a, sr, level, f0 };
+  };
+  const formants = (samples, rate) => { const an = analyze(samples, rate); return an && an.peaks.length > 1 ? { f1: an.peaks[0][0], f2: an.peaks[1][0], level: an.level, f0: an.f0 } : null; };
+
+  // ---------- vowel quality by matching the whole spectral outline ----------
+  // Picking the two lowest peaks fails for back vowels: in o and ou the first two resonances stand so close that
+  // they show as one peak, the third resonance is then taken for the second, and the vowel reads as i. Here the
+  // outline of the spectrum from 200 to 3600 Hz is instead compared with the outline that every pair (F1, F2)
+  // on a grid would produce, close pairs included, and the best-fitting pairs give the reading.
+  // Loudness and overall tilt (microphone, voice quality) are taken out of both sides before comparing.
+  const FIT = (() => {
+    const NB = 36, fs = Array.from({ length: NB }, (_, j) => 200 * Math.pow(3600 / 200, j / (NB - 1)));
+    const wt = fs.map(f => (f < 2200 ? 1 : 0.55)), sw = wt.reduce((p, c) => p + c, 0);
+    const flat = v => { let sx = 0, sy = 0, sxx = 0, sxy = 0; for (let j = 0; j < NB; j++) { sx += wt[j] * j; sy += wt[j] * v[j]; sxx += wt[j] * j * j; sxy += wt[j] * j * v[j]; } const b = (sw * sxy - sx * sy) / (sw * sxx - sx * sx), a0 = (sy - b * sx) / sw; for (let j = 0; j < NB; j++) v[j] -= a0 + b * j; return v; };
+    const res = (f, F, B) => -10 * Math.log10(Math.pow(1 - (f / F) * (f / F), 2) + Math.pow(f * B / (F * F), 2));
+    let T = null;
+    const templates = () => {
+      if (T) return T; T = [];
+      for (let F1 = 240; F1 <= 920; F1 *= 1.06) for (let F2 = Math.max(600, F1 * 1.3); F2 <= 2650; F2 *= 1.05) for (const F3 of [2400, 2800, 3200]) {
+        if (F3 < F2 * 1.12) continue;
+        T.push({ l1: Math.log(F1), l2: Math.log(F2), v: flat(Float64Array.from(fs, f => res(f, F1, 70) + res(f, F2, 100) + res(f, F3, 160) + res(f, 3900, 220))) });
+      }
+      return T;
+    };
+    return { NB, fs, wt, sw, flat, templates };
+  })();
+  // an: the result of analyze. scale: how far this speaker's resonances stand above the reference voice's.
+  // Returns { f1, f2 } as they would be for the reference voice, with fit (mean mismatch in dB; lower is better).
+  const vowelFit = (an, scale = 1) => {
+    if (!an) return null; const { a, sr } = an, P = a.length - 1, m = new Float64Array(FIT.NB);
+    for (let j = 0; j < FIT.NB; j++) { const w = 2 * Math.PI * Math.min(FIT.fs[j] * scale, sr * 0.47) / sr; let re = 0, im = 0; for (let k = 0; k <= P; k++) { re += a[k] * Math.cos(k * w); im -= a[k] * Math.sin(k * w); } m[j] = -10 * Math.log10(re * re + im * im); }
+    FIT.flat(m);
+    const T = FIT.templates(), es = new Float64Array(T.length); let best = Infinity;
+    for (let t = 0; t < T.length; t++) { const v = T[t].v; let e = 0; for (let j = 0; j < FIT.NB; j++) { const d = m[j] - v[j]; e += FIT.wt[j] * d * d; } es[t] = e / FIT.sw; if (es[t] < best) best = es[t]; }
+    // the pairs that fit nearly as well as the best one are averaged, which steadies the reading between grid points
+    let w = 0, l1 = 0, l2 = 0; for (let t = 0; t < T.length; t++) { const k = Math.exp(-(es[t] - best) / (0.12 * best + 0.5)); if (k < 0.01) continue; w += k; l1 += k * T[t].l1; l2 += k * T[t].l2; }
+    return { f1: Math.exp(l1 / w), f2: Math.exp(l2 / w), fit: Math.sqrt(best), level: an.level, f0: an.f0 };
   };
   // A speaker's usual pitch stands in for the size of the vocal tract: about 120 Hz reads against the
   // reference values as they are, 210 Hz against values some 17 % higher, 280 Hz some 27 % higher.
@@ -2318,7 +2356,7 @@ const Core = (() => {
     return out;
   };
 
-  return { parseQ, parseUnit, compare, judge, parseCourse, makeProgress, pool, fmtUnit, fmtQ, fmtIn, close, sameD, zeroD, expand, DIRS, dimName, mergeCourses, formants, vowelMap, tractScale, renderTrees, treeSpans, syn: SYN, fr: FR, instantiate, rerollable, friendly, evalQ, tosup };
+  return { parseQ, parseUnit, compare, judge, parseCourse, makeProgress, pool, fmtUnit, fmtQ, fmtIn, close, sameD, zeroD, expand, DIRS, dimName, mergeCourses, formants, analyze, vowelFit, vowelMap, tractScale, renderTrees, treeSpans, syn: SYN, fr: FR, instantiate, rerollable, friendly, evalQ, tosup };
 })();
 
 if (typeof module !== 'undefined') module.exports = Core;
@@ -2562,32 +2600,79 @@ if (typeof document !== 'undefined') (() => {
   const VOWELS = [['i', 270, 2250], ['é', 370, 2050], ['è', 530, 1800], ['a', 750, 1350], ['o', 520, 1000], ['ô', 380, 800], ['ou', 300, 760], ['u', 270, 1850], ['eu', 380, 1450], ['œu', 520, 1400], ['an', 620, 950], ['on', 430, 720], ['in', 620, 1550]].map(([letter, f1, f2]) => ({ letter, f1, f2 }));
   const vowelFigure = () => {
     const el = $('div', 'figwrap vowels'), bar = $('div', 'figbar'), chart = $('div', 'vchart'), read = $('div', 'quiet vread', 'Press Listen, then hold one vowel for a second or two.');
-    const go = btn('btn primary', 'Listen'); let scale = 1, auto = true, lf0 = null;
-    const voices = $('div', 'seg'); [['Auto, from pitch', 0], ['Lower voice', 1], ['Higher voice', 1.17], ['Child', 1.3]].forEach(([name, k], i) => { const b = btn('segb', name); b.setAttribute('aria-checked', String(i === 0)); b.onclick = () => { auto = !k; if (k) scale = k; [...voices.children].forEach(c => c.setAttribute('aria-checked', String(c === b))); }; voices.append(b); });
-    bar.append(go, voices);
+    const go = btn('btn primary', 'Listen'), tune = btn('btn', 'Tune to my voice'); let scale = 1, mode = 'auto', lf0 = null;
+    // A tuning is two anchors from this speaker: a for the first resonance and i for the second.
+    let cal = null; try { cal = JSON.parse(localStorage.getItem('ctree.voice') || 'null'); } catch (e) { /* none kept */ }
+    const voices = $('div', 'seg');
+    const chips = () => { voices.replaceChildren(...[['Auto, from pitch', 'auto']].concat(cal ? [['My voice', 'mine']] : [], [['Lower voice', 1], ['Higher voice', 1.17], ['Child', 1.3]]).map(([name, k]) => { const b = btn('segb', name); b.setAttribute('aria-checked', String(mode === k)); b.onclick = () => { mode = k; chips(); }; return b; })); };
+    if (cal) mode = 'mine'; chips(); bar.append(go, voices, tune);
     const lx = f2 => 100 * (Math.log(2500) - Math.log(f2)) / (Math.log(2500) - Math.log(620)), ly = f1 => 100 * (Math.log(f1) - Math.log(230)) / (Math.log(860) - Math.log(230));
+    const cv = document.createElement('canvas'); cv.className = 'vtrace'; chart.append(cv);
     const boxes = VOWELS.map(v => { const b = $('div', 'vbox', '<b>' + v.letter + '</b><span></span>'); b.style.left = lx(v.f2) + '%'; b.style.top = ly(v.f1) + '%'; chart.append(b); return b; });
-    const dot = $('i', 'vdot'); dot.hidden = true; chart.append(dot);
+    const now = $('i', 'vdot now'), avg = $('i', 'vdot avg'); now.hidden = avg.hidden = true; chart.append(avg, now);
     el.append(bar, chart, read);
-    let an = null, stream = null, ctx = null, buf = null; const s = VOWELS.map(() => 0);
-    const stop = () => { if (stream) stream.getTracks().forEach(t => t.stop()); if (ctx) ctx.close(); an = stream = ctx = null; go.textContent = 'Listen'; };
-    go.onclick = () => {
-      if (an) return stop();
+    let an = null, stream = null, ctx = null, buf = null, last = 0, quiet = 0, sm = null, task = null;
+    const s = VOWELS.map(() => 0), heat = VOWELS.map(() => 0), recent = [], tail = [];
+    const calm = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const stop = () => { if (stream) stream.getTracks().forEach(t => t.stop()); if (ctx) ctx.close(); an = stream = ctx = null; task = null; go.textContent = 'Listen'; };
+    const listen = then => {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { read.textContent = 'This browser gives the page no microphone.'; return; }
-      navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: true } }).then(st => { stream = st; ctx = new (window.AudioContext || window.webkitAudioContext)(); an = ctx.createAnalyser(); an.fftSize = 2048; buf = new Float32Array(an.fftSize); ctx.createMediaStreamSource(st).connect(an); lf0 = null; go.textContent = 'Stop listening'; read.textContent = 'Listening.'; })
+      navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: true } }).then(st => { stream = st; ctx = new (window.AudioContext || window.webkitAudioContext)(); an = ctx.createAnalyser(); an.fftSize = 2048; buf = new Float32Array(an.fftSize); ctx.createMediaStreamSource(st).connect(an); lf0 = null; go.textContent = 'Stop listening'; read.textContent = 'Listening.'; if (then) then(); })
         .catch(() => { read.textContent = 'The microphone could not be opened. A preview page is not allowed to use it. On the deployed site the browser asks for permission.'; });
     };
+    go.onclick = () => (an ? stop() : listen());
+    const med = xs => { const v = xs.slice().sort((p, q) => p - q); return v[v.length >> 1]; };
+    tune.onclick = () => { const begin = () => { task = { steps: [['a', 'ah'], ['i', 'ee, as in "see"']], at: 0, got: [], f1: [], f2: [] }; }; if (an) begin(); else listen(begin); };
+    const tuning = (m, base) => {
+      // raw readings against the pitch-based scale; half a second of steady vowel per anchor
+      const st = task.steps[task.at]; read.textContent = 'Tuning ' + (task.at + 1) + ' of 2: hold a long "' + st[1] + '". ' + '●'.repeat(Math.floor(task.f1.length / 6));
+      if (!m) return; task.f1.push(Math.log(m.f1)); task.f2.push(Math.log(m.f2)); if (task.f1.length < 30) return;
+      task.got.push([med(task.f1), med(task.f2)]); task.f1 = []; task.f2 = []; task.at++;
+      if (task.at < task.steps.length) return;
+      const A = VOWELS.find(v => v.letter === 'a'), I = VOWELS.find(v => v.letter === 'i'), lim = r => Math.max(0.75, Math.min(1.35, r));
+      cal = { k: base, r1: lim(Math.exp(task.got[0][0]) / A.f1), r2: lim(Math.exp(task.got[1][1]) / I.f2) }; try { localStorage.setItem('ctree.voice', JSON.stringify(cal)); } catch (e) { /* this visit only */ }
+      task = null; mode = 'mine'; chips(); read.textContent = 'Tuned to your voice. It is kept on this device.';
+    };
+    const paint = (t, dt) => {
+      const w = chart.clientWidth, h = chart.clientHeight, dpr = window.devicePixelRatio || 1; if (!w) return;
+      if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+      const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
+      // heat left on the vowels that were hit: a glow, and rings that drift outward while it lasts
+      VOWELS.forEach((v, i) => { const q = heat[i]; if (q < 0.02) return; const x = lx(v.f2) / 100 * w, y = ly(v.f1) / 100 * h, R = 26 + 54 * q;
+        const gr = g.createRadialGradient(x, y, 4, x, y, R); gr.addColorStop(0, 'hsla(30, 95%, 55%, ' + 0.5 * q + ')'); gr.addColorStop(1, 'hsla(30, 95%, 55%, 0)'); g.fillStyle = gr; g.beginPath(); g.arc(x, y, R, 0, 7); g.fill();
+        if (!calm) for (let j = 0; j < 2; j++) { const ph = ((t / 2600) + j / 2) % 1; g.strokeStyle = 'hsla(30, 95%, 52%, ' + 0.45 * q * (1 - ph) + ')'; g.lineWidth = 1.5; g.beginPath(); g.arc(x, y, 24 + ph * (20 + 50 * q), 0, 7); g.stroke(); } });
+      // the comet tail: where the steady dot has been over the last second and a half
+      while (tail.length && t - tail[0].t > 1600) tail.shift();
+      g.lineCap = 'round';
+      for (let i = 1; i < tail.length; i++) { const p = tail[i - 1], q = tail[i]; if (p.gap || q.gap) continue; const age = 1 - (t - q.t) / 1600; g.strokeStyle = 'hsla(215, 70%, 45%, ' + 0.5 * age * age + ')'; g.lineWidth = 1 + 9 * age * age; g.beginPath(); g.moveTo(p.x / 100 * w, p.y / 100 * h); g.lineTo(q.x / 100 * w, q.y / 100 * h); g.stroke(); }
+    };
     clock.add({ el, rest: 0, draw: () => {
-      let m = null; if (an) { an.getFloatTimeDomainData(buf); m = Core.formants(buf, ctx.sampleRate); }
+      const t = performance.now(), dt = Math.min(0.1, (t - (last || t)) / 1000); last = t;
+      let m = null, A = null; if (an) { an.getFloatTimeDomainData(buf); A = Core.analyze(buf, ctx.sampleRate); }
       // The pitch is followed slowly, in octaves, so one misread frame cannot move the references.
-      if (m && m.f0) lf0 = lf0 === null ? Math.log(m.f0) : lf0 * 0.94 + Math.log(m.f0) * 0.06;
-      if (auto && lf0 !== null) scale = Core.tractScale(Math.exp(lf0));
-      const p = m ? Core.vowelMap(m, VOWELS, scale) : null;
-      s.forEach((v, i) => { s[i] = p ? v * 0.72 + p[i] * 0.28 : v * 0.88; const b = boxes[i]; b.style.setProperty('--g', s[i].toFixed(3)); b.lastChild.textContent = s[i] > 0.04 ? Math.round(s[i] * 100) + '%' : ''; });
-      dot.hidden = !m; if (m) { dot.style.left = lx(m.f2 / scale) + '%'; dot.style.top = ly(m.f1 / scale) + '%'; read.textContent = 'First resonance ' + Math.round(m.f1) + ' Hz, second ' + Math.round(m.f2) + ' Hz.' + (lf0 !== null ? ' Pitch about ' + Math.round(Math.exp(lf0) / 5) * 5 + ' Hz' + (auto ? ', references moved ' + (scale >= 1 ? 'up ' : 'down ') + Math.round(Math.abs(scale - 1) * 100) + '%.' : '.') : ''); }
+      if (A && A.f0) lf0 = lf0 === null ? Math.log(A.f0) : lf0 * 0.94 + Math.log(A.f0) * 0.06;
+      const base = lf0 !== null ? Core.tractScale(Math.exp(lf0)) : 1, mine = mode === 'mine' && cal && !task;
+      scale = task || mode === 'auto' ? base : mine ? cal.k : mode;
+      if (A) { m = Core.vowelFit(A, scale); if (m && m.fit > 8) m = null; }   // a poor fit is a consonant or noise, not a vowel
+      if (task) { tuning(m, base); }
+      if (m && mine) { m.f1 /= cal.r1; m.f2 /= cal.r2; }
+      if (m) {
+        quiet = 0; recent.push([Math.log(m.f1), Math.log(m.f2)]); if (recent.length > 5) recent.shift();
+        // the steady dot: the middle of the last five readings, then eased toward
+        const c = [med(recent.map(r => r[0])), med(recent.map(r => r[1]))]; sm = sm ? [sm[0] + (c[0] - sm[0]) * 0.2, sm[1] + (c[1] - sm[1]) * 0.2] : c;
+        tail.push({ t, x: lx(Math.exp(sm[1])), y: ly(Math.exp(sm[0])) });
+      } else if (++quiet > 8 && sm) { sm = null; recent.length = 0; tail.push({ t, gap: true }); }
+      const p = sm ? Core.vowelMap({ f1: Math.exp(sm[0]), f2: Math.exp(sm[1]) }, VOWELS, 1) : null;
+      s.forEach((v, i) => { s[i] = p ? v * 0.72 + p[i] * 0.28 : v * 0.88; heat[i] = Math.min(1, heat[i] * Math.exp(-dt / 5) + (p ? p[i] * p[i] * dt * 1.4 : 0)); const b = boxes[i]; b.style.setProperty('--g', s[i].toFixed(3)); b.lastChild.textContent = s[i] > 0.04 ? Math.round(s[i] * 100) + '%' : ''; });
+      now.hidden = !m; avg.hidden = !sm;
+      if (m) { now.style.left = lx(m.f2) + '%'; now.style.top = ly(m.f1) + '%'; }
+      if (sm) { avg.style.left = lx(Math.exp(sm[1])) + '%'; avg.style.top = ly(Math.exp(sm[0])) + '%'; }
+      if (m && !task) read.textContent = 'First resonance ' + Math.round(m.f1 * scale) + ' Hz, second ' + Math.round(m.f2 * scale) + ' Hz.' + (lf0 !== null ? ' Pitch about ' + Math.round(Math.exp(lf0) / 5) * 5 + ' Hz.' : '') + (mine ? ' Read against your tuned voice.' : mode === 'auto' ? ' References moved ' + (scale >= 1 ? 'up ' : 'down ') + Math.round(Math.abs(scale - 1) * 100) + '%.' : '');
+      paint(t, dt);
     } });
     return { el };
   };
+
   const frenchFigure = spec => {
     const src = spec.replace(/^french\s*/, ''), el = $('div', 'figwrap frfig'), line = $('div', 'frline'), note = $('div', 'quiet frnote'), bar = $('div', 'figbar');
     let tree, all; try { tree = Core.syn.parse(src); all = Core.fr.all(tree); } catch (e) { el.textContent = '⟦' + e.message + '⟧'; return { el }; }
@@ -3107,9 +3192,8 @@ if (typeof document !== 'undefined') (() => {
     // break across lines like any run of words (box-decoration-break), and the part cut at the right margin goes on.
     // The pointer counts as still on the unit while it is inside the box as it was when closed or as it is now, so
     // the reflow can never take the unit out from under the pointer and close it.
-    const canHover = typeof matchMedia === 'function' && matchMedia('(hover: hover)').matches;
     const calm = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let openU = null, zone = null, shutU = null, typer = 0;
+    let openU = null, zone = null, typer = 0;
     const wordsOf = x => x.dataset.w.split('|');
     const put = (x, text) => x.querySelector('.ut').replaceChildren(...text.split(' ').flatMap((w, i) => { const sp = $('span', 'wd'); sp.textContent = w; return i ? [' ', sp] : [sp]; }));
     const typeIn = (x, text) => { clearInterval(typer); if (calm) return put(x, text); let n = 1; put(x, text.slice(0, n)); typer = setInterval(() => { n = Math.min(text.length, n + 2); put(x, text.slice(0, n)); if (n >= text.length) clearInterval(typer); }, 16); };
@@ -3124,15 +3208,17 @@ if (typeof document !== 'undefined') (() => {
       wd.forEach(e => e.animate([{ transform: 'translateY(0)', opacity: 1 }, { transform: 'translateY(' + -dir * 85 + '%)', opacity: 0 }], { duration: 120, easing: 'ease-in', fill: 'forwards' }));
       setTimeout(() => { if (openU !== x) return; put(x, w[k]); x.querySelectorAll('.wd').forEach(e => e.animate([{ transform: 'translateY(' + dir * 85 + '%)', opacity: 0 }, { transform: 'translateY(0)', opacity: 1 }], { duration: 160, easing: 'ease-out' })); setTimeout(() => { x._busy = false; }, 160); }, 120);
     };
-    treeEl.onmouseover = ev => { if (!canHover) return; const g = ev.target.closest('.given'), x = g && g.querySelector('.u'); if (x && x !== openU && x !== shutU && !(openU && onUnit(ev))) openUnit(x); };
-    document.addEventListener('mousemove', ev => { if (!canHover) return; if (openU && !onUnit(ev)) closeUnit(); if (shutU && !within(zone, ev, 2)) shutU = null; });
-    document.addEventListener('scroll', () => { closeUnit(); shutU = null; }, true);
-    // A click steps through the wordings and then back to the symbol.
+    // Hover is taken from the pointer itself (a mouse or pen), never from a media query: some laptops with touch screens report no hover.
+    let touch = false;
+    document.addEventListener('pointerdown', ev => { touch = ev.pointerType === 'touch'; }, true);
+    treeEl.addEventListener('pointerover', ev => { if (ev.pointerType === 'touch') return; touch = false; const g = ev.target.closest('.given'), x = g && g.querySelector('.u'); if (x && x !== openU && !(openU && onUnit(ev))) openUnit(x); });
+    document.addEventListener('pointermove', ev => { if (ev.pointerType !== 'touch' && openU && !onUnit(ev)) closeUnit(); });
+    document.addEventListener('scroll', () => closeUnit(), true);
+    // With a mouse a click does nothing: hover opens and the wheel changes the wording. A finger has neither, so a tap opens, steps and closes.
     treeEl.onclick = ev => {
-      const x = openU && onUnit(ev) ? openU : ev.target.closest('.u'); if (!x) return;
-      if (x !== openU) { if (!canHover) { x.dataset.k = 0; openUnit(x); } return; }
-      const n = wordsOf(x).length, k = (+x.dataset.k || 0) + 1;
-      if (k >= n) { x.dataset.k = 0; closeUnit(); if (canHover) shutU = x; } else swap(x, k, 1);
+      if (!touch) return; const x = ev.target.closest('.u'); if (!x) return;
+      if (x !== openU) { x.dataset.k = 0; return openUnit(x); }
+      const n = wordsOf(x).length, k = (+x.dataset.k || 0) + 1; if (k >= n) { x.dataset.k = 0; closeUnit(); } else swap(x, k, 1);
     };
     // The wheel rolls through the wordings while the pointer is on the unit.
     treeEl.addEventListener('wheel', ev => {
