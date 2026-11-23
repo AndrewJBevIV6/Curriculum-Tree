@@ -1,35 +1,570 @@
 # Math III   @m3
-  can: Sample sections only, to try out what the course needs. The full map comes later.
+  can: Reason through the fall semester: trigonometry as ratios, the three operations and how they interact, counting, expanding binomials, Pascal's triangle, and simplex numbers.
 
-!! SAMPLE. Topic and wording are placeholders.
+!! ---------------------------------------------------------------------------
+!! DRAFT 2, 23 Nov 2026. Lines starting with !! are notes between Andrew and
+!! Claude. The importer skips them.
+!!
+!! SOURCES
+!!   Andrew's summary of the semester; the two Locus files (ratio-object
+!!   population, compound-angle fractal); homework sheets on binomial sums,
+!!   bipartition mappings, the (A+B) times a row sheet, the quadrinomial
+!!   power, the central-dogma worksheet (handwritten), the reciprocal and
+!!   Pythagorean pairs table, the inverse-obverse note, the polygon areas.
+!!   Class coinages kept: "central dogma of algebra", "incrementation",
+!!   "base-nested power", "inverse-obverse composition", "tabulate",
+!!   "Pascal's plane", "tetrahedral number", "pentachoral number".
+!!
+!! GUESSES TO CHECK
+!!   - Ratio-object shape names "fan", "elbow", "ramp" are taken from the
+!!     Locus file's variable names; the class may call them something else.
+!!   - The Pythagorean-pairs table is read as: find the Pythagorean pair on
+!!     the shortest path between the two given functions around the hexagon
+!!     sin, csc, cot, tan, sec, cos. Only unambiguous rows are used.
+!!   - N!/(A!B!) with A + B = N is used for coefficients throughout, as on
+!!     the homework, beside the n-choose-k symbol.
+!! ---------------------------------------------------------------------------
 
-## Exponents and logarithms   @m3.exp
-   can: Move between an exponential statement and its logarithm.
+## Trigonometry as ratios   @m3.trig
+   can: Read the six trigonometric functions as ratios of two lengths, relate them to one another, and use them to measure shapes.
 
-### What a logarithm is   @m3.exp.log
-    can: Read a logarithm as a question about an exponent.
+### Ratio objects   @m3.trig.ratio
+    can: Name each trigonometric ratio by the two lengths it compares.
 
-- A logarithm is an exponent   @m3.exp.log.def
-  can: Evaluate a simple logarithm by asking what power is needed.
-  bite: $\log_2 32$ asks a question: to what power must 2 be raised to give 32? Since $2^5 = 32$, the answer is 5. A logarithm is an exponent, found by working backwards from the result.
-  ? numeric: What is $\log_2 32$?
-    = 5
-    why: $2^5 = 32$.
-  ? numeric: What is $\log_3 81$?
-    = 4
-    why: $3^4 = 81$.
-  ? row: By what factor does $2^x$ grow when $x$ increases by:
-    slider: factor 2 | 3 | 4 | 6 | 8 | 9 | 16
-    | 1?     = 2
-    | 3?     = 8
-    | 4?     = 16
-    why: Each step of 1 in the exponent multiplies by 2.
+- A ratio belongs to the angle   @m3.trig.ratio.same
+  can: Explain why a ratio of sides depends only on the angle.
+  bite: Scale a right triangle up or down and every side grows by the same factor, so the ratio of any two sides does not change. The ratio depends on the angle and on nothing else. That is why a ratio object can be dragged larger or smaller, or carried anywhere in a layout, and still show the same number.
+  ? choice: A ratio object is scrolled to three times its size. What happens to the number it shows?
+    (x) it stays the same
+    ( ) it triples
+    ( ) it becomes a third
+    ( ) it grows by nine
+  ? choice: Two right triangles share an acute angle of 35°. What must be true?
+    (x) the ratios between corresponding sides are equal
+    ( ) the triangles are the same size
+    ( ) their hypotenuses are equal
+    ( ) their areas are equal
 
-- Two statements, one fact   @m3.exp.log.pair
-  can: Rewrite an exponential statement as a logarithmic one.
-  bite: $2^5 = 32$ and $\log_2 32 = 5$ say the same thing. The base stays the base, and the exponent and the logarithm are the same number.
-  ? match: Match each exponential statement to the logarithm that says the same thing.
-    | $2^3 = 8$         = $\log_2 8 = 3$
-    | $3^2 = 9$         = $\log_3 9 = 2$
-    | $10^2 = 100$      = $\log_{10} 100 = 2$
-    | $2^6 = 64$        = $\log_2 64 = 6$
+- Three shapes, six functions   @m3.trig.ratio.shapes
+  can: Match each ratio-object shape and polarity to its function.
+  bite: A right triangle has three sides, so there are three ways to pick two of them, and a ratio object draws just the two it compares. The fan draws the hypotenuse and the adjacent leg, both leaving the angle: cosine. The elbow draws the adjacent leg and then the opposite leg, meeting at the right angle: tangent. The ramp draws the hypotenuse and the opposite leg: sine. Clicking the object flips its polarity, which swaps which length is measured against which, and gives the reciprocal: secant, cotangent, cosecant.
+  !! GUESS: shape names from the Locus file.
+  ? match: Match each pair of lengths to the function that compares them.
+    | adjacent over hypotenuse      = cosine
+    | opposite over adjacent        = tangent
+    | opposite over hypotenuse      = sine
+    | hypotenuse over adjacent      = secant
+    | adjacent over opposite        = cotangent
+    | hypotenuse over opposite      = cosecant
+  ? row: A ratio object has its polarity flipped. What does it show now?
+    | sine        = cosecant
+    | tangent     = cotangent
+    | cosine      = secant
+    | secant      = cosine
+  ? numeric: A right triangle has legs 3 and 4 and hypotenuse 5. What is the sine of the angle across from the side of length 3?
+    = 0.6
+    = 3/5
+  ? numeric: In the same triangle, what is the secant of that angle?
+    = 1.25
+    = 5/4
+    why: Hypotenuse over adjacent: 5 over 4.
+  ? choice: A hypotenuse of length [h = 10 | 5 | 20] meets an angle whose cosine is 0.8. How long is the adjacent leg?
+    (x) [= h * 0.8]
+    ( ) [= h * 0.6]
+    ( ) [= h / 0.8]
+    ( ) [= h + 0.8]
+    why: Cosine is adjacent over hypotenuse, so the adjacent leg is the hypotenuse times the cosine.
+
+### How the six relate   @m3.trig.pairs
+    can: Move from any one of the six functions to any other.
+
+- Reciprocal pairs and Pythagorean pairs   @m3.trig.pairs.two
+  can: Name each function's reciprocal partner and its Pythagorean partner.
+  bite: Each function has two partners. Its reciprocal partner is the same two lengths the other way up: sine with cosecant, tangent with cotangent, secant with cosine. Its Pythagorean partner shares one length with it, and the two are tied by the Pythagorean theorem: $\sin^2 + \cos^2 = 1$, $\tan^2 + 1 = \sec^2$, and $\cot^2 + 1 = \csc^2$. Laid out in a ring the six go sine, cosecant, cotangent, tangent, secant, cosine, and back to sine, with the two kinds of partnership alternating around it.
+  ? row: Name the reciprocal partner.
+    | sine        = cosecant
+    | tangent     = cotangent
+    | secant      = cosine
+  ? row: Name the Pythagorean partner.
+    | sine          = cosine
+    | tangent       = secant
+    | cotangent     = cosecant
+  ? match: Match each Pythagorean pair to its identity.
+    | sine and cosine            = $\sin^2 + \cos^2 = 1$
+    | tangent and secant         = $\tan^2 + 1 = \sec^2$
+    | cotangent and cosecant     = $\cot^2 + 1 = \csc^2$
+
+- From one function to another   @m3.trig.pairs.path
+  can: Find the Pythagorean pair that links two functions and write one in terms of the other.
+  bite: To get from one function to another, walk the ring. Each step is either "take the reciprocal" or "use the Pythagorean identity". From cosecant to cotangent is one Pythagorean step: $\cot = \sqrt{\csc^2 - 1}$. From tangent to cosecant is two steps: reciprocal to cotangent, then Pythagorean to cosecant, so $\csc = \sqrt{1 + 1/\tan^2}$. (The square root gives the size; the quadrant gives the sign.)
+  !! GUESS: reading of the pairs table. Opposite corners of the ring (three steps either way) are left out.
+  ? row: Which Pythagorean pair lies on the shortest path between these two?
+    | cosecant and cotangent     = cotangent and cosecant
+    | tangent and cosecant       = cotangent and cosecant
+    | sine and cotangent         = cotangent and cosecant
+    | secant and sine            = sine and cosine
+    | secant and tangent         = tangent and secant
+    | cotangent and secant       = tangent and secant
+  ? choice: Which gives cotangent from cosecant (as a size)?
+    (x) $\sqrt{\csc^2 - 1}$
+    ( ) $\sqrt{1 - \csc^2}$
+    ( ) $1 / \csc$
+    ( ) $\sqrt{\csc^2 + 1}$
+  ? choice: Which gives sine from secant (as a size)?
+    (x) $\sqrt{1 - 1/\sec^2}$
+    ( ) $\sqrt{\sec^2 - 1}$
+    ( ) $1 / \sec$
+    ( ) $\sqrt{1 + 1/\sec^2}$
+    why: Reciprocal first, to cosine, and then the Pythagorean step from cosine to sine.
+  ? numeric: The tangent of an acute angle is 0.75. What is its secant?
+    = 1.25
+    why: $\sec^2 = \tan^2 + 1 = 0.5625 + 1 = 1.5625$.
+
+### What the functions forget   @m3.trig.inv
+    can: Say what angle an inverse function gives back.
+
+- Inverse-obverse composition   @m3.trig.inv.comp
+  can: Find what $\cos^{-1}(\cos\theta)$ and $\sin^{-1}(\sin\theta)$ return.
+  bite: Sine and cosine take an angle and return information about it, but some is lost: whole laps make no difference, for one. So an inverse function cannot return the original angle. It returns a default angle that has the same value. For the cosine pair, the default keeps how far the angle is from the zero direction: $\cos^{-1}(\cos\theta)$ is the angle of the minor arc, between 0° and 180°, with laps and the sense of turning forgotten. For the sine pair, the default lies between −90° and 90°: it keeps how far the angle is above or below the horizontal.
+  ? row: What is $\cos^{-1}(\cos\theta)$ for each angle? Answer in degrees.
+    | 60°       = 60
+    | 300°      = 60
+    | 400°      = 40
+    | −50°      = 50
+    | 190°      = 170
+  ? row: What is $\sin^{-1}(\sin\theta)$ for each angle? Answer in degrees.
+    | 30°       = 30
+    | 150°      = 30
+    | 200°      = -20
+    | 390°      = 30
+  ? choice: What does $\cos^{-1}(\cos\theta)$ keep of the original angle?
+    (x) how far it is from the zero direction, as a minor arc
+    ( ) how many laps it made
+    ( ) whether it turned clockwise or counterclockwise
+    ( ) everything
+
+### Measuring with ratios   @m3.trig.use
+    can: Use a ratio to find a length or an area.
+
+- Regular polygons   @m3.trig.use.poly
+  can: Find the area of a regular polygon from its edge length.
+  bite: Cut a regular polygon with $n$ sides into $n$ equal triangles meeting at the center. Each has the edge $L$ as its base and a central angle of $360°/n$. Halve one and you have a right triangle with the angle $180°/n$ at the center and $L/2$ across from it. Its other leg, the height of the triangle, is $\tfrac{L}{2}\cot(180°/n)$. So each triangle has area $\tfrac{L^2}{4}\cot(180°/n)$, and the polygon has $n$ of them.
+  ? row: For a regular pentagon cut this way, how many degrees is:
+    | the central angle of one triangle        = 72
+    | the angle at the center after halving    = 36
+  ? numeric: A regular pentagon has edge length $L$. Its area is what number times $L^2$?
+    = 1.7205
+    why: $\tfrac54\cot 36°$.
+  ? numeric: A regular dodecagon has edge length $L$. Its area is what number times $L^2$?
+    = 11.196
+    why: $\tfrac{12}{4}\cot 15° = 3 \times 3.732$.
+  ? numeric: A regular heptagon has edge length $L$. Its area is what number times $L^2$?
+    = 3.634
+    why: $\tfrac74\cot(180°/7)$.
+  ? numeric: What is the ratio of the area of a regular octagon of edge $L$ to the area of a square of edge $L$?
+    = 4.828
+    why: $2\cot 22.5° = 2 + 2\sqrt2$.
+
+### Compound angles   @m3.trig.sum
+    can: Expand the cosine or sine of a sum of angles by picking cosine or sine from each.
+
+- Every term picks one from each angle   @m3.trig.sum.pick
+  can: Count and sign the terms in the expansion of a sum of angles.
+  bite: Stack ratio objects, each one built on an arm of the one before. At each angle you either stay along the arm, which costs a factor of cosine, or step off sideways, which costs a factor of sine and turns you a quarter turn. After $n$ angles there are $2^n$ ways through, each a product of $n$ factors. A product with no sines points along the start. One sine: a quarter turn, the sine direction. Two sines: a half turn, so it counts against the cosine. Three: against the sine. That gives $\cos(\alpha+\beta) = \cos\alpha\cos\beta - \sin\alpha\sin\beta$ and $\sin(\alpha+\beta) = \sin\alpha\cos\beta + \cos\alpha\sin\beta$. The count of products with $k$ sines is a binomial coefficient.
+  links: @m3.binom.count.choose
+  ? numeric: Expanding for three angles, how many products are there in all?
+    = 8
+  ? row: With three angles, how many products have this many sine factors?
+    | none      = 1
+    | one       = 3
+    | two       = 3
+    | three     = 1
+  ? row: Where does a product with this many sine factors go?
+    | none      = cosine, added
+    | one       = sine, added
+    | two       = cosine, subtracted
+    | three     = sine, subtracted
+  ? choice: Which is $\cos(\alpha + \beta)$?
+    (x) $\cos\alpha\cos\beta - \sin\alpha\sin\beta$
+    ( ) $\cos\alpha\cos\beta + \sin\alpha\sin\beta$
+    ( ) $\sin\alpha\cos\beta + \cos\alpha\sin\beta$
+    ( ) $\cos\alpha + \cos\beta$
+
+## The central dogma of algebra   @m3.dogma
+   can: Build addition, multiplication and exponentiation by repetition and predict how they interact.
+
+### Three operations, each from the last   @m3.dogma.build
+    can: Say how each operation is repeated use of the one before.
+
+- Iteration   @m3.dogma.build.iter
+  can: Describe each operation as repeating the one below it.
+  bite: Start with incrementation: adding one. Repeat it and you have addition, since $a + 3$ is "add one, three times". Repeat addition and you have multiplication: $a \cdot 3$ is $a + a + a$. Repeat multiplication and you have exponentiation: $a^3$ is $a \cdot a \cdot a$. Addition, multiplication and exponentiation are the three operations whose interactions make up most of algebra.
+  ? match: Match each operation to what it repeats.
+    | addition           = incrementation
+    | multiplication     = addition
+    | exponentiation     = multiplication
+  ? row: Write as a single operation.
+    | $a + a + a + a$                    = $4a$
+    | $a \cdot a \cdot a \cdot a$        = $a^4$
+  ? choice: $5 \cdot 3$ unpacks one level down as:
+    (x) $5 + 5 + 5$
+    ( ) $5 \cdot 5 \cdot 5$
+    ( ) $5 + 3$
+    ( ) $3^5$
+
+### How the operations interact   @m3.dogma.rules
+    can: Predict what happens when one operation meets another.
+
+- Multiplication over addition   @m3.dogma.rules.dist
+  can: Distribute a factor over a sum and say why it works.
+  bite: $3(a + b)$ means $(a + b) + (a + b) + (a + b)$. Regroup the terms and there are three $a$'s and three $b$'s: $3a + 3b$. Distribution is what repeating a sum looks like after regrouping. It works because the outer operation is repetition of the inner one.
+  ? typed: Expand $4(x + y)$.
+    = 4x + 4y
+    = 4y + 4x
+  ? choice: Why does $3(a + b) = 3a + 3b$?
+    (x) three copies of the sum, regrouped, hold three $a$'s and three $b$'s
+    ( ) multiplication always goes first
+    ( ) it is a definition with no reason behind it
+    ( ) because $a$ and $b$ are like terms
+
+- Exponentiation over multiplication   @m3.dogma.rules.pow
+  can: Distribute an exponent over a product.
+  bite: The same reasoning one level up. $(ab)^3$ means $ab \cdot ab \cdot ab$. Regroup and there are three $a$'s and three $b$'s multiplied: $a^3 b^3$. An exponent distributes over a product for the same reason a factor distributes over a sum.
+  ? typed: Expand $(xy)^4$.
+    = x^4 y^4
+    = x^4y^4
+  ? numeric: What is $(2 \cdot 5)^3$?
+    = 1000
+    why: $2^3 \cdot 5^3 = 8 \cdot 125$, or directly $10^3$.
+
+- Adding and multiplying exponents   @m3.dogma.rules.exp
+  can: Combine exponents on the same base.
+  bite: $a^2 \cdot a^3$ is two $a$'s times three $a$'s: five in all, so $a^5$. A sum in the exponent is a product below. $(a^2)^3$ is three copies of two $a$'s: six in all, so $a^6$. A product in the exponent is a power of a power.
+  ? row: Simplify to a single power of $a$: give the exponent.
+    | $a^2 \cdot a^5$       = 7
+    | $(a^2)^5$             = 10
+    | $a^3 \cdot a^3$       = 6
+    | $(a^3)^3$             = 9
+  ? match: Match each expression to its equal.
+    | $a^{m+n}$      = $a^m \cdot a^n$
+    | $a^{mn}$       = $(a^m)^n$
+    | $(ab)^n$       = $a^n b^n$
+    | $n(a+b)$       = $na + nb$
+
+- The one that does not distribute   @m3.dogma.rules.not
+  can: Recognize that an exponent does not distribute over a sum.
+  bite: Distribution works between neighbors: multiplication over addition, exponentiation over multiplication. It does not skip a level. $(a + b)^2$ is not $a^2 + b^2$. Try numbers: $(1 + 2)^2 = 9$, but $1^2 + 2^2 = 5$. What $(a + b)^n$ actually becomes is the subject of the next unit.
+  ? choice: Which of these is false in general?
+    (x) $(a + b)^2 = a^2 + b^2$
+    ( ) $(ab)^2 = a^2 b^2$
+    ( ) $2(a + b) = 2a + 2b$
+    ( ) $a^2 \cdot a^3 = a^5$
+  ? numeric: What is $(3 + 4)^2 - (3^2 + 4^2)$?
+    = 24
+    why: 49 − 25. The missing 24 is $2 \cdot 3 \cdot 4$, the middle term.
+  ? row: Does the outer operation distribute over the inner one?
+    | a factor over a sum               = yes
+    | an exponent over a product        = yes
+    | an exponent over a sum            = no
+
+- True or false   @m3.dogma.rules.tf
+  can: Judge a claimed rewriting of a power, product or sum.
+  bite: Two questions settle each case. Which operation is outside and which is inside? Are they neighbors, with the outside one built from the inside one? A factor outside a sum distributes. An exponent outside a product distributes. An exponent outside a sum does not, and neither does a factor outside a product: $3(ABC)$ is three copies of $ABC$ added, not $3A \cdot 3B \cdot 3C$. In the exponent, a sum becomes a product of powers and a product becomes a power of a power.
+  ? row: True or false?
+    | $(x+2)^7 = x^7 + 2^7$                              = false
+    | $A^{2+3+7} = A^2 \cdot A^3 \cdot A^7$              = true
+    | $A^{2+3+7} = A^2 + A^3 + A^7$                      = false
+    | $3(ABC) = 3A \cdot 3B \cdot 3C$                    = false
+    | $(ABC)^4 = A^4 \cdot B^4 \cdot C^4$                = true
+    | $13(A+B+C) = 13A + 13B + 13C$                      = true
+  ? row: True or false?
+    | $A^{3 \cdot 5 \cdot 2} = A^3 \cdot A^5 \cdot A^2$  = false
+    | $A^{3 \cdot 5 \cdot 2} = ((A^3)^5)^2$              = true
+    | $A^{3 \cdot 5 \cdot 2} = ((A^5)^2)^3$              = true
+  ? row: Can the outside operation be distributed directly over the inside?
+    | $(x+2)^7$          = no
+    | $(x+y+z)^3$        = no
+    | $(ABC)^4$          = yes
+    | $3(ABC)$           = no
+    | $13(A+B+C)$        = yes
+
+- Base-nested powers and towers   @m3.dogma.rules.nest
+  can: Simplify a power of a power and read a tower of exponents.
+  bite: When the base is itself a power, the exponents multiply: $((A^{39})^{5/3})^{4/13}$ has exponent $39 \cdot \tfrac53 \cdot \tfrac{4}{13} = 20$. A tower is different. With no parentheses, $5^{2^3}$ means $5^{(2^3)}$: the exponent is worked out first, so it is $5^8$, eight copies of 5 multiplied. That is not $(5^2)^3 = 5^6$.
+  ? numeric: $((A^{39})^{5/3})^{4/13}$ simplifies to $A$ to what power?
+    = 20
+  ? numeric: Evaluate $(3^{4/3})^6$.
+    = 6561
+    why: The exponents multiply to 8, and $3^8 = 6561$.
+  ? numeric: Written as a product of fives, how many copies of 5 are in $5^{2^3}$?
+    = 8
+  ? row: True or false?
+    | $3^{5^2} = (3^5)^2$                  = false
+    | $5^{2^3} = 5^{(2^3)}$                = true
+  ? numeric: $3^{5^2}$ is 3 to what power?
+    = 25
+
+- Undoing a power   @m3.dogma.rules.undo
+  can: Isolate a variable from under a fractional power.
+  bite: A power is undone by the reciprocal power, because the exponents multiply to 1. To isolate $\varphi$ in $32 + (\varphi - 100)^{5/4} = 64$, peel from the outside in: subtract 32, raise both sides to the power $\tfrac45$, then add 100. Since $32 = 2^5$, $32^{4/5} = 2^4 = 16$, so $\varphi = 116$.
+  ? numeric: Solve $32 + (\varphi - 100)^{5/4} = 64$ for $\varphi$.
+    = 116
+  ? choice: To undo a power of $\tfrac54$, raise both sides to the power:
+    (x) $\tfrac45$
+    ( ) $-\tfrac54$
+    ( ) $\tfrac54$
+    ( ) 4
+  ? numeric: Solve $x^{3/2} = 27$ for $x$.
+    = 9
+    why: $27^{2/3} = 3^2$.
+
+## Counting   @m3.count
+   can: Count arrangements by multiplying choices and by dividing out what cannot be told apart.
+
+### Slots and mappings   @m3.count.slot
+    can: Count the ways to fill slots and the mappings between two sets.
+
+- Independent and dependent choices   @m3.count.slot.fill
+  can: Count the ways to fill slots with and without repetition.
+  bite: Fill slots one at a time and multiply the number of choices at each. If items can be repeated, every slot has the same choices and the choices are independent: 5 items in 4 slots gives $5 \cdot 5 \cdot 5 \cdot 5 = 5^4$. If an item is used up when chosen, each slot has one choice fewer than the last and the choices depend on each other: 7 items in 5 slots gives $7 \cdot 6 \cdot 5 \cdot 4 \cdot 3$, a factorial cut short.
+  ? numeric: Five items fill four slots, and items can be repeated. How many ways?
+    = 625
+  ? numeric: Seven items fill five slots, and an item is used up once chosen. How many ways?
+    = 2520
+    why: $7 \cdot 6 \cdot 5 \cdot 4 \cdot 3$.
+  ? row: Are the choices independent or dependent?
+    | items can be repeated                    = independent
+    | items are used up once chosen            = dependent
+  ? numeric: [n = 6 | 4 | 5 | 8] items fill 3 slots, and items can be repeated. How many ways?
+    = n^3
+
+- Mappings of a bipartition   @m3.count.slot.map
+  can: Count the mappings between two sets from the degrees of their members.
+  bite: Put the things being arranged in one row, each with degree 1: it takes part once. Put what they are assigned to in a second row, each with a degree saying how many it takes. With 5 things above and five distinct labels below, each of degree 1, there are $5!$ mappings. If a label below has degree 3, the three things it takes can be swapped among themselves without changing anything, so divide by $3!$. In general, the count is the factorial of the total divided by the factorial of every degree: $\tfrac{N!}{A!\,B!}$ when the degrees are $A$ and $B$ with $A + B = N$.
+  ? row: How many mappings? Above: distinct things of degree 1. Below: labels with the degrees given.
+    | 5 above; below, five labels of degree 1               = 120
+    | 5 above; below, Y of degree 3 and N of degree 2       = 10
+    | 5 above; below, three labels of degree 1 and N of degree 2    = 60
+    | 7 above; below, degrees 3, 2 and 2                    = 210
+  ? numeric: There are five distinguishable light switches on a panel. In how many ways can three be on and two off?
+    = 10
+    why: $\tfrac{5!}{3!\,2!}$.
+  ? choice: Why divide by $3!$ when a label has degree 3?
+    (x) the three things it takes can be reordered among themselves without changing the mapping
+    ( ) three of the things are left out
+    ( ) each thing can be used three times
+    ( ) there are three labels
+
+## Expanding binomials   @m3.binom
+   can: Expand a power of a binomial by counting.
+
+### Expansion is counting   @m3.binom.count
+    can: Find a coefficient by counting choices.
+
+- One choice from each factor   @m3.binom.count.choose
+  can: Explain where the terms of an expansion come from.
+  links: @m3.dogma.rules.not
+  bite: $(a + b)^3$ is $(a + b)(a + b)(a + b)$. Each term of the expansion is made by picking $a$ or $b$ from each of the three factors and multiplying the picks. The term $a^2 b$ shows up once for every way to pick $b$ from exactly one factor: three ways. So its coefficient is 3. A coefficient is a count of ways to choose.
+  ? numeric: In $(a + b)^3$, how many ways are there to pick $b$ from exactly one of the three factors?
+    = 3
+  ? numeric: How many terms are there in $(a + b)^4$ before like terms are collected?
+    = 16
+    why: Two choices from each of four factors: $2^4$.
+  ? numeric: What is the coefficient of $a^2 b^2$ in $(a + b)^4$?
+    = 6
+    why: Choose which two of the four factors give $b$: 6 ways.
+
+- n choose k   @m3.binom.count.formula
+  can: Compute a binomial coefficient.
+  links: @m3.count.slot.map
+  bite: The number of ways to choose $k$ things out of $n$ is written $\binom{n}{k}$ and equals $\tfrac{n!}{k!\,(n-k)!}$. In practice, write $k$ falling factors starting at $n$ on top and $k!$ below: $\binom{5}{2} = \tfrac{5 \cdot 4}{2 \cdot 1} = 10$. Choosing which $k$ to take is the same as choosing which $n - k$ to leave, so $\binom{n}{k} = \binom{n}{n-k}$.
+  ? row: Evaluate.
+    | $\binom{5}{2}$      = 10
+    | $\binom{6}{3}$      = 20
+    | $\binom{7}{1}$      = 7
+    | $\binom{7}{6}$      = 7
+    | $\binom{4}{0}$      = 1
+  ? numeric: What is $\binom{10}{8}$?
+    = 45
+    why: The same as $\binom{10}{2} = \tfrac{10 \cdot 9}{2}$.
+
+### Pascal's triangle   @m3.binom.pascal
+    can: Build Pascal's triangle and connect it to the coefficient formula.
+
+- The rule of the triangle   @m3.binom.pascal.rule
+  can: Build a row of Pascal's triangle from the row above.
+  bite: Each entry is the sum of the two entries above it, with 1 at both ends. Row 4 is 1, 4, 6, 4, 1. Row $n$ lists $\binom{n}{0}, \binom{n}{1}, \ldots, \binom{n}{n}$, so it is also the list of coefficients of $(a + b)^n$.
+  ? typed: Row 4 of Pascal's triangle is 1, 4, 6, 4, 1. Write row 5, with commas.
+    = 1, 5, 10, 10, 5, 1
+    = 1,5,10,10,5,1
+  ? numeric: What do the entries of row 5 add up to?
+    = 32
+    why: Every row sums to $2^n$: all the ways to pick from $n$ factors.
+  ? numeric: In row 6, what is the entry after 1 and 6?
+    = 15
+
+- Why the rule holds   @m3.binom.pascal.lcd
+  can: Prove the triangle's rule from the explicit form of a coefficient.
+  bite: Write a coefficient as $\frac{N!}{A!\,B!}$ with $A + B = N$. The triangle's rule says two neighbors add to the one below: $\frac{N!}{A!\,B!} + \frac{N!}{(A+1)!\,(B-1)!} = \frac{(N+1)!}{(A+1)!\,B!}$. To add the fractions, use the least common denominator $(A+1)!\,B!$. A factorial is built from the one before, $(A+1)! = (A+1) \cdot A!$, so the first fraction needs a factor $(A+1)$ on top and bottom and the second needs a factor $B$. The tops add to $N!\,(A + 1 + B) = N!\,(N+1) = (N+1)!$. For example $\frac{13!}{9!\,4!} + \frac{13!}{10!\,3!} = \frac{14!}{10!\,4!}$: 715 + 286 = 1001.
+  ? choice: To add $\frac{N!}{A!\,B!}$ and $\frac{N!}{(A+1)!\,(B-1)!}$, what is the least common denominator?
+    (x) $(A+1)!\,B!$
+    ( ) $A!\,B!$
+    ( ) $A!\,(B-1)!$
+    ( ) $(A+1)!\,(B-1)!\,A!\,B!$
+  ? choice: What factor does the first fraction, $\frac{N!}{A!\,B!}$, need on top and bottom?
+    (x) $(A+1)$
+    ( ) $B$
+    ( ) $(N+1)$
+    ( ) $A$
+  ? row: Simplify to a single binomial coefficient and give its value.
+    | $\frac{4!}{2!\,2!} + \frac{4!}{3!\,1!}$          = 10
+    | $\frac{5!}{3!\,2!} + \frac{5!}{4!\,1!}$          = 15
+    | $\frac{8!}{6!\,2!} + \frac{8!}{7!\,1!}$          = 36
+    | $\frac{22!}{3!\,19!} + \frac{22!}{2!\,20!}$      = 1771
+  ? numeric: $\frac{22!}{3!\,19!} + \frac{22!}{2!\,20!} = \frac{N!}{3!\,20!}$ for which $N$?
+    = 23
+  ? numeric: Work from the inside out: $\frac{2!}{0!\,2!} + \frac{2!}{1!\,1!} + \frac{3!}{2!\,1!} + \frac{4!}{3!\,1!} + \frac{5!}{4!\,1!} + \frac{6!}{5!\,1!}$. What single value is it?
+    = 21
+    why: Each addition steps down the triangle: the whole sum is $\frac{7!}{5!\,2!}$. It is also 1 + 2 + 3 + 4 + 5 + 6.
+
+- Multiplying a row by (A + B)   @m3.binom.pascal.mult
+  can: Explain why multiplying an expansion by $(A + B)$ gives the next row.
+  bite: Take the expansion of $(A+B)^3$ and multiply it by $(A + B)$. Distribute: $A$ times the whole row, plus $B$ times the whole row. Multiplying by $A$ raises every power of $A$ by one. Multiplying by $B$ raises every power of $B$ by one. A term such as $A^2B^2$ then arrives twice, once from $A \cdot 3A^1B^2$ and once from $B \cdot 3A^2B^1$, and its coefficient is the sum of those two neighbors: 6. That is the rule of the triangle, seen as like terms being collected.
+  ? numeric: In $(A+B) \cdot (A^3 + 3A^2B + 3AB^2 + B^3)$, what is the coefficient of $A^2B^2$?
+    = 6
+  ? choice: In that product, which two terms of the row combine into the $A^3B$ term?
+    (x) $A \cdot 3A^2B$ and $B \cdot A^3$
+    ( ) $A \cdot A^3$ and $B \cdot B^3$
+    ( ) $A \cdot 3AB^2$ and $B \cdot 3A^2B$
+    ( ) $A \cdot A^3$ only
+  ? choice: The first expression, $(A+B)$ times the row for the cube, expanded from:
+    (x) $(A+B)^4$
+    ( ) $(A+B)^3$
+    ( ) $(A+B)^2$
+    ( ) $A^4 + B^4$
+
+- The binomial theorem   @m3.binom.pascal.thm
+  can: Expand a power of a binomial.
+  bite: $(a + b)^n$ is the sum of the terms $\binom{n}{k}\,a^{n-k}\,b^k$ for $k$ from 0 to $n$. The powers of $a$ fall from $n$ to 0, the powers of $b$ rise from 0 to $n$, and the coefficients are row $n$ of the triangle. For example $(a + b)^3 = a^3 + 3a^2 b + 3ab^2 + b^3$.
+  ? typed: Expand $(a + b)^2$.
+    = a^2 + 2ab + b^2
+  ? numeric: What is the coefficient of $a^3 b^2$ in $(a + b)^5$?
+    = 10
+  ? numeric: What is the coefficient of $x^2$ in $(x + 3)^4$?
+    = 54
+    why: $\binom{4}{2}\,x^2\,3^2 = 6 \cdot 9$.
+  ? numeric: What is the coefficient of $x$ in $(x + 2)^3$?
+    = 12
+    why: $\binom{3}{2}\,x\,2^2 = 3 \cdot 4$.
+
+- More than two terms   @m3.binom.pascal.multi
+  can: Count and weigh the terms of a power of a sum of several terms.
+  bite: In $(A + B + C + D)^5$ each of the five factors contributes one of four letters. A term such as $A^2BCD$ has coefficient $\tfrac{5!}{2!\,1!\,1!\,1!}$: a mapping of five factors onto letters with those degrees. The distinct terms are all the ways to share 5 among four exponents, which are the lattice points of a tetrahedron: $\frac{8!}{5!\,3!} = 56$ of them.
+  links: @m3.count.slot.map @m3.simplex.lattice.shape
+  ? numeric: How many distinct terms does $(A + B + C + D)^5$ have after like terms are collected?
+    = 56
+  ? numeric: What is the coefficient of $A^2BCD$ in $(A + B + C + D)^5$?
+    = 60
+  ? numeric: How many distinct terms does $(A + B + C)^4$ have?
+    = 15
+    why: Share 4 among three exponents: a triangle of lattice points, $\frac{6!}{4!\,2!}$.
+  ? numeric: What is the coefficient of $A^2B^2$ in $(A + B + C)^4$?
+    = 6
+
+## Simplex numbers   @m3.simplex
+   can: Read the diagonals of Pascal's triangle as running totals and use them to count.
+
+### Diagonals   @m3.simplex.diag
+    can: Name the numbers on each diagonal and say how one diagonal sums the one before.
+
+- Running totals   @m3.simplex.diag.sum
+  can: Find a running total on one diagonal as a single entry on the next.
+  bite: The first diagonal of the triangle is all ones. The second is the natural numbers 1, 2, 3, 4. The third is the triangular numbers 1, 3, 6, 10: each is a running total of the natural numbers. The fourth is the tetrahedral numbers 1, 4, 10, 20: running totals of the triangular numbers. The fifth is the pentachoral numbers 1, 5, 15, 35: running totals of the tetrahedral numbers. Every diagonal is the running total of the one before, so any partial sum along a diagonal can be read off as one entry on the next diagonal over.
+  ? rank: Order these diagonals as they appear, from the edge of the triangle inward.
+    | ones
+    | natural numbers
+    | triangular numbers
+    | tetrahedral numbers
+    | pentachoral numbers
+  ? row: What is each running total?
+    | $1 + 2 + 3 + 4$              = 10
+    | $1 + 3 + 6 + 10$             = 20
+    | $1 + 4 + 10 + 20$            = 35
+  ? match: Match each running total to its name.
+    | natural numbers, summed         = triangular number
+    | triangular numbers, summed      = tetrahedral number
+    | tetrahedral numbers, summed     = pentachoral number
+
+- As binomial coefficients   @m3.simplex.diag.coef
+  can: Write a simplex number as a binomial coefficient.
+  bite: A diagonal is the set of entries with one fixed factorial underneath. The $n$th triangular number is $\binom{n+1}{2}$, the $n$th tetrahedral number is $\binom{n+2}{3}$, and the $n$th pentachoral number is $\binom{n+3}{4}$. So $1 + 2 + \cdots + 100$ is $\binom{101}{2} = 5050$ with no adding needed.
+  ? numeric: What is $1 + 2 + 3 + \cdots + [n = 20 | 10 | 30 | 40 | 100]$?
+    = n * (n + 1) / 2
+    why: The triangular number $\binom{n+1}{2}$.
+  ? numeric: What is the 5th tetrahedral number, $\binom{7}{3}$?
+    = 35
+  ? numeric: The sum of the first 6 triangular numbers is which tetrahedral number? Give its value.
+    = 56
+    why: $\binom{8}{3}$.
+
+### Counting lattice points   @m3.simplex.lattice
+    can: Turn a counting problem into a count of lattice points in a simplex.
+
+- Points in a triangle or a tetrahedron   @m3.simplex.lattice.shape
+  can: See a simplex number as a count of lattice points.
+  bite: Stack dots in a right triangle with 1, 2, 3, … in successive rows and you have a triangular number. Stack those triangles into a pyramid and you have a tetrahedral number. One more dimension gives the pentachoral numbers. A binomial coefficient counts the lattice points in a right simplex, and the lower number of the coefficient is the number of dimensions.
+  ? row: In how many dimensions does each shape live?
+    slider: 1 | 2 | 3 | 4
+    | triangular number      = 2
+    | tetrahedral number     = 3
+    | pentachoral number     = 4
+  ? numeric: A right triangle of dots has 1 dot in its first row, 2 in the next, and so on to 7 in its last. How many dots?
+    = 28
+
+- A table split three ways   @m3.simplex.lattice.table
+  can: Count the cells of a square table above, on and below its diagonal.
+  bite: Take an $n$ by $n$ table with row index $i$ and column index $j$. The cells with $i = j$ are the diagonal: $n$ of them. The cells with $i < j$ make a right triangle of $\binom{n}{2}$ cells, and the cells with $i > j$ make another. Check: $n + 2\binom{n}{2} = n^2$. With three indices, the cells with $i < j < k$ number $\binom{n}{3}$, a tetrahedron.
+  ? row: In a 10 by 10 table, how many cells have:
+    | $i = j$      = 10
+    | $i < j$      = 45
+    | $i > j$      = 45
+  ? numeric: In an $n$ by $n$ table with $n = [n = 6 | 5..12]$, how many cells have $i < j$?
+    = n * (n - 1) / 2
+  ? numeric: Three indices each run from 1 to 6. How many triples have $i < j < k$?
+    = 20
+    why: $\binom{6}{3}$.
+
+- Dice   @m3.simplex.lattice.dice
+  can: Count the ways to roll a given total without listing them.
+  bite: How many ways can 3 dice total 8? Take one pip off each die, so each shows 0 to 5 and the total is 5. Now you are spreading 5 pips over 3 dice: lattice points on a triangle, $\binom{5+2}{2} = 21$. The general count for spreading $s$ pips over $d$ dice is $\binom{s+d-1}{d-1}$. It is exact as long as no die would need more than 5 extra pips. When some could, subtract the arrangements where a die overflows.
+  ? numeric: In how many ways can 3 dice total 8? Order matters.
+    = 21
+  ? numeric: In how many ways can 4 dice total 9?
+    = 56
+    why: Spread 5 extra pips over 4 dice: $\binom{8}{3}$.
+  ? numeric: In how many ways can 2 dice total 7?
+    = 6
+  ? numeric: In how many ways can 6 dice total 24?
+    = 3431
+    why: Spread 18 extra pips over 6 dice, $\binom{23}{5} = 33649$, then correct for dice above 5 extra: subtract $6\binom{17}{5}$, add back $15\binom{11}{5}$, subtract $20\binom{5}{5}$. That is 33649 − 37128 + 6930 − 20.
+
+- Tabulating   @m3.simplex.lattice.tab
+  can: Lay out every arrangement of a string in a table and see why the table is a simplex.
+  bite: To enumerate is to count. To tabulate is to lay every case out so that none can be missed. Tabulate the arrangements of AAAABBB by where the three B's sit: give the table three indices, one for each B's position. The second B must come after the first and the third after the second, so along every index the table tapers by one cell per step: each tick of one B uses up a free place for the others. What is left is a tetrahedron of cells, and the number of cells is the coefficient $\frac{7!}{4!\,3!} = 35$. The figure ticks through the table in order.
+  figure: tabulate AAAABBB
+  ? numeric: How many arrangements does AAAABBB have?
+    = 35
+  ? row: In the table for AAAABBB, how many cells are in the layer where the first B is in:
+    | place 1      = 15
+    | place 2      = 10
+    | place 3      = 6
+    | place 4      = 3
+    | place 5      = 1
+  ? choice: Why does each layer of the table have fewer cells than the one before?
+    (x) moving the first B along by one leaves one place fewer for the others
+    ( ) the letters run out
+    ( ) later arrangements repeat earlier ones
+    ( ) the table is cut off to save space
+  ? numeric: How many arrangements does AAAAABB have? Its table is a single triangle.
+    = 21
+

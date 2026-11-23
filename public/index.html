@@ -192,6 +192,16 @@ code { font: .92em ui-monospace, "SF Mono", Menlo, Consolas, monospace; backgrou
 /* vowel chart */
 .figwrap.vowels { display: grid; gap: 10px; justify-items: stretch; max-width: 520px; }
 .vchart { position: relative; height: 330px; margin: 22px 30px 26px; border-left: 2px solid var(--line); border-bottom: 2px solid var(--line); }
+.sfrac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; font-size: .82em; line-height: 1.15; margin: 0 .15em; }
+.sfrac > span:first-child { border-bottom: 1.5px solid currentColor; padding: 0 .25em 1px; } .sfrac > span:last-child { padding: 1px .25em 0; }
+.rad { border-top: 1.5px solid currentColor; padding: 0 .1em; }
+.figwrap.tabfig { display: grid; gap: 8px; justify-items: start; }
+.tabstr { font: 700 1.5rem/1 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .18em; } .taba { color: var(--muted); opacity: .6; } .tabb { color: var(--ink); background: hsl(44 95% 56% / .45); border-radius: 4px; }
+.tabbody { display: flex; flex-wrap: wrap; gap: 14px 18px; align-items: flex-end; } .tablayer { display: grid; gap: 4px; justify-items: start; font-size: .72rem; }
+.tabtri { display: grid; gap: 3px; } .tabrow { display: flex; gap: 3px; }
+.tabcell { width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid var(--line); background: transparent; transition: background .2s; }
+.tabcell.done { background: hsl(44 95% 56% / .4); border-color: hsl(40 80% 50% / .6); } .tabcell.now { background: var(--ink); border-color: var(--ink); }
+.binom { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; font-size: .78em; line-height: 1.05; padding: 0 .35em; margin: 0 .1em; border-left: 1.5px solid currentColor; border-right: 1.5px solid currentColor; border-radius: 45% / 50%; }
 .vbox { position: absolute; width: 44px; height: 36px; margin: -18px 0 0 -22px; border-radius: 10px; border: 1.5px solid var(--line); display: grid; place-items: center; --g: 0;
   background: hsl(44 95% 56% / calc(var(--g) * .35)); border-color: color-mix(in srgb, hsl(40 90% 45%) calc(var(--g) * 100%), var(--line)); }
 /* Dormant, the letter reads like disabled text. Hit, it darkens to full ink and thickens, with a smudge trailing off it. */
@@ -1794,7 +1804,7 @@ const Core = (() => {
     m: [1, D(0, 1)], cm: [1e-2, D(0, 1)], mm: [1e-3, D(0, 1)], km: [1e3, D(0, 1)], mi: [1609.344, D(0, 1)],
     s: [1, D(0, 0, 1)], min: [60, D(0, 0, 1)], h: [3600, D(0, 0, 1)],
     N: [1, D(1, 1, -2)], kN: [1e3, D(1, 1, -2)], MN: [1e6, D(1, 1, -2)], mN: [1e-3, D(1, 1, -2)], C: [1, D(0, 0, 0, 1)], mC: [1e-3, D(0, 0, 0, 1)], 'μC': [1e-6, D(0, 0, 0, 1)], uC: [1e-6, D(0, 0, 0, 1)], nC: [1e-9, D(0, 0, 0, 1)],
-    ms: [1e-3, D(0, 0, 1)], 'μm': [1e-6, D(0, 1)], um: [1e-6, D(0, 1)], nm: [1e-9, D(0, 1)],
+    ms: [1e-3, D(0, 0, 1)], 'μs': [1e-6, D(0, 0, 1)], us: [1e-6, D(0, 0, 1)], ns: [1e-9, D(0, 0, 1)], 'μm': [1e-6, D(0, 1)], um: [1e-6, D(0, 1)], nm: [1e-9, D(0, 1)],
     rad: [1, D()], deg: [TAU / 360, D()], '°': [TAU / 360, D()], rev: [TAU, D()], RPM: [TAU / 60, D(0, 0, -1)],
   };
   const ALIAS = {
@@ -1878,10 +1888,13 @@ const Core = (() => {
   // Compare one student input with one expected answer.
   // Returns { ok } or { ok:false, invalid:true, msg } (not counted) or { ok:false, msg }.
   const compare = (expected, input) => {
-    const e = parseQ(expected);
+    // A digit string with a leading zero (a byte written out, say) is text: its zeros are part of the answer.
+    const e = /^0\d+$/.test(String(expected).trim()) ? null : parseQ(expected);
     if (!String(input).trim()) return { ok: false, invalid: true, msg: 'Type an answer first.' };
     if (!e) {
       if (norm(expected) === norm(input)) return { ok: true };
+      // In an expression or a list, spacing carries nothing: 4x+4y is 4x + 4y.
+      if (/[+^=,]/.test(expected) && norm(expected).replace(/\s+/g, '') === norm(input).replace(/\s+/g, '')) return { ok: true };
       const bare = x => norm(x).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/œ/g, 'oe').replace(/æ/g, 'ae');
       return bare(expected) === bare(input) ? { ok: false, near: true, msg: 'Close. The accents are part of the spelling, and one is missing or different here.' } : { ok: false };
     }
@@ -2373,9 +2386,9 @@ if (typeof document !== 'undefined') (() => {
 
   // ---------- rich text: [boxed givens], {term :: note}, $maths$ ----------
   const tex = src => {
-    let s = esc(src).replace(/\\,/g, ' ').replace(/\\tfrac\{([^}]*)\}\{([^}]*)\}|\\tfrac(\d)(\d)/g, (_, a, b, c, d) => '<span class="frac"><sup>' + (a || c) + '</sup>⁄<sub>' + (b || d) + '</sub></span>');
+    let s = esc(src).replace(/\\(alpha|beta|gamma|theta|varphi|phi|pi|approx|le|ge|ne)\b/g, (_, w) => ({alpha:'α',beta:'β',gamma:'γ',theta:'θ',varphi:'φ',phi:'φ',pi:'π',approx:'≈',le:'≤',ge:'≥',ne:'≠'})[w]).replace(/\\sqrt\{([^{}]*)\}/g, '√<span class="rad">$1</span>').replace(/\\sqrt(\d)/g, '√$1').replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g, '<span class="sfrac"><span>$1</span><span>$2</span></span>').replace(/\\cdots|\\ldots/g, '…').replace(/\\cdot/g, '·').replace(/\\times/g, '×').replace(/\\binom\{([^}]*)\}\{([^}]*)\}/g, (_, n, k) => '<span class="binom"><span>' + n + '</span><span>' + k + '</span></span>').replace(/\\,/g, ' ').replace(/\\tfrac\{([^}]*)\}\{([^}]*)\}|\\tfrac(\d)(\d)/g, (_, a, b, c, d) => '<span class="frac"><sup>' + (a || c) + '</sup>⁄<sub>' + (b || d) + '</sub></span>');
     s = s.replace(/_(\{[^}]*\}|\w)/g, (_, x) => '<sub>' + x.replace(/[{}]/g, '') + '</sub>').replace(/\^(\{[^}]*\}|\w)/g, (_, x) => '<sup>' + x.replace(/[{}]/g, '') + '</sup>');
-    return '<span class="math">' + s.split(/(<[^>]+>)/).map(p => (p[0] === '<' ? p : p.replace(/[A-Za-z]+/g, '<i>$&</i>'))).join('').replace(/\\<i>(log|ln|sin|cos|tan)<\/i>/g, '$1') + '</span>';
+    return '<span class="math">' + s.split(/(<[^>]+>)/).map(p => (p[0] === '<' ? p : p.replace(/[A-Za-z]+/g, '<i>$&</i>'))).join('').replace(/\\<i>(log|ln|sin|cos|tan|sec|csc|cot)<\/i>/g, '$1') + '</span>';
   };
   // Quantities of like dimension share a color, the same one everywhere in the course.
   const DIMHUE = { '0,1,0,0': 212, '0,0,1,0': 32, '1,0,0,0': 138, '0,0,-1,0': 300, '0,0,-2,0': 328, '0,1,-1,0': 188, '0,1,-2,0': 166, '1,1,-1,0': 96, '1,1,-2,0': 12, '1,2,-2,0': 48, '1,2,-1,0': 74, '1,2,0,0': 256, '0,2,0,0': 228, '0,0,0,1': 58 };
@@ -2650,6 +2663,39 @@ if (typeof document !== 'undefined') (() => {
     return { el };
   };
 
+  // Every arrangement of a two-letter string, laid out by where the rarer letter sits: one index for each copy.
+  // The table tapers by one cell per step along every index, so it fills a simplex, and a marker ticks through it.
+  const tabulateFigure = spec => {
+    const word = (spec.replace(/^tabulate\s*/, '').trim() || 'AAAABBB').toUpperCase(), n = word.length, el = $('div', 'figwrap tabfig');
+    const letters = [...new Set(word)].sort(), few = letters.length === 2 ? (word.split(letters[0]).length - 1 <= n / 2 ? letters[0] : letters[1]) : null;
+    const k = few ? word.split(few).length - 1 : 0, many = letters.find(c => c !== few);
+    if (!few || k < 1 || k > 3 || n > 12) { el.textContent = 'The table is drawn for two different letters, with one to three copies of the rarer one.'; return { el }; }
+    const combos = []; const rec = (start, acc) => { if (acc.length === k) return combos.push(acc); for (let i = start; i < n; i++) rec(i + 1, acc.concat(i)); }; rec(0, []);
+    const str = $('div', 'tabstr'), idx = $('div', 'quiet tabidx'), body = $('div', 'tabbody'), bar = $('div', 'figbar'), run = btn('btn', 'Pause'), cells = [];
+    // layers by the first index (when there are three), rows by the next, columns by the last
+    const layers = k === 3 ? [...new Set(combos.map(c => c[0]))] : [null];
+    layers.forEach(a => {
+      const mine = combos.map((c, i) => [c, i]).filter(([c]) => a === null || c[0] === a), lay = $('div', 'tablayer'), tri = $('div', 'tabtri');
+      const rowKey = c => (k === 1 ? 0 : c[k - 2]);
+      [...new Set(mine.map(([c]) => rowKey(c)))].forEach(r => { const row = $('div', 'tabrow'); mine.filter(([c]) => rowKey(c) === r).forEach(([c, i]) => { const cell = $('i', 'tabcell'); cell.onmouseenter = () => { hold = i; show(i); }; cell.onmouseleave = () => { hold = null; }; cells[i] = cell; row.append(cell); }); tri.append(row); });
+      lay.append(tri); if (a !== null) lay.append($('span', 'quiet', 'first ' + few + ' in place ' + (a + 1) + ': ' + mine.length)); body.append(lay);
+    });
+    let at = -1, hold = null, paused = false, last = 0, wait = 0;
+    const show = i => {
+      const c = combos[i]; str.replaceChildren(...Array.from({ length: n }, (_, p) => $('span', c.includes(p) ? 'tabb' : 'taba', c.includes(p) ? few : many)));
+      idx.textContent = 'Places of the ' + few + '’s: ' + c.map(p => p + 1).join(' < ') + '.   Arrangement ' + (i + 1) + ' of ' + combos.length + '.';
+      cells.forEach((cell, j) => { cell.className = 'tabcell' + (j === i ? ' now' : j < (hold === null ? at : -1) + 1 ? ' done' : ''); });
+    };
+    run.onclick = () => { paused = !paused; run.textContent = paused ? 'Play' : 'Pause'; };
+    const again = btn('btn', 'Start over'); again.onclick = () => { at = -1; wait = 0; paused = false; run.textContent = 'Pause'; };
+    bar.append(run, again); el.append(str, idx, body, bar); show(0); at = 0;
+    clock.add({ el, rest: 0, draw: () => {
+      const t = performance.now(); if (paused || hold !== null || t - last < 260) return; last = t;
+      if (at >= combos.length - 1) { if (++wait < 10) return; wait = 0; at = -1; }
+      at++; show(at);
+    } });
+    return { el };
+  };
   const frenchFigure = spec => {
     const src = spec.replace(/^french\s*/, ''), el = $('div', 'figwrap frfig'), line = $('div', 'frline'), note = $('div', 'quiet frnote'), bar = $('div', 'figbar');
     let tree, all; try { tree = Core.syn.parse(src); all = Core.fr.all(tree); } catch (e) { el.textContent = '⟦' + e.message + '⟧'; return { el }; }
@@ -2688,7 +2734,7 @@ if (typeof document !== 'undefined') (() => {
     line.lang = 'fr'; draw(); el.append(line, note, bar);
     return { el };
   };
-  const makeFigure = spec => { const s = String(spec || '').trim(); return /^french/.test(s) ? frenchFigure(s) : /^vowels/.test(s) ? vowelFigure() : /^table/.test(s) ? tableFigure(s) : /^rings/.test(s) ? pulleyFigure(s) : /^roll/.test(s) ? rollFigure(s) : /^spin/.test(s) ? spinFigure(s) : /^components/.test(s) ? componentsFigure(s) : null; };
+  const makeFigure = spec => { const s = String(spec || '').trim(); return /^tabulate/.test(s) ? tabulateFigure(s) : /^french/.test(s) ? frenchFigure(s) : /^vowels/.test(s) ? vowelFigure() : /^table/.test(s) ? tableFigure(s) : /^rings/.test(s) ? pulleyFigure(s) : /^roll/.test(s) ? rollFigure(s) : /^spin/.test(s) ? spinFigure(s) : /^components/.test(s) ? componentsFigure(s) : null; };
 
   // ---------- answer fields ----------
   // units: a list of answer units to offer as buttons. The first is preselected and marked recommended.

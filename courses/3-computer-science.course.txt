@@ -1,33 +1,1233 @@
 # Computer Science   @cs
-  can: Sample sections only, to try out what the course needs. The full map comes later.
+  can: Reason through the fall semester: data as bits, the machine under a program, operating systems and languages, algorithms, networks and the web, the anatomy of a phishing scheme, information and compression, and reading JavaScript.
 
-!! SAMPLE. The language and the topics are placeholders. Code is written
-!! between backticks.
+!! ---------------------------------------------------------------------------
+!! DRAFT 2, 23 Nov 2026. Lines starting with !! are notes between Andrew and
+!! Claude. The importer skips them.
+!!
+!! SOURCES
+!!   The two Inquam decks ("From the ISA to a WebSocket app on Render" and
+!!   "You're Invited!!!") with their six response files, and Andrew's list:
+!!   information theory, compression, algorithms, JavaScript control flow
+!!   and scope. Deck questions are carried over nearly word for word; the
+!!   bites are new and need his review.
+!!   Left out: the product-tile, collab and capstone items (no item kind for
+!!   them here yet). The two product items are kept as plain numeric ones.
+!!
+!! WHAT THE RESPONSES SHOWED (extra items and hints follow these)
+!!   - 2^32 entered as "2e32", 2^28 as "2e28" (three of nine). @cs.data.pow
+!!   - Page offset: 3 of 5; "4.096e3 bits" given for 12. @cs.data.count.inverse
+!!   - Exponent slips: 2.25e1 for 2.25e0, 6e1 for 6e0, 32e1 for 32.
+!!   - Two's complement 10 of 13; hex to binary 9 of 13 (0b prefix, decimal).
+!!   - Phishing deck: the after-capture match 3 of 6, the email-mechanism
+!!     match 4 of 6, "share the code with ___" 4 of 6, what SPF/DKIM/DMARC
+!!     prove 4 of 6.
+!!   - Not answered in any response file, so possibly not reached in class:
+!!     ISA deck from Networking on; phishing deck's Safe Browsing chance,
+!!     passphrase entropy, and the last few items. These units are marked.
+!! ---------------------------------------------------------------------------
 
-## Reading code   @cs.read
-   can: Say what a short program does by following it line by line.
+## Data as bits   @cs.data
+   can: Move between binary, hexadecimal and decimal, read signed and multi-byte values, and count what a number of bits can tell apart.
 
-### Variables   @cs.read.vars
+### Writing numbers in other bases   @cs.data.base
+    can: Read and write a byte in binary and in hexadecimal.
+
+- Binary place values   @cs.data.base.bin
+  can: Convert a small number between binary and decimal.
+  bite: In binary each place is worth twice the place to its right: 1, 2, 4, 8, 16, 32, 64, 128. A byte is eight of these places. To read `00101111`, add the places that hold a 1: 32 + 8 + 4 + 2 + 1 = 47. Leading zeros are kept so that the byte is always eight digits wide.
+  ? numeric: What is `00101111` in decimal?
+    = 47
+    why: 32 + 8 + 4 + 2 + 1.
+  ? typed: Write decimal 47 as one byte in binary, all eight digits.
+    = 00101111
+    ~ 101111 :: Right value. A byte is written with all eight digits, so put the leading zeros in.
+    ~ 0b00101111 :: Right value. Here only the eight digits are wanted, without the `0b` prefix.
+  ? numeric: What is `10000001` in decimal?
+    = 129
+    why: 128 + 1.
+  ? typed: Write decimal 200 as one byte in binary.
+    = 11001000
+    why: 128 + 64 + 8.
+
+- Hexadecimal   @cs.data.base.hex
+  can: Read a byte as two hexadecimal digits.
+  bite: Four bits make sixteen patterns, and hexadecimal gives each one a single digit: 0 to 9, then A to F for ten to fifteen. So a byte splits into two halves of four bits, and each half becomes one hex digit. `0010 1111` is 2 and then F: `2F`.
+  ? typed: Write `0x2F` as 8 binary digits.
+    = 00101111
+    ~ 101111 :: Right value. Eight binary digits were asked for, so put the leading zeros in.
+    ~ 0b00101111 :: Right value. Here only the eight digits are wanted, without the 0b prefix.
+    ~ 47 :: That is the value in decimal. Write it as eight binary digits.
+    why: Each hex digit is four bits: 2 is 0010 and F is 1111.
+  ? typed: Write the byte `00101111` in hexadecimal, two digits.
+    = 2F
+    ~ 0x2F :: Right value. Here only the two digits are wanted.
+    why: 0010 is 2, and 1111 is fifteen, written F.
+  ? row: What is each hex digit in decimal?
+    | A     = 10
+    | C     = 12
+    | F     = 15
+    | 9     = 9
+  ? numeric: What is hexadecimal `FF` in decimal?
+    = 255
+    why: 15 sixteens and 15 ones: 240 + 15.
+
+### Signed values and byte order   @cs.data.signed
+    can: Read a two's-complement byte and find which byte of a word sits at which address.
+
+- Two's complement   @cs.data.signed.twos
+  can: Read an 8-bit two's-complement pattern as a signed value.
+  bite: In two's complement the leftmost bit of a byte is worth −128 and not +128. The other seven bits keep their usual worth. So `11111111` is −128 + 127 = −1, and `10000000` is −128. A shortcut for a pattern that starts with 1: flip every bit, add one, and that is the size of the negative number.
+  ? choice: The 8-bit two's-complement pattern `11111110` stands for which value?
+    ( ) −126
+    ( ) 254
+    ( ) −1
+    (x) −2
+    why: In two's complement the top bit is worth −128. `11111110` is −128 + 126 = −2. Or: flip the bits and add one to get the size, 2.
+  ? row: What signed value does each two's-complement byte stand for?
+    | `11111111`     = -1
+    | `10000000`     = -128
+    | `01111111`     = 127
+    | `11111100`     = -4
+
+- Little-endian   @cs.data.signed.endian
+  can: Say which byte of a multi-byte value is stored first.
+  bite: A 32-bit word takes four bytes, at four addresses in a row. Little-endian machines store the least significant byte, the little end, at the lowest address. The word `0x12345678` stored at address 100 puts `0x78` at 100, `0x56` at 101, `0x34` at 102 and `0x12` at 103.
+  ? choice: The 32-bit word `0x12345678` is stored little-endian starting at address 100. Which byte is at address 100?
+    ( ) `0x12`
+    ( ) `0x34`
+    (x) `0x78`
+    ( ) `0x56`
+    why: Little-endian puts the least significant byte, the little end, at the lowest address. Of 12 34 56 78, that is 78.
+  ? choice: The same word `0x12345678` is stored little-endian at address 100. Which byte is at address 103?
+    (x) `0x12`
+    ( ) `0x34`
+    ( ) `0x56`
+    ( ) `0x78`
+
+### Counting with bits   @cs.data.count
+    can: Say how many things a number of bits can tell apart, and how many bits a number of things needs.
+
+- n bits, 2^n patterns   @cs.data.count.forward
+  can: Find how many different values a number of bits can hold.
+  bite: Each added bit doubles the number of patterns. One bit has 2, two bits have 4, three have 8, and $n$ bits have $2^n$. A byte, 8 bits, has 256 patterns.
+  ? numeric: How many different patterns can [n = 5 | 3..10] bits hold?
+    = 2^n
+    why: Doubling once per bit.
+  ? row: How many patterns?
+    | 4 bits      = 16
+    | 8 bits      = 256
+    | 10 bits     = 1024
+    | 16 bits     = 65536
+
+- How many bits are needed   @cs.data.count.inverse
+  can: Find how many bits are needed to tell a number of things apart.
+  bite: This is the question backwards. To give each of 4096 things its own pattern, ask which power of two reaches 4096: $2^{12} = 4096$, so 12 bits. The answer is the exponent, not the 4096. If the count is not a power of two, round up: 100 things need 7 bits, since 64 is too few and 128 is enough.
+  ? numeric: How many bits are needed to give each of 4096 things its own pattern?
+    = 12
+    ~ 4096 :: That is the number of things. The number of bits is the exponent: which power of two gives 4096?
+    why: $2^{12} = 4096$.
+  ? row: How many bits are needed for this many things?
+    | 2        = 1
+    | 16       = 4
+    | 256      = 8
+    | 1024     = 10
+    | 100      = 7
+  ? choice: A field of 12 bits can hold 4096 different values. Which of these is a number of bits, and which is a number of values?
+    (x) 12 is the number of bits and 4096 is the number of values
+    ( ) 4096 is the number of bits and 12 is the number of values
+    ( ) both are numbers of bits
+    ( ) both are numbers of values
+
+### Powers of two are not powers of ten   @cs.data.pow
+    can: Keep $2^{32}$ apart from $2 \times 10^{32}$ when writing an answer.
+
+- 2^32 is not 2e32   @cs.data.pow.notation
+  can: Write a power of two correctly in scientific notation.
+  bite: The entry `2e32` means $2 \times 10^{32}$, a two followed by thirty-two zeros. $2^{32}$ is thirty-two twos multiplied together, which is 4,294,967,296, about `4.29e9`. They differ by a factor of more than $10^{22}$. A handy bridge: $2^{10} = 1024$ is about a thousand, so $2^{32} = 2^2 \times 2^{30}$ is about 4 thousand-thousand-thousands, 4 billion.
+  ? choice: Which entry means $2^{32}$?
+    (x) 4.294967296e9
+    ( ) 2e32
+    ( ) 32e2
+    ( ) 2.32e1
+    why: `2e32` is $2 \times 10^{32}$. Working out $2^{32}$ gives about 4.29 billion.
+  ? row: About how large is each power of two?
+    slider: a thousand | a million | a billion | a trillion
+    | $2^{10}$     = a thousand
+    | $2^{20}$     = a million
+    | $2^{30}$     = a billion
+    | $2^{40}$     = a trillion
+  ? numeric: $2^{28}$ is closest to which of these when written in scientific notation: give the power of ten. (For example, for 4.29e9 answer 9.)
+    = 8
+    why: $2^{28} = 2^{30} / 4$, about a billion over four: 2.68e8.
+  ? choice: A lock has 28 switches, each up or down. How many settings are there?
+    (x) about 2.68e8
+    ( ) 2e28
+    ( ) 56
+    ( ) 784
+    why: Two choices, 28 times over: $2^{28}$, about 268 million.
+
+- Address space   @cs.data.pow.addr
+  can: Find how many bytes a machine can address from the width of its addresses.
+  bite: An address is a number that names one byte of memory. If addresses are 32 bits wide there are $2^{32}$ of them, so the machine can name $2^{32}$ bytes: about 4.29 billion bytes, 4 gibibytes.
+  ? numeric: A byte-addressed machine has 32-bit addresses. How many bytes can it address?
+    = 4294967296
+    = 4.29e9
+    ~ 2e32 :: That entry means 2 × 10^32. Work out 2^32.
+    why: 2^32 addresses, one byte each: about 4.29 billion.
+  ? numeric: Addresses are 16 bits wide. How many bytes can be addressed?
+    = 65536
+
+## The machine   @cs.mach
+   can: Follow a program down to the instructions, the pipeline, the caches and the page tables that run it.
+
+### The instruction set   @cs.mach.isa
+    can: Say what an instruction set specifies and read simple RISC-V instructions.
+
+- The contract   @cs.mach.isa.def
+  can: Describe the instruction set architecture as the contract between hardware and software.
+  bite: The instruction set architecture, or ISA, is what software can count on: the instructions, the registers, how instructions are encoded, and how memory behaves. How fast the clock runs, how many pipeline stages there are and how big the caches are belong to one particular chip, not to the contract. RISC-V is a load/store architecture: only load and store instructions touch memory, and all arithmetic happens between registers.
+  ? choice: What does an instruction set architecture specify?
+    (x) The contract software sees: instructions, registers, encodings, and memory behaviour
+    ( ) The clock speed
+    ( ) How many pipeline stages the processor has
+    ( ) The size of the caches
+  ? choice: RISC-V is a load/store architecture. That means:
+    ( ) Every instruction may read and write memory
+    ( ) Registers are stored in memory
+    (x) Only loads and stores touch memory; arithmetic works on registers
+    ( ) Memory is accessed only at program start and end
+
+- Reading RISC-V   @cs.mach.isa.read
+  can: Say what a RISC-V instruction does.
+  bite: A RISC-V instruction names its destination first. `add x5, x6, x7` puts x6 + x7 into x5. `lw` loads a word from memory into a register and `sw` stores one back; the address is written as an offset and a base register, as in `8(x6)`. `beq` branches when two registers are equal. Every base RV32I instruction is 32 bits wide. Register x0 always reads as zero.
+  ? match: Match each RISC-V instruction to its effect.
+    | `add x5, x6, x7`      = x5 ← x6 + x7
+    | `lw x5, 8(x6)`        = x5 ← the word at address x6 + 8
+    | `sw x5, 8(x6)`        = the word at address x6 + 8 ← x5
+    | `beq x5, x6, L`       = go to L if x5 and x6 are equal
+    | `jal x1, f`           = x1 ← return address, then go to f
+  ? numeric: How wide is every base RV32I instruction? Answer in bits.
+    = 32
+    ~ 320 :: Check the power of ten: 3.2e1 is 32.
+  ? choice: In RISC-V, register x0:
+    ( ) Holds the return value
+    ( ) Holds the stack pointer
+    (x) Always reads as 0; writes to it are discarded
+    ( ) Holds the program counter
+
+- Calling and returning   @cs.mach.isa.call
+  can: Say what `jal` does and which register lets a function return.
+  bite: To call a function, `jal` (jump and link) does two things: it jumps to the function, and it saves the address of the next instruction in a register. By convention that register is x1, whose ABI name is `ra`, the return address. The function returns by jumping to whatever `ra` holds.
+  ? typed: After jal, which register (ABI name) holds the return address under the RISC-V calling convention?
+    = ra
+    ~ jal :: jal is the instruction that makes the call. Which register does it fill?
+    ~ x1 :: That is the register number. Its ABI name is asked for.
+
+### Pipeline and performance   @cs.mach.pipe
+    can: Name what makes a pipeline wait and compute how long a program runs.
+
+- Hazards   @cs.mach.pipe.hazard
+  can: Match each pipeline hazard to its cause and predict a load-use stall.
+  bite: A pipeline overlaps instructions: while one executes, the next is being decoded and a third fetched. A hazard is anything that stops the next instruction from proceeding on schedule. Forwarding hands a result straight to the instruction that needs it, without waiting for it to be written back. It cannot hand over a value that does not exist yet: a loaded value appears only after the memory stage, so an instruction that uses it right away waits one cycle.
+  ? match: Match each hazard to its cause.
+    | data hazard            = an instruction needs a result not yet written
+    | control hazard         = the next fetch depends on a branch not yet decided
+    | structural hazard      = two instructions need one hardware unit in the same cycle
+  ? choice: In a classic 5-stage pipeline with forwarding, `lw x5, 0(x6)` is followed directly by `add x7, x5, x5`. What happens?
+    ( ) The add reads the old value of x5
+    ( ) The processor raises an exception
+    (x) One stall cycle, because the loaded value exists only after MEM
+    ( ) Nothing; forwarding hides it completely
+    why: Forwarding can pass a value along only once it exists. A load's value appears at the end of MEM, one cycle too late for the add's EX stage, so the add waits one cycle.
+
+- CPU time   @cs.mach.pipe.time
+  can: Compute run time from instruction count, cycles per instruction and clock rate.
+  bite: Run time is instructions × cycles per instruction × seconds per cycle. A 2 GHz clock has 2 × 10⁹ cycles per second, so dividing a number of cycles by 2 × 10⁹ gives seconds. Write the powers of ten down and cancel them before touching the mantissas.
+  ? numeric: A program runs 3 × 10⁹ instructions at an average CPI of 1.5 on a 2 GHz clock. How long does it take?
+    = 2.25 s
+    ~ 22.5 s :: Check the power of ten. Instructions × cycles per instruction ÷ cycles per second.
+    why: 3 × 10^9 instructions × 1.5 cycles each = 4.5 × 10^9 cycles. At 2 × 10^9 cycles per second that is 2.25 s.
+  ? numeric: A program runs [n = 4 | 2 | 6 | 8] × 10⁹ instructions at an average of 2 cycles per instruction on a 4 GHz clock. How long does it take?
+    = n / 2 -> s
+    why: Instructions × 2 cycles each, divided by 4 × 10⁹ cycles per second.
+
+### Memory   @cs.mach.mem
+    can: Explain why caches work and compute with cache and page sizes.
+
+- Caches   @cs.mach.mem.cache
+  can: Explain locality and compute an average access time and a cache capacity.
+  bite: A cache is a small fast memory that keeps recently used data close. It works because programs reuse what they just used (temporal locality) and use what sits next to it (spatial locality). The average access time is the hit time, which every access pays, plus the miss rate times the miss penalty, which only the misses pay. A cache's capacity is sets × ways per set × bytes per block.
+  ? choice: Why do caches work at all?
+    ( ) Compilers copy the whole program into the cache
+    (x) Programs reuse recent data (temporal locality) and touch nearby data (spatial locality)
+    ( ) Caches are larger than main memory
+    ( ) Memory is slow only when it is cold
+  ? numeric: Hit time 1 ns, miss rate 5 %, miss penalty 100 ns. What is the average memory access time?
+    = 6 ns
+    = 6e-9 s
+    ~ 60 ns :: Check the power of ten: 5 % of 100 ns is 5 ns.
+    why: Every access pays the hit time, and 5 % of them pay the penalty as well: 1 ns + 0.05 × 100 ns.
+  ? numeric: A cache has 64 sets, 8 ways per set, and 64-byte blocks. What is its capacity in bytes?
+    = 32768
+    why: 64 × 8 × 64.
+  ? numeric: Hit time 2 ns, miss rate 10 %, miss penalty 50 ns. What is the average memory access time?
+    = 7 ns
+    why: 2 ns + 0.10 × 50 ns.
+
+- Virtual memory   @cs.mach.mem.vm
+  can: Split a virtual address into page number and offset, and say what a TLB is.
+  bite: Memory is handed out in pages. The low bits of a virtual address say where within the page (the offset), and the remaining high bits say which page. A page of 4 KiB is 4096 = 2¹² bytes, so the offset is 12 bits. Translating the page number means a table lookup, and the TLB is a small cache of recent translations so that most lookups are skipped.
+  ? numeric: Pages are 4 KiB. How many bits of a virtual address are the page offset?
+    = 12
+    ~ 4096 :: That is the number of bytes in a page. The number of bits is the exponent: which power of two gives 4096?
+    ~ 120 :: Check the power of ten: 1.2e1 is 12.
+    why: 4 KiB is 4096 bytes, and 2^12 = 4096, so 12 bits pick out a byte within the page.
+  ? choice: A TLB is:
+    ( ) The part of the disk that holds swapped pages
+    (x) A cache of recent virtual-to-physical translations
+    ( ) A table of open files
+    ( ) A list of free pages
+  ? row: How many offset bits does each page size need?
+    | 4 KiB (4096 bytes)       = 12
+    | 8 KiB (8192 bytes)       = 13
+    | 1 KiB (1024 bytes)       = 10
+    | 64 KiB (65536 bytes)     = 16
+
+## Operating systems and languages   @cs.os
+   can: Say what the operating system shares out, where concurrency goes wrong, and how source code becomes a running program.
+
+### Processes and threads   @cs.os.proc
+    can: Tell threads from processes and spot a race and a deadlock.
+
+- Threads and races   @cs.os.proc.share
+  can: Say what threads share and what an unprotected shared counter does.
+  bite: A process has its own address space. Threads within one process share that address space (code, globals and heap), but each thread has its own stack, registers and program counter. Sharing is what makes threads useful and what makes them dangerous: `counter++` is really three steps, read, add one, write back. Two threads can interleave those steps and lose an update.
+  ? choice: What do two threads of one process share that two processes do not?
+    ( ) A program counter
+    (x) An address space (heap, globals, code)
+    ( ) A register file
+    ( ) A stack
+  ? choice: Two threads each run `counter++` 1000 times on a shared counter, with no lock. The final value is:
+    ( ) Always 1000
+    ( ) Sometimes more than 2000
+    (x) At most 2000, and often less
+    ( ) Always 2000
+    why: `counter++` is read, add, write. Two threads can both read the same old value, and then one increment is lost. Increments can be lost but never invented.
+
+- System calls and deadlock   @cs.os.proc.sys
+  can: Match system calls to their jobs and name the conditions for deadlock.
+  bite: A program asks the operating system for service through system calls. A deadlock is a set of threads each waiting for something another one holds. It needs four conditions at once: mutual exclusion, hold and wait, no preemption, and circular wait. Break any one and deadlock cannot happen.
+  ? match: Match each system call to what it does.
+    | fork        = makes a copy of the calling process
+    | execve      = replaces the process image with a new program
+    | read        = copies bytes in from a file descriptor
+    | mmap        = maps a file or memory region into the address space
+  ? choice: Which is NOT one of the four conditions for deadlock?
+    ( ) Mutual exclusion
+    ( ) Hold and wait
+    ( ) No preemption
+    ( ) Circular wait
+    (x) Starvation
+    why: The four conditions are mutual exclusion, hold and wait, no preemption and circular wait. Starvation is a different problem: a thread that could run but never gets its turn.
+
+### From source to running code   @cs.os.lang
+    can: Order the stages of a compiler and say where a local variable lives.
+
+- Compiler stages   @cs.os.lang.compile
+  can: Match each compiler stage to its job.
+  bite: A compiler works in stages. The lexer groups characters into tokens. The parser arranges tokens into a syntax tree. The type checker rejects programs that misuse their values. The code generator turns the checked program into machine instructions. The linker joins the separately compiled pieces and fills in the addresses they refer to in one another.
+  ? match: Match each stage to its job.
+    | lexer               = characters into tokens
+    | parser              = tokens into a syntax tree
+    | type checker        = rejects ill-typed programs before they run
+    | code generator      = intermediate code into machine instructions
+    | linker              = joins object files and resolves their symbols
+  ? rank: Order the stages from first to last.
+    | lexer
+    | parser
+    | type checker
+    | code generator
+    | linker
+
+- The stack frame   @cs.os.lang.stack
+  can: Say where a local variable lives and for how long.
+  bite: Each function call gets a stack frame: a block of memory for its local variables and its return address. When the call returns, the frame is popped and its locals are gone. This is the machine-level reason a local variable cannot be seen outside its function.
+  ? choice: A local variable declared inside a function call usually lives:
+    ( ) In the program's code segment
+    ( ) On the heap until the garbage collector runs
+    ( ) In a register for the whole program
+    (x) In that call's stack frame, gone when the call returns
+    why: Each call gets a stack frame for its locals. Returning pops the frame.
+
+## Algorithms   @cs.alg
+   can: Compare ways of doing a task by how the work grows.
+
+### Searching   @cs.alg.search
+    can: Compare checking every item with halving a sorted list.
+
+- One by one   @cs.alg.search.lin
+  can: Count the comparisons a linear search makes.
+  bite: To find something in an unsorted list you can only look at the items one after another. With $N$ items the worst case is $N$ looks, and the average is about half of that.
+  ? numeric: An unsorted list has [n = 1000 | 200..5000] items. In the worst case, how many items does a linear search look at?
+    = n
+- Halving   @cs.alg.search.bin
+  can: Count the comparisons a binary search makes.
+  bite: If the list is sorted, look at the middle item. It tells you which half the target is in, and the other half is discarded. Each comparison halves what is left, so $N$ items take about $\log_2 N$ comparisons. A million is about $2^{20}$, so a million sorted items take about 20 comparisons.
+  ? numeric: Worst case, about how many comparisons does binary search need over 1 000 000 sorted items?
+    = 20
+    = 19.93
+    ~ 1000000 :: That is a linear search. Each comparison of a binary search halves what is left.
+    ~ 500000 :: That is the average for a linear search. Each comparison of a binary search halves what is left.
+    why: A million is about 2^20, so twenty halvings reach one item.
+  ? row: About how many comparisons does binary search need for this many sorted items?
+    | 16             = 4
+    | 1024           = 10
+    | a million      = 20
+    | a billion      = 30
+  ? choice: Binary search only works if the list is:
+    (x) sorted
+    ( ) short
+    ( ) made of numbers
+    ( ) stored twice
+  ? choice: A sorted list doubles in length. How many more comparisons does binary search need?
+    (x) one more
+    ( ) twice as many
+    ( ) the same number
+    ( ) the square of the old number
+
+### Growth   @cs.alg.grow
+    can: Say how the work grows as the input grows.
+
+- Doubling the input   @cs.alg.grow.double
+  can: Predict what doubling the input does to the work.
+  bite: What matters about an algorithm is how its work grows. If the work is proportional to $N$, doubling the input doubles the work. If it is proportional to $N^2$, as when every item is compared with every other, doubling the input makes four times the work. If it is proportional to $\log_2 N$, doubling the input adds a single step.
+  ? row: The input doubles. By what factor does the work grow?
+    slider: factor 1 | 2 | 4 | 8 | 16
+    | work proportional to $N$       = 2
+    | work proportional to $N^2$     = 4
+    | work proportional to $N^3$     = 8
+  ? match: Match each task to its running time.
+    | binary search in a sorted array      = O(log n)
+    | merge sort                           = O(n log n)
+    | walking a linked list                = O(n)
+    | comparing every pair of items        = O(n²)
+    | hash-table lookup (average)          = O(1)
+  ? rank: Order these from slowest-growing work to fastest-growing.
+    | $\log_2 N$
+    | $N$
+    | $N \log_2 N$
+    | $N^2$
+    | $2^N$
+
+- Sorting   @cs.alg.grow.sort
+  can: Compare a simple sort with a divide-and-merge sort.
+  bite: A simple sort compares each item with many of the others, so its work grows like $N^2$. A sort that splits the list in half, sorts each half, and merges them does about $N \log_2 N$ work. For a million items that is the difference between a trillion steps and about twenty million.
+  ? choice: For a million items, about how many steps does an $N \log_2 N$ sort take?
+    (x) twenty million
+    ( ) a million
+    ( ) a trillion
+    ( ) twenty
+  ? choice: Why is merging two sorted halves quick?
+    (x) only the front items of the two halves ever need comparing
+    ( ) the halves are already in one list
+    ( ) no comparisons are needed
+    ( ) the halves are the same
+
+## Networks and the web   @cs.net
+   can: Follow a message from one machine to another and say what each layer adds.
+
+   !! No response file has answers for these deck sections. Kept in case they were covered another way; cut freely.
+
+### Layers and transport   @cs.net.stack
+    can: Place protocols in their layers and estimate delays.
+
+- Layers and TCP   @cs.net.stack.layers
+  can: Match protocols to layers and say what TCP adds.
+  bite: Networking is built in layers. The link layer moves frames between neighbors. IP moves packets across networks. TCP turns unreliable packets into a reliable, ordered stream of bytes, starting with a three-step handshake. Applications such as HTTP ride on top. A home machine usually has a private address behind a router that translates addresses (NAT), so outsiders cannot open a connection to it.
+  ? match: Match each protocol to its layer.
+    | Ethernet      = link
+    | IP            = network
+    | TCP           = transport
+    | HTTP          = application
+  ? choice: What does TCP give you that UDP does not?
+    ( ) Message boundaries
+    (x) A reliable, ordered byte stream
+    ( ) Lower latency
+    ( ) Broadcast to many hosts
+  ? choice: The TCP handshake is:
+    ( ) HELLO, ACK
+    ( ) GET, 200
+    (x) SYN, SYN-ACK, ACK
+    ( ) SYN, ACK, FIN
+  ? choice: A laptop behind a home router has address `192.168.1.20`. Why can't a stranger's computer open a connection to it directly?
+    ( ) IPv4 forbids incoming connections
+    ( ) Firewalls block all traffic on home networks
+    ( ) 192.168 addresses are reserved for routers
+    (x) It is a private address behind NAT; outsiders can't initiate a connection to it
+
+- How long it takes   @cs.net.stack.delay
+  can: Estimate propagation and transfer times.
+  bite: Two different delays. Propagation is distance ÷ signal speed: nothing arrives sooner than light in the fibre allows. Transfer is size ÷ rate, and here units bite: file sizes are in bytes and link rates in bits per second, so multiply bytes by 8 first.
+  ? numeric: Light in fibre travels at about 2 × 10⁸ m/s. New Orleans to Paris is about 7800 km of fibre. What is the shortest possible round-trip time?
+    = 0.078 s
+  ? numeric: How long does a 10 MB file take over a 100 Mbit/s link, ignoring overhead?
+    = 0.8 s
+
+### The web   @cs.net.web
+    can: Say what DNS, HTTP status codes, HTTPS and origins are.
+
+- Names, codes and HTTPS   @cs.net.web.http
+  can: Say what DNS and HTTPS do and read common status codes.
+  bite: DNS turns a host name into an IP address. HTTP is request and response; the response starts with a status code whose first digit gives its class: 1 for informational, 2 for success, 3 for redirection, 4 for a mistake by the client, 5 for a failure of the server. HTTPS is HTTP inside an encrypted channel that also proves which server you reached. Two URLs share an origin only if scheme, host and port all match.
+  ? choice: DNS turns:
+    ( ) A URL into HTML
+    (x) A host name into an IP address
+    ( ) An IP address into a MAC address
+    ( ) HTTP into HTTPS
+  ? match: Match each HTTP status code to its meaning.
+    | 101      = switching protocols
+    | 200      = OK
+    | 301      = moved permanently
+    | 404      = not found
+    | 500      = server error
+  ? choice: What does HTTPS add to HTTP?
+    ( ) A persistent two-way connection
+    ( ) Faster page loads
+    (x) Encryption, integrity, and proof of the server's identity through a certificate
+    ( ) Compression
+  ? choice: Two URLs have the same origin when they share:
+    (x) Scheme, host, and port
+    ( ) The host only
+    ( ) The host and the path
+    ( ) The top-level domain
+
+### Live connections   @cs.net.live
+    can: Say what WebSockets add and how a live app is deployed.
+
+- WebSockets   @cs.net.live.ws
+  can: Explain why a live app uses a WebSocket and how the connection starts.
+  bite: In plain HTTP the server can only answer. A WebSocket starts life as an ordinary HTTP request that asks to upgrade; the server agrees with status 101, and from then on the connection stays open and either side can send whole messages at any time. A chat server's job is then to forward each message to the other sockets in the same room. A page served over https must use wss.
+  ? choice: Why is plain HTTP awkward for a live chat?
+    ( ) HTTP connections are always encrypted
+    ( ) HTTP has no status codes
+    ( ) HTTP cannot carry text
+    (x) The server can only answer requests; it cannot speak first
+  ? choice: A WebSocket connection begins as:
+    (x) An HTTP GET carrying Upgrade: websocket and Connection: Upgrade headers
+    ( ) A POST request with a JSON body
+    ( ) A UDP packet to the server
+    ( ) A raw TCP connection on port 9000
+  ? typed: Which HTTP status code does the server send to accept the upgrade?
+    = 101
+  ? choice: Compared with raw TCP, a WebSocket delivers:
+    ( ) Unordered datagrams
+    ( ) A byte stream you must split yourself
+    ( ) Only binary data
+    (x) Whole messages, as the sender framed them
+  ? choice: Your page is served over https://. The socket URL must begin with:
+    ( ) http://
+    ( ) tcp://
+    ( ) ws://
+    (x) wss://
+  ? choice: A chat server receives a message from one socket in room "physics". What is its job?
+    ( ) Close the socket
+    (x) Forward it to every other open socket in that room
+    ( ) Send it back only to the sender
+    ( ) Store it and wait for clients to ask
+  ? choice: You run two instances of your chat server. Users on different instances can't see each other's messages. The usual fix:
+    (x) A shared message bus (pub/sub) that every instance publishes to and listens on
+    ( ) Switch to UDP
+    ( ) Run more instances
+    ( ) Lengthen the timeout
+
+- WebRTC   @cs.net.live.rtc
+  can: Say what a server still does in a peer-to-peer call.
+  bite: WebRTC lets two browsers send audio, video and data straight to each other. They still need help to find each other: a signalling server passes the offer, the answer and the candidate addresses between them. Once a path is found the media flows directly between the peers, or through a relay when no direct path works.
+  ? choice: Two browsers want a video call. What must a server still do?
+    ( ) Carry all of the video
+    ( ) Encode the video
+    ( ) Nothing; WebRTC finds peers by itself
+    (x) Signalling: pass offers, answers, and ICE candidates between them
+  ? match: Match each piece to its job.
+    | STUN      = tells a peer its public address as seen from outside
+    | TURN      = relays the traffic when no direct path works
+    | ICE       = gathers candidate paths and tests which ones connect
+    | SDP       = describes the media, codecs, and keys in an offer or answer
+  ? choice: Peer B receives A's offer through the signalling server. What does B call first?
+    (x) `setRemoteDescription(offer)`
+    ( ) `createOffer()`
+    ( ) `addIceCandidate(offer)`
+    ( ) `setLocalDescription()`
+  ? choice: A data channel created with default options is:
+    (x) Reliable and ordered
+    ( ) Reliable but unordered
+    ( ) Server-relayed
+    ( ) Unreliable and unordered
+  ? choice: Your signalling server runs on Render. Once a call connects, the media flows:
+    ( ) Through Render's CDN
+    ( ) Over the WebSocket
+    (x) Directly between peers if ICE finds a path, otherwise through a TURN relay
+    ( ) Through the signalling server
+
+- Deploying on Render   @cs.net.live.render
+  can: Avoid the common mistakes when deploying a Node server.
+  bite: A hosting service runs your server on its machines. It tells your program which port to listen on through the PORT environment variable, and it handles encryption at its edge, so your program speaks plain HTTP. Anything kept only in memory is gone after a restart or redeploy. Secrets go in environment variables, never in code the browser receives.
+  ? choice: An app listening on `localhost:3000` works on your laptop but fails to deploy on Render. The fix:
+    ( ) Turn off TLS
+    (x) Bind to `0.0.0.0` on the port in the PORT environment variable
+    ( ) Use port 80
+    ( ) Add a Dockerfile
+  ? typed: What is the default value of PORT for a Render web service?
+    = 10000
+  ? choice: Browsers reach your Render service over https:// and wss://. What does your Node process itself speak?
+    (x) Plain HTTP and ws; Render terminates TLS at its edge
+    ( ) Raw TCP
+    ( ) Only HTTP/3
+    ( ) HTTPS with a certificate you must upload
+  ? choice: A demo on a free instance has had no traffic for 20 minutes. The first student's page load:
+    ( ) Fails with a 404
+    ( ) Goes to another student's instance
+    ( ) Is as fast as usual
+    (x) Is slow, because the service spun down after 15 minutes idle and must start again
+  ? choice: Your server keeps chat rooms in a JavaScript Map. After a redeploy:
+    (x) They are gone; in-memory state does not survive a restart
+    ( ) Only the newest room survives
+    ( ) Render copies them to the new instance
+    ( ) The rooms are still there
+  ? choice: Where should an API key your server needs go?
+    ( ) In a commit, so teammates have it
+    ( ) In the client JavaScript
+    (x) In an environment variable set in Render's dashboard
+    ( ) In the HTML
+
+## Anatomy of a phishing scheme   @cs.ph
+   can: Trace an invitation scam from the lure to the spread and say which habits and mechanisms stop it.
+
+### The lure and the ask   @cs.ph.social
+    can: Say why the lure works and recognize what a real invitation never asks for.
+
+- The lure   @cs.ph.social.lure
+  can: Explain why a familiar name and a familiar brand make the scam work.
+  bite: The invitation names someone you know and looks like a service you know. Both are borrowed. The name comes from an account that was taken over earlier, and the look is copied. Most phishing pushes with fear; this one pulls with curiosity and the wish to be included.
+  ? choice: An email titled "YOU'RE INVITED !!!" names a friend of yours as the host. Why does that name make the scam work so well?
+    (x) Trust in someone you know lowers your guard more than any design trick
+    ( ) Invitation platforms require a real host name
+    ( ) Spam filters never check messages that mention a name
+    ( ) It proves the email came from your friend's computer
+  ? choice: How can the scammer put your real friend's name on it?
+    ( ) Invitation sites publish everyone's friends
+    ( ) Email cannot show a sender name at all
+    (x) The friend's account was taken over earlier, and its contact list is being worked through
+    ( ) They guess names at random
+  ? choice: The message copies the look of Evite, Paperless Post, or Google Calendar. What does copying a known brand buy the scammer?
+    ( ) Legal protection
+    ( ) Faster delivery
+    ( ) Access to the brand's servers
+    (x) Borrowed trust: a familiar layout reads as legitimate before anyone checks the address
+  ? choice: Phishing usually leans on fear ("your account is locked"). This lure leans on what instead?
+    (x) Curiosity and the wish to be included
+    ( ) Authority
+    ( ) Boredom
+    ( ) Greed
+
+- The ask   @cs.ph.social.ask
+  can: Recognize the request that gives the scam away.
+  bite: An invitation has no reason to need your email password. A one-time code is a service asking whether it is really you, so reading it to anyone else answers yes on their behalf. A page that says "error, try again" after you typed a password has already kept it.
+  ? choice: The invitation page asks for your email password "to verify it's you" before showing the party details. What is the tell?
+    ( ) It should have asked for your bank PIN instead
+    ( ) Nothing; real sites always ask for this
+    ( ) The page loaded too quickly
+    (x) An invitation never needs your email password to show you an event
+  ? choice: A variant asks for your phone number, then for "the code we just texted you." Where did that code really come from?
+    ( ) Your phone company, to confirm the number exists
+    (x) A real service (often your email provider) that the scammer asked to sign in or reset your account
+    ( ) The invitation site, to confirm your RSVP
+    ( ) It is made up; there is no code
+  ? typed: Fill in the rule in one word: a one-time code proves you are you to the service that sent it, so you should share it with ___ .
+    = nobody
+    = no one
+    = noone
+    ~ the service :: The service already knows the code, since it sent it. Anyone who asks you for it is someone else.
+    why: The code is the service asking whether it is really you. Reading it to anyone else answers yes on their behalf.
+  ? choice: You type your password into the fake page. The page then says "Error, try again." Why?
+    ( ) The party was cancelled
+    (x) The password is already captured; the error keeps you from getting suspicious, and sometimes collects a second password
+    ( ) You mistyped
+    ( ) The site is broken
+
+- Inside the kit   @cs.ph.social.kit
+  can: Say how a phishing kit hides from scanners and tracks its targets.
+  bite: Phishing pages are built from kits. A kit shows scanners a harmless page and shows the form only to likely victims, which is called cloaking. Each email carries its own token in the link, so the kit knows who clicked, can fill in their address, and can refuse a link once a scanner has used it.
+  ? choice: Many phishing kits check each visitor's IP address and browser, show security scanners a harmless page, and show the login form only to likely victims. What is this called, and why do it?
+    ( ) Sandboxing: it protects the scammer's server
+    (x) Cloaking: an automated scanner that loads the link sees nothing wrong, so the domain stays off blocklists longer
+    ( ) Load balancing: it spreads traffic across servers
+    ( ) Caching: it makes the page load faster
+  ? choice: The fake page already shows your email address filled in. How did it know?
+    ( ) It guessed from your IP address
+    ( ) Your browser told it
+    ( ) Your email provider shared it
+    (x) The link in your email carried a token or the encoded address, so the kit knew which recipient was clicking
+  ? choice: Why does each email carry its own unique link token instead of one shared link?
+    (x) The kit can track who clicked, pre-fill details, and refuse or expire a link once a scanner has visited it
+    ( ) It makes the email shorter
+    ( ) Email servers require unique links
+    ( ) Tokens make the page encrypted
+
+### After capture, and the spread   @cs.ph.after
+    can: Say what a stolen inbox is used for and why the campaign grows.
+
+- What the inbox unlocks   @cs.ph.after.inbox
+  can: Match what an attacker does in a stolen inbox to its purpose.
+  bite: An inbox is a master key, because password resets for most other accounts arrive there. The attacker searches it for money and accounts, adds a hidden forwarding rule so that a password change does not shut them out, sends the same invitation to the contacts, and sometimes steps into a real conversation to redirect a payment. So after a phish, changing the password is half the job: forwarding rules, filters and signed-in sessions need checking too.
+  ? match: Match each thing the attacker does with your inbox to its purpose.
+    | search the mailbox for "bank", "invoice", "reset password"      = find accounts and money the email unlocks
+    | add a hidden forwarding rule                                    = keep reading your mail after you change your password
+    | send the same invitation to your contacts                       = recruit the next round of victims
+    | reply inside a real conversation with a supplier                = redirect a payment (business email compromise)
+    why: Each action serves a different stage: the search finds what the inbox unlocks, the forwarding rule keeps access, the invitations spread it, and the reply in a real thread takes money.
+  ? choice: Why is an email account worth more to a thief than, say, a single shopping account?
+    ( ) Email providers pay ransoms
+    (x) Password resets for most other accounts go to email, so the inbox is the master key
+    ( ) Email accounts store credit card numbers
+    ( ) Email accounts can't use two-factor authentication
+  ? choice: You change your password right after being phished. Which check is just as urgent?
+    (x) Your forwarding settings and filters, plus your list of signed-in sessions and devices
+    ( ) Unsubscribing from newsletters
+    ( ) Changing your profile picture
+    ( ) Clearing your browser history
+  ? choice: In business email compromise, the attacker replies inside a real email thread: "Our bank details changed; please pay this month's invoice to the new account." Why does this work?
+    ( ) It uses an attachment
+    (x) It arrives in an existing, trusted conversation from a real account, at a moment when a payment is expected
+    ( ) The thread is encrypted
+    ( ) Banks check all such requests
+
+- Growth   @cs.ph.after.spread
+  can: Compute how many new victims each victim produces and say what pushes that number below one.
+  bite: Multiply the contacts each victim's account reaches by the share who fall for it. That product is how many new victims each victim makes. Above 1, every round is larger than the last and the campaign grows exponentially; below 1 it dies out. Two-factor authentication attacks the second factor of that product directly: a stolen password alone no longer opens the account.
+  ? numeric: Each new victim's account sends the invitation to 200 contacts, and 2 % of them enter their password. How many new victims does each victim produce on average?
+    = 4
+    why: 200 × 0.02 = 4.
+  ? choice: If that number stays above 1, the campaign grows like:
+    (x) An exponential, each round several times the last, like a chain reaction above critical
+    ( ) A sine wave
+    ( ) It stays the same size
+    ( ) A straight line
+  ? choice: Which defence pushes that number below 1 most directly?
+    ( ) Deleting the email after reading it
+    ( ) A better-looking spam folder
+    ( ) Turning the phone off at night
+    (x) Two-factor authentication: a stolen password alone no longer opens the account
+  ? numeric: Each victim's account sends the invitation to [c = 150 | 100 | 250 | 300 | 500] contacts, and [p = 2 | 1 | 4] % of them enter their password. How many new victims does each victim produce on average?
+    = c * p / 100
+  ? choice: Each victim's account reaches 200 contacts. What share of them must fall for it for the campaign to just hold steady?
+    (x) 0.5 %
+    ( ) 2 %
+    ( ) 5 %
+    ( ) 50 %
+    why: Holding steady means one new victim per victim: 1 ÷ 200.
+
+### What email checks prove   @cs.ph.mail
+    can: Say what SPF, DKIM and DMARC check and what they leave unchecked.
+
+- Sender checks   @cs.ph.mail.auth
+  can: Match each email mechanism to what it checks.
+  bite: Three mechanisms check where a message came from, and all three are about domains. SPF is a list, published in DNS, of the servers allowed to send for a domain. DKIM is a signature over the message that anyone can check with a key published in DNS. DMARC asks whether the domain you see in the From line agrees with what SPF or DKIM vouched for. None of them checks the display name, which is free text. And a message from a stolen account passes all of them, because it really did come from that domain.
+  ? choice: The invitation comes from your friend's real Gmail account, so it passes the sender checks (SPF, DKIM, DMARC). What do those checks really prove?
+    (x) The mail came from a server allowed to send for that domain, so it is not forged, though the account itself may be stolen
+    ( ) The sender is honest
+    ( ) Nothing at all
+    ( ) The message is safe
+    why: SPF, DKIM and DMARC check the sending domain, not the person at the keyboard. A stolen account passes all three.
+  ? match: Match each email mechanism to what it checks.
+    | SPF               = a DNS list of servers allowed to send for a domain
+    | DKIM              = a signature over the message, checked with a public key published in DNS
+    | DMARC             = whether the visible From domain lines up with SPF or DKIM, and what to do on failure
+    | display name      = free text the sender types, never checked by anything
+    why: SPF is a list of servers, DKIM is a signature, DMARC ties them to the visible From domain, and the display name is checked by nothing.
+  ? choice: An email shows "Sarah Miller <rsvp@evite-notice.vu>" and passes SPF, DKIM and DMARC. What has been proven?
+    ( ) That Sarah Miller sent it
+    ( ) That Evite sent it
+    (x) Only that evite-notice.vu authorized it; the scammer owns that domain, and "Sarah Miller" was never checked
+    ( ) That the link inside is safe
+  ? choice: In Gmail's "Show original", the Received headers list every server the message passed through. Each server adds its line at the top. Where is the first hop?
+    ( ) In the Subject line
+    (x) At the bottom; you read the path from the bottom up
+    ( ) At the top
+    ( ) In the middle
+
+### Reading the link   @cs.ph.link
+    can: Find who owns the place a link goes to.
+
+- Before you click   @cs.ph.link.hover
+  can: Say what hovering shows and which text to believe.
+  bite: Hovering over a link loads nothing. It only shows the address the link points to, and that address is what counts, not the words on the button.
+  ? choice: You hover over "View Invitation" without clicking, and the status bar shows the address. Was hovering risky?
+    ( ) Yes; hovering downloads the page in the background
+    (x) No; hovering only shows the link's target and loads nothing
+    ( ) Yes; it tells the scammer your password
+    ( ) Only on a phone
+  ? choice: The button's text reads evite.com, but the status bar shows something else. Which one tells you where the click goes?
+    (x) The status bar, the link's real target, though a page script can still swap the target at the moment you click
+    ( ) Neither
+    ( ) The button's text
+    ( ) The email subject
+
+- The registered domain   @cs.ph.link.domain
+  can: Pick out the registered domain in a web address.
+  bite: People read an address from the left. Ownership is read from the right. In a host name the last label is the top-level domain, and the label before it, together with the top-level domain, is the registered domain: the name someone actually bought. Everything to the left of that is subdomain labels, which the owner sets to anything at all, including the name of a company they are imitating. Everything after the first slash is a path on their server.
+  ? typed: What is the registered domain (the part someone actually owns) in https://evite.com.rsvp-view.zonetide.vu/party ?
+    = zonetide.vu
+    ~ rsvp-view.zonetide.vu :: That still includes a subdomain label. Read from the right: which name was registered?
+    ~ evite.com :: That is what the scammer wants you to read. Ownership is read from the right end of the host name.
+    ~ evite.com.rsvp-view.zonetide.vu :: That is the whole host name. Which part of it was registered?
+    ~ view.zonetide.vu :: That still includes part of a subdomain label. Which name was registered?
+    why: Read the host name from the right: vu is the top-level domain, and zonetide.vu is the name somebody registered. Everything to its left is theirs to make up.
+  ? choice: Why does the scammer write evite.com at the left end of that address?
+    (x) People read a web address from the left, so a familiar name there looks right; but ownership is read from the right
+    ( ) Evite allows it
+    ( ) It is required by DNS
+    ( ) It makes the page load faster
+  ? match: Match each part of https://evite.com.rsvp-view.zonetide.vu/party to what it is.
+    | https                    = the scheme (how to talk to the server)
+    | vu                       = the top-level domain, here Vanuatu's country code
+    | zonetide.vu              = the registered domain, which decides who controls the site
+    | evite.com.rsvp-view      = subdomain labels the owner may set to anything
+    | /party                   = the path on that server
+  ? choice: Which of these addresses belongs to the owner of `example.com`?
+    (x) `login.example.com/account`
+    ( ) `example.com.secure-login.net`
+    ( ) `example-com.net/example.com`
+    ( ) `secure-login.net/example.com`
+    why: Read from the right of the host name: only the first has example.com as its registered domain.
+  ? row: What is the registered domain in each address?
+    | `https://mail.google.com/inbox`                  = google.com
+    | `https://google.com.account-check.net/login`     = account-check.net
+    | `https://paypal.com.secure.zonetide.vu`          = zonetide.vu
+
+- Cheap names and padlocks   @cs.ph.link.signs
+  can: Say why new, obscure domains are a warning and what a padlock does not mean.
+  bite: Campaigns use cheap names from obscure top-level domains and abandon each one as soon as it is blocked, so a domain registered two weeks ago has no record to trust. A padlock means your connection to that server is encrypted. Anyone can get one for a domain they own.
+  ? choice: Why do campaigns like this favour obscure top-level domains and keep moving to new ones?
+    ( ) They are faster
+    ( ) They can't be traced at all
+    ( ) Browsers trust them more
+    (x) Names are cheap and quick to register, and a domain is abandoned as soon as blocklists catch it
+  ? choice: A security scanner flags a .vu domain like this one as phishing and notes it was registered 14 days ago. Why does domain age matter?
+    ( ) Domains expire after 14 days
+    (x) A brand-new domain has no history of good behaviour; phishing domains seldom live long
+    ( ) Age shows who owns it
+    ( ) Old domains are always safe
+  ? choice: The address shows a padlock (HTTPS). Does that make the page trustworthy?
+    ( ) Only on desktop browsers
+    ( ) Yes, if it is green
+    (x) No; it means your connection to that server is encrypted, and anyone can get a certificate for a domain they own
+    ( ) Yes; the padlock means the site was vetted
+
+### Infrastructure   @cs.ph.infra
+    can: Say how certificates, look-alike names and blocklists work.
+
+- Certificates   @cs.ph.infra.cert
+  can: Say what a certificate proves and how defenders use the public logs.
+  bite: A certificate is issued to whoever proves control of a domain, automatically and within minutes. It proves control of the name and nothing about who they are. Every certificate is recorded in public logs, and that is useful to defenders: a new certificate for a look-alike name is an early warning.
+  ? choice: How can a scammer get a valid HTTPS certificate for a domain registered an hour ago?
+    ( ) By stealing one from Evite
+    (x) Automated domain validation (ACME): prove control of the domain by serving a token or adding a DNS record; no identity is checked
+    ( ) They can't; new domains have no certificates
+    ( ) By paying a certificate authority to vouch for them
+  ? choice: Every publicly trusted certificate is recorded in public Certificate Transparency logs. How can defenders use that against this scheme?
+    ( ) Read the scammers' traffic
+    ( ) Revoke all .vu certificates
+    (x) Watch the logs for new certificates on lookalike names, and block those domains before the emails go out
+    ( ) Find the scammers' home addresses
+
+- Look-alike letters   @cs.ph.infra.puny
+  can: Recognize a name that uses letters from another alphabet.
+  bite: Domain names may contain letters from other alphabets, and some look exactly like Latin letters. Underneath, such a name is a different name, stored in plain characters beginning `xn--`. A browser that shows you that form is telling you the name is not made of the letters it appears to be.
+  ? choice: A link reads evіte.com, where the і is a Cyrillic letter. What is it in DNS?
+    ( ) An invalid address that cannot load
+    (x) A different domain, stored in an ASCII form beginning with xn-- (punycode); browsers often display that form when scripts are mixed
+    ( ) A subdomain of evite.com
+    ( ) The same domain as evite.com
+  ? typed: What four-character prefix marks a punycode (internationalized) domain label?
+    = xn--
+
+- Hiding and blocking   @cs.ph.infra.block
+  can: Say what a content-delivery network hides and how a browser checks a blocklist privately.
+  bite: A scammer can put a site behind a large content-delivery network, which hides where the real server is. Browsers check addresses against a list of known bad ones without revealing what you visit: the browser sends only a short prefix of a hash of the address, gets back the full hashes that share it, and compares for itself.
+  ? choice: The phishing domain resolves to an address belonging to a large content-delivery network. What does that do for the scammer?
+    ( ) It makes the page legitimate
+    (x) It hides the real server's address, so taking the site down goes through the CDN or the registrar
+    ( ) Nothing; CDNs refuse phishing sites automatically
+    ( ) It encrypts the victim's password
+  ? choice: For a Safe Browsing check, the browser sends only a short prefix of the URL's hash, not the URL. Why?
+    ( ) Hashes are faster to type
+    ( ) URLs are secret
+    (x) Privacy: many URLs share a prefix, so the service learns little; the full hashes come back and the browser compares them itself
+    ( ) To save the scammer's bandwidth
+  ? numeric: A browser holds 1 000 000 bad-URL prefixes of 32 bits each. What is the chance that a random safe URL's 32-bit prefix matches one of them by accident?
+    = 0.000233
+    why: A million prefixes out of 2^32 possible: 10^6 ÷ 4.29 × 10^9.
+
+### Exploits and malware   @cs.ph.exploit
+    can: Say how a browser can be attacked and why it rarely is in mass phishing.
+
+- Memory-safety bugs   @cs.ph.exploit.mem
+  can: Say what the most common class of serious browser bug is.
+  bite: About seventy percent of serious browser security bugs are memory-safety bugs: the program reads or writes memory it should not. A use-after-free keeps using a pointer to something already freed, whose memory now holds data the attacker chose. A type confusion treats memory as the wrong kind of object. Such attacks on a fully updated browser are rare and costly, so mass phishing seldom uses them.
+  ? choice: Could merely opening the page put a virus on your device with no download?
+    ( ) Only if the page is HTTPS
+    ( ) Yes; every phishing page does this
+    ( ) No; browsers cannot have security flaws
+    (x) Possible in principle through an unpatched browser flaw, but such exploits are rare and costly, so mass credential phishing seldom uses them; updates close the gap
+  ? choice: Chromium and Microsoft have each reported that about 70 % of their serious security bugs belong to one class. Which?
+    ( ) Weak passwords
+    ( ) Spelling mistakes in error messages
+    (x) Memory-safety bugs, such as use-after-free and out-of-bounds access
+    ( ) Slow network code
+  ? choice: What is a use-after-free?
+    (x) The program frees an object but keeps a pointer to it; the memory is reused for attacker-chosen data, and the stale pointer is then used as if the old object were still there
+    ( ) Using memory nobody allocated
+    ( ) A free trial that never ends
+    ( ) Reading a file after deleting it
+  ? choice: A JavaScript engine's JIT compiler turns hot code into machine code that assumes a value always has one shape. What is a type-confusion bug there?
+    ( ) A variable named confusingly
+    ( ) The JIT running too slowly
+    (x) A path where the assumption fails, so the fast code treats memory as the wrong kind of object and reads or writes past what it should
+    ( ) Converting numbers to strings
+
+- Mitigations   @cs.ph.exploit.mitig
+  can: Match each mitigation to what it does and count the positions ASLR allows.
+  bite: Systems make bugs harder to use. ASLR loads code at random addresses, so the attacker does not know where anything is. DEP forbids running data as code. A stack canary detects an overwritten return address. A sandbox runs the page with almost no rights, and site isolation keeps sites in separate processes. Randomness is counted in bits: $n$ bits of randomness means $2^n$ equally likely positions.
+  ? match: Match each mitigation to what it does.
+    | ASLR                = randomizes where code and data sit in memory
+    | DEP / NX            = marks data memory as non-executable
+    | stack canary        = a secret value that detects an overwritten return address
+    | sandbox             = runs the page's renderer with almost no rights on the system
+    | site isolation      = puts different sites in different processes
+    why: ASLR moves things, DEP stops data from running, a canary notices a smashed stack, a sandbox takes away rights, and site isolation separates sites.
+  ? choice: With DEP, bytes injected into data memory can't be executed. What do attackers do instead, in principle?
+    ( ) Ask the user to turn DEP off
+    ( ) Give up
+    (x) Reuse snippets of code already in memory, chained together (return-oriented programming), which first needs an information leak to defeat ASLR
+    ( ) Inject more bytes
+  ? numeric: ASLR gives a library 28 bits of randomness in its load address. How many possible positions is that?
+    = 268000000
+    = 2.68e8
+    ~ 2e28 :: That entry means 2 × 10^28. Work out 2^28.
+    why: 2^28 = 2^30 ÷ 4, about a billion over four.
+  ? row: How many positions does this many bits of randomness give? (For example 4.29e9.)
+    | 8 bits      = 256
+    | 16 bits     = 65536
+    | 20 bits     = 1048576
+
+- Chains and patches   @cs.ph.exploit.chain
+  can: Explain why attacks need several bugs and why updating quickly matters.
+  bite: One bug is usually not enough: the first gives control only inside the sandbox, and a second is needed to get out. A patch closes a bug and also reveals where it was, so machines that have not updated are briefly at greater risk. An unknown bug, a zero-day, loses its value once it is seen in the wild, which is why such bugs are not spent on mass email.
+  ? choice: Why does a working browser attack usually need a chain of two or more bugs?
+    ( ) Each bug works only on alternate days
+    ( ) Browsers require two clicks
+    (x) The first bug gives code execution only inside the renderer's sandbox; a second bug (a sandbox escape) is needed to reach the rest of the system
+    ( ) One bug is for Windows, one for Mac
+  ? choice: The day a browser patch ships, risk briefly rises for anyone who hasn't updated. Why?
+    ( ) Patches add new bugs
+    ( ) It doesn't; risk drops for everyone
+    ( ) Updates turn off the sandbox
+    (x) The patch points at the bug: attackers compare old and new code and build an exploit (an "n-day") for unpatched machines
+  ? choice: Why is a zero-day "burned" once it is used in a mass email campaign?
+    (x) Every use risks crash reports and samples reaching researchers; once seen it is patched, and its value is gone
+    ( ) It can only run once per computer
+    ( ) The domain expires
+    ( ) Antivirus licenses run out
+
+- Malware   @cs.ph.exploit.malware
+  can: Recognize the versions of the scam that try to install something.
+  bite: Some versions go after the device and not the password. The signal is a prompt to download or open a file. Malware that runs on the device can copy every saved password and every live session at once, which is worse than one phished password.
+  ? choice: An attached .html "invitation" decodes data inside the browser and offers the result as a download. Why does this "HTML smuggling" get past mail scanners?
+    ( ) HTML attachments are never scanned
+    ( ) It uses a stolen certificate
+    ( ) It is encrypted with the victim's password
+    (x) The harmful file never travels as a file; it is assembled by script on the victim's machine
+  ? choice: Why is an infostealer, malware that actually runs on the device, worse than one phished password?
+    (x) It can copy saved passwords and live session cookies from every browser profile at once, not just one account
+    ( ) It changes the wallpaper
+    ( ) It is not worse
+    ( ) It only reads the clipboard
+  ? choice: Some versions of the invitation scam do try to install something. What is the usual signal?
+    ( ) A black-and-white design
+    ( ) A request to RSVP "maybe"
+    (x) A prompt to download an "invitation" file or an app, or to open an attachment
+    ( ) A short email
+  ? match: Match each kind of attack to its usual cost and reach.
+    | credential phishing page              = cheap template, sent to millions
+    | malicious attachment or download      = needs the victim to open or run a file
+    | drive-by browser exploit              = rare and expensive, saved for high-value targets
+    why: Cost and reach run opposite ways: the cheap template goes to millions, and the expensive exploit is saved for a few.
+
+### Relays and what resists them   @cs.ph.relay
+    can: Explain how a relay defeats codes and why a passkey resists it.
+
+- The relay   @cs.ph.relay.aitm
+  can: Explain how a relaying page gets past two-factor codes.
+  bite: A relay page does not copy the login page. It passes everything you type to the real site and everything the real site answers back to you, and keeps a copy. You see the real two-factor prompt and answer it. The real site then sets a session cookie, the proof that you logged in, and the relay keeps that too. Whoever holds the cookie is treated as you.
+  ? choice: The attacker steals your session cookie through a "man-in-the-middle" phishing page that relays your real login. Why can that get past two-factor authentication?
+    ( ) Two-factor codes are always the same
+    ( ) Cookies are shared between all sites
+    (x) The cookie is the proof that login, second factor included, already happened, so whoever holds it is treated as you
+    ( ) The cookie contains your password
+  ? choice: How does an adversary-in-the-middle phishing page differ from a static copy of a login page?
+    ( ) It runs on the victim's computer
+    ( ) It is the same thing with better graphics
+    ( ) It only works on Wi-Fi
+    (x) It forwards every request to the real login service and every response back, so you see the real pages and the real two-factor prompt while it records your password and the session cookie the real site sets
+  ? choice: The real site marks its session cookie HttpOnly, so page scripts can't read it. Why doesn't that stop the relay?
+    (x) HttpOnly only hides the cookie from scripts in the browser; the relay reads the Set-Cookie header in transit, because your encrypted connection ends at the attacker's server
+    ( ) The relay guesses the cookie
+    ( ) It does stop it
+    ( ) HttpOnly cookies are sent unencrypted
+  ? choice: Why does a six-digit authenticator code not stop the relay, while a passkey does?
+    (x) You type the code into the relay, which passes it on within seconds; a passkey's signature includes the origin the browser actually saw (zonetide.vu), so the real site rejects it
+    ( ) Passkeys are longer
+    ( ) Codes are sent by email
+    ( ) Codes expire too slowly
+  ? choice: One proposed defence binds a session to a private key that never leaves the device. What would that do to a stolen cookie?
+    ( ) Send it to the user's phone
+    ( ) Nothing
+    (x) Make it useless elsewhere: the server keeps asking for proof made with the key, and the attacker's machine doesn't have it
+    ( ) Make it last longer
+
+- Grants and fake windows   @cs.ph.relay.grant
+  can: Recognize a consent grant and a window drawn by the page.
+  bite: Two more routes. A real consent page can ask you to grant an app access to your mail; the access then lives in that grant and survives a password change until you revoke it. And a page can draw a fake sign-in window, address bar included, out of ordinary page elements. A real window can be dragged out of the browser. A drawn one cannot.
+  ? choice: A real Google page asks: "Invitation Viewer wants to read and send email as you." You click Allow. Why is this harder to clean up than a stolen password?
+    (x) The access lives in a grant you approved, held by the app; it has to be revoked in your account's third-party access settings, and a password change may not remove it
+    ( ) The app now knows your password
+    ( ) It is not harder
+    ( ) Google can't revoke it
+  ? choice: A "Sign in with Google" popup appears with an address bar showing accounts.google.com. How can you tell it is drawn by the page (browser-in-the-browser)?
+    (x) It can't be dragged outside the browser window, and it behaves like part of the page, because it is HTML pretending to be a window
+    ( ) It is always blue
+    ( ) You can't tell
+    ( ) Real popups have no address bar
+
+### Defence   @cs.ph.defence
+    can: Choose the habits and mechanisms that stop the scheme.
+
+- Passkeys and passphrases   @cs.ph.defence.passkey
+  can: Say why a passkey resists phishing and count the entropy of a passphrase.
+  bite: A passkey is tied to the real site's domain. The browser will not offer it anywhere else, and there is nothing to type into a fake page. Where a password is still needed, strength is counted in bits of entropy: a word chosen at random from a list of 7776 carries $\log_2 7776 \approx 12.9$ bits, and independent choices add.
+  ? choice: A passkey resists this whole scheme. Why?
+    (x) It is bound to the real site's domain, so the browser will not offer it to zonetide.vu, and there is nothing to type into a fake page
+    ( ) It is stored by the scammer
+    ( ) It only works on phones
+    ( ) It is a longer password
+  ? typed: The browser offers a passkey made for evite.com only on evite.com and its subdomains. Would it offer it on evite.com.rsvp-view.zonetide.vu? (yes or no)
+    = no
+  ? numeric: A passphrase of 4 words, each chosen at random from a 7776-word list. How many bits of entropy is that?
+    = 51.7
+    why: Each word is one of 7776, which is log2(7776) ≈ 12.9 bits. Four independent words: 4 × 12.9.
+  ? numeric: How many possible passphrases are there of 4 words, each chosen from a 7776-word list? Scientific notation is fine.
+    = 3656158440062976
+    = 3.66e15
+    why: 7776 choices, four times over: 7776⁴.
+  ? numeric: About how many bits of entropy does a passphrase of [w = 5 | 3 | 6] such words carry?
+    = w * 12.925
+    why: About 12.9 bits per word, added.
+
+- Habits   @cs.ph.defence.habits
+  can: Choose a sensible response to an unexpected invitation.
+  bite: Check an unexpected invitation by reaching the friend some other way, through a number you already have. If you clicked but typed nothing, little is likely to have happened: delete the message and keep the browser updated. And read summaries with care, including summaries written by AI: a domain name is not an organization, and specifics are unverified until a cited source confirms them.
+  ? choice: The safest way to check an unexpected invitation from a friend:
+    ( ) Click the link on a different device
+    ( ) Reply to the email and ask
+    (x) Contact the friend some other way, such as a text or call to a number you already have
+    ( ) Forward it to more friends
+  ? choice: You clicked the link but typed nothing, then closed the tab. Sensible next steps:
+    ( ) Nothing; it is impossible that anything happened
+    (x) Delete the message, keep the browser updated, and optionally run a security scan
+    ( ) Factory-reset the device
+    ( ) Change every password you have
+  ? choice: The AI summary this deck began from spoke of "Zonetide's operations" and named the domains it would "pivot to" next. What is the careful reading?
+    ( ) Search for those domains and visit them to check
+    (x) A domain name is not an organization, and example domains may be invented; treat specifics as unverified until a cited source confirms them
+    ( ) Accept it; AI summaries are checked by experts
+    ( ) Reject it all; nothing in it is true
+
+## Information and compression   @cs.info
+   can: Measure information in bits and say what compression can and cannot do.
+
+### Information   @cs.info.bits
+    can: Count the bits a message carries.
+
+- Halving the possibilities   @cs.info.bits.half
+  can: Count information as the number of yes-or-no questions needed.
+  bite: One bit of information is what you learn from one fair yes-or-no answer: it cuts the possibilities in half. To pick one thing out of 8 equally likely things takes 3 such answers, so the choice carries 3 bits. In general, one out of $N$ equally likely things carries $\log_2 N$ bits.
+  ? row: How many bits does it take to single out one of this many equally likely things?
+    | 2       = 1
+    | 8       = 3
+    | 64      = 6
+    | 1024    = 10
+  ? numeric: A card is drawn from 32 equally likely cards. How many bits does naming the card carry?
+    = 5
+
+- Surprise   @cs.info.bits.surprise
+  can: Say why unlikely messages carry more information.
+  bite: A message you could have predicted tells you little. A message you did not expect tells you a lot. Something with probability $\tfrac12$ carries 1 bit, probability $\tfrac14$ carries 2 bits, probability $\tfrac18$ carries 3. Rare means many bits; certain means zero bits.
+  ? row: How many bits does a message with this probability carry?
+    | $\tfrac12$      = 1
+    | $\tfrac14$      = 2
+    | $\tfrac18$      = 3
+    | 1               = 0
+  ? choice: Which report carries the most information?
+    (x) "it snowed in Bogalusa in July"
+    ( ) "it was hot in Bogalusa in July"
+    ( ) "the sun rose this morning"
+    ( ) "Tuesday came after Monday"
+
+### Compression   @cs.info.comp
+    can: Say how compression saves space and where it must stop.
+
+- Short codes for common things   @cs.info.comp.freq
+  can: Explain why frequent symbols get short codes.
+  bite: Compression gives short codes to what shows up often and long codes to what shows up rarely. On average the message gets shorter. Morse code does this: E, the most common letter in English, is a single dot. No code can be made uniquely readable if one symbol's code is the beginning of another's, so the codes are chosen with that in mind.
+  ? choice: In a good code for English text, which letter should get the shortest code?
+    (x) e
+    ( ) q
+    ( ) z
+    ( ) x
+  ? choice: A file is one letter repeated a million times. How well does it compress?
+    (x) extremely well: "this letter, a million times" says it all
+    ( ) not at all
+    ( ) to about half its size
+    ( ) it gets larger
+
+- Lossless and lossy   @cs.info.comp.loss
+  can: Tell lossless compression from lossy.
+  bite: Lossless compression gives back exactly the original, bit for bit. It is what text and programs need. Lossy compression throws away detail that people are unlikely to notice, and gets much smaller files for pictures, sound and video. What was thrown away cannot be brought back.
+  ? row: Lossless or lossy?
+    | a zipped folder of documents         = lossless
+    | a JPEG photograph                    = lossy
+    | an MP3 song                          = lossy
+    | a program's source code in an archive = lossless
+  ? choice: Why must a program be compressed losslessly?
+    (x) changing even one bit can change what the program does
+    ( ) programs are too small to compress any other way
+    ( ) lossy compression is slower
+    ( ) programs contain no repetition
+
+- The limit   @cs.info.comp.limit
+  can: Explain why no method shrinks every file.
+  bite: There are more long files than short ones. If a method made every file shorter, two different files would have to shrink to the same short file, and then nobody could tell which one to give back. So every lossless method that shrinks some files must leave others the same or make them longer. Files that already look random, including files that are already compressed, do not shrink.
+  ? choice: A lossless program claims to make every file smaller. Why is that impossible?
+    (x) there are fewer short files than long ones, so two files would collide
+    ( ) computers are not fast enough
+    ( ) files are stored in bytes
+    ( ) it is possible with enough memory
+  ? choice: What happens when you compress a file that is already well compressed?
+    (x) almost nothing is saved, and it may get slightly larger
+    ( ) it halves again
+    ( ) it shrinks to nothing after enough rounds
+    ( ) the original is lost
+
+## Reading JavaScript   @cs.js
+   can: Say what a short JavaScript program does by following it line by line.
+
+### Variables   @cs.js.vars
     can: Track the value a variable holds as lines run.
 
-- Assignment replaces   @cs.read.vars.assign
+- Assignment replaces   @cs.js.vars.assign
   can: Follow a variable through several assignments.
-  bite: A variable holds one value at a time. Assigning to it again replaces what was there. The right-hand side is worked out first, using the value the variable has at that moment. After `x = 3` and then `x = x + 2`, the variable `x` holds 5.
-  ? numeric: These lines run in order: `x = 4`, then `x = x * 2`, then `x = x - 3`. What does `x` hold at the end?
+  bite: A variable holds one value at a time. Assigning to it again replaces what was there. The right-hand side is worked out first, using the value the variable has at that moment. After `let x = 3` and then `x = x + 2`, the variable `x` holds 5.
+  ? numeric: These lines run in order: `let x = 4`, then `x = x * 2`, then `x = x - 3`. What does `x` hold at the end?
     = 5
     why: 4, then 8, then 5.
-  ? choice: These lines run in order: `a = 2`, then `b = a`, then `a = 7`. What does `b` hold?
+  ? choice: These lines run in order: `let a = 2`, then `let b = a`, then `a = 7`. What does `b` hold?
     (x) 2
     ( ) 7
     ( ) 9
     ( ) nothing
     why: `b = a` copied the value 2. Changing `a` afterwards does not reach back into `b`.
 
-- Names and values   @cs.read.vars.names
-  can: Tell a variable's name from the value it holds.
-  bite: The name is the label on the box, and the value is what is inside. `count = 10` makes a box labeled `count` holding 10. Writing `count` later means "whatever is in the box now".
-  ? row: After `total = 6` and `n = 3`, is each of these a name or a value?
-    | `total`     = name
-    | `6`         = value
-    | `n`         = name
-    | `total / n` = value
+- let and const   @cs.js.vars.const
+  can: Say what `const` forbids.
+  bite: `let` makes a variable that can be assigned again. `const` makes one that cannot: a second assignment is an error. Use `const` unless you mean for the value to change.
+  ? choice: After `const n = 5`, what does the line `n = 6` do?
+    (x) stops with an error
+    ( ) sets `n` to 6
+    ( ) makes a second variable called `n`
+    ( ) nothing, silently
+  ? row: `let` or `const`?
+    | a counter that goes up in a loop       = let
+    | the number of days in a week           = const
+    | a running total                        = let
+
+### Control flow   @cs.js.flow
+    can: Follow branches and loops.
+
+- if and else   @cs.js.flow.if
+  can: Say which branch runs.
+  bite: `if (condition) { A } else { B }` runs A when the condition is true and B when it is false. Exactly one of the two runs. A chain `if … else if … else` tries its conditions from the top and runs the first one that is true, and no other.
+  ? choice: `let x = 7`. Then: `if (x > 10) { y = 1 } else if (x > 5) { y = 2 } else { y = 3 }`. What is `y`?
+    (x) 2
+    ( ) 1
+    ( ) 3
+    ( ) 2 and then 3
+    why: The first condition is false, the second is true, and the chain stops there.
+  ? choice: In a chain of `if … else if … else`, how many of the blocks run?
+    (x) exactly one
+    ( ) every block whose condition is true
+    ( ) at least two
+    ( ) possibly none
+
+- Loops   @cs.js.flow.loop
+  can: Count how many times a loop body runs and what it leaves behind.
+  bite: `for (let i = 0; i < 4; i++) { … }` runs its body with `i` equal to 0, 1, 2, 3: four times. It starts at the start value, checks the condition before every pass, and adds one after every pass. A `while (condition) { … }` loop is the same idea without the counter built in: check, run, check, run, until the condition is false.
+  ? numeric: How many times does the body of `for (let i = 0; i < [n = 5 | 3..9]; i++)` run?
+    = n
+  ? numeric: `let total = 0`. Then `for (let i = 1; i <= 4; i++) { total = total + i }`. What is `total` at the end?
+    = 10
+    why: 1 + 2 + 3 + 4.
+  ? numeric: `let n = 20`, `let steps = 0`. Then `while (n > 1) { n = n / 2; steps = steps + 1 }`. What is `steps` at the end?
+    = 5
+    why: 20, 10, 5, 2.5, 1.25, 0.625: five halvings before `n > 1` fails.
+  ? choice: `for (let i = 0; i < 3; i++)` gives `i` which values, in order?
+    (x) 0, 1, 2
+    ( ) 1, 2, 3
+    ( ) 0, 1, 2, 3
+    ( ) 3, 2, 1
+
+### Scope   @cs.js.scope
+    can: Say where a name can be seen.
+
+- Blocks   @cs.js.scope.block
+  can: Say where a `let` variable exists.
+  links: @cs.os.lang.stack
+  bite: A variable made with `let` or `const` exists only inside the nearest pair of braces around it, from its line to the closing brace. Outside those braces the name means nothing. Code inside a block can see names from the blocks around it, but not the other way.
+  ? choice: `if (true) { let secret = 4 }` and then, after the closing brace, `console.log(secret)`. What happens?
+    (x) an error: `secret` does not exist outside the braces
+    ( ) it prints 4
+    ( ) it prints nothing
+    ( ) it prints `undefined`
+  ? choice: `let a = 1`. Then inside a function body: `let b = a + 1`. Can the function see `a`?
+    (x) yes: inner code can see names from the code around it
+    ( ) no: functions see only their own names
+    ( ) only if `a` is a `const`
+    ( ) only after the function returns
+
+- Shadowing   @cs.js.scope.shadow
+  can: Say which variable a name refers to when the same name is declared twice.
+  bite: If an inner block declares a name that also exists outside, the inner one hides the outer one for as long as the block lasts. They are two different variables. When the block ends, the outer one is still there with its own value.
+  ? choice: `let x = 1`. Then `{ let x = 2 }`. Then `console.log(x)`. What is printed?
+    (x) 1
+    ( ) 2
+    ( ) 3
+    ( ) an error
+    why: The inner `x` was a separate variable and is gone after its block.
+  ? choice: `let x = 1`. Then `{ x = 2 }`. Then `console.log(x)`. What is printed?
+    (x) 2
+    ( ) 1
+    ( ) an error
+    ( ) `undefined`
+    why: No `let` inside the braces, so the assignment reached the outer `x`.
+
