@@ -16,11 +16,10 @@
 !!   "Pascal's plane", "tetrahedral number", "pentachoral number".
 !!
 !! GUESSES TO CHECK
-!!   - Ratio-object shape names "fan", "elbow", "ramp" are taken from the
-!!     Locus file's variable names; the class may call them something else.
-!!   - The Pythagorean-pairs table is read as: find the Pythagorean pair on
-!!     the shortest path between the two given functions around the hexagon
-!!     sin, csc, cot, tan, sec, cos. Only unambiguous rows are used.
+!!   (Settled 23 Nov: shape names fan, elbow, ramp, scythe; the pairs table
+!!   follows Andrew's hexagon graphic: reciprocals share a shape, Pythagorean
+!!   pairs join two shapes, and any two functions are a Pythagorean pair after
+!!   zero, one or two reciprocal flips.)
 !!   - N!/(A!B!) with A + B = N is used for coefficients throughout, as on
 !!     the homework, beside the n-choose-k symbol.
 !! ---------------------------------------------------------------------------
@@ -47,8 +46,7 @@
 
 - Three shapes, six functions   @m3.trig.ratio.shapes
   can: Match each ratio-object shape and polarity to its function.
-  bite: A right triangle has three sides, so there are three ways to pick two of them, and a ratio object draws just the two it compares. The fan draws the hypotenuse and the adjacent leg, both leaving the angle: cosine. The elbow draws the adjacent leg and then the opposite leg, meeting at the right angle: tangent. The ramp draws the hypotenuse and the opposite leg: sine. Clicking the object flips its polarity, which swaps which length is measured against which, and gives the reciprocal: secant, cotangent, cosecant.
-  !! GUESS: shape names from the Locus file.
+  bite: A right triangle has three sides, so there are three ways to pick two of them, and a ratio object draws just the two it compares. The fan draws the hypotenuse and the adjacent leg, both leaving the angle: cosine. The elbow draws the adjacent leg and then the opposite leg, meeting at the right angle: tangent. The ramp draws the hypotenuse and the opposite leg: sine. Clicking the object flips its polarity, which swaps which length is measured against which, and gives the reciprocal: secant, cotangent, cosecant. A fourth shape, the scythe, draws an arc and its radius. Its ratio, arc over radius, is the angle itself in radians.
   ? match: Match each pair of lengths to the function that compares them.
     | adjacent over hypotenuse      = cosine
     | opposite over adjacent        = tangent
@@ -56,6 +54,18 @@
     | hypotenuse over adjacent      = secant
     | adjacent over opposite        = cotangent
     | hypotenuse over opposite      = cosecant
+  ? match: Match each shape to the two lengths it draws.
+    | fan        = hypotenuse and adjacent leg
+    | elbow      = adjacent leg and opposite leg
+    | ramp       = hypotenuse and opposite leg
+    | scythe     = arc and radius
+  ? row: Which shape carries each function?
+    | cosine        = fan
+    | cotangent     = elbow
+    | cosecant      = ramp
+    | secant        = fan
+    | tangent       = elbow
+    | sine          = ramp
   ? row: A ratio object has its polarity flipped. What does it show now?
     | sine        = cosecant
     | tangent     = cotangent
@@ -78,9 +88,10 @@
 ### How the six relate   @m3.trig.pairs
     can: Move from any one of the six functions to any other.
 
-- Reciprocal pairs and Pythagorean pairs   @m3.trig.pairs.two
-  can: Name each function's reciprocal partner and its Pythagorean partner.
-  bite: Each function has two partners. Its reciprocal partner is the same two lengths the other way up: sine with cosecant, tangent with cotangent, secant with cosine. Its Pythagorean partner shares one length with it, and the two are tied by the Pythagorean theorem: $\sin^2 + \cos^2 = 1$, $\tan^2 + 1 = \sec^2$, and $\cot^2 + 1 = \csc^2$. Laid out in a ring the six go sine, cosecant, cotangent, tangent, secant, cosine, and back to sine, with the two kinds of partnership alternating around it.
+- Three kinds of pair   @m3.trig.pairs.two
+  can: Name each function's reciprocal, Pythagorean and complementary partner.
+  bite: Put the six functions at the corners of a hexagon. Reciprocal pairs sit opposite each other, and each pair lives on one shape: sine and cosecant on the ramp, tangent and cotangent on the elbow, cosine and secant on the fan. Pythagorean pairs are neighbors that join two different shapes, and there is one for each pair of shapes: sine with cosine, tangent with secant, cotangent with cosecant. They are tied by $\sin^2 + \cos^2 = 1$, $\tan^2 + 1 = \sec^2$ and $\cot^2 + 1 = \csc^2$. Complementary pairs are the ones named with "co-": sine and cosine, tangent and cotangent, secant and cosecant. Use the buttons to light each kind.
+  figure: hexagon
   ? row: Name the reciprocal partner.
     | sine        = cosecant
     | tangent     = cotangent
@@ -89,22 +100,49 @@
     | sine          = cosine
     | tangent       = secant
     | cotangent     = cosecant
+  ? row: Name the complementary partner.
+    | sine        = cosine
+    | tangent     = cotangent
+    | secant      = cosecant
   ? match: Match each Pythagorean pair to its identity.
     | sine and cosine            = $\sin^2 + \cos^2 = 1$
     | tangent and secant         = $\tan^2 + 1 = \sec^2$
     | cotangent and cosecant     = $\cot^2 + 1 = \csc^2$
+  ? row: Which two shapes does each Pythagorean pair join?
+    | sine and cosine            = ramp and fan
+    | tangent and secant         = elbow and fan
+    | cotangent and cosecant     = elbow and ramp
+  ? choice: What do the two members of a reciprocal pair have in common?
+    (x) they live on the same shape
+    ( ) they are neighbors on the hexagon
+    ( ) they both start with "co-"
+    ( ) their squares add to 1
 
-- From one function to another   @m3.trig.pairs.path
-  can: Find the Pythagorean pair that links two functions and write one in terms of the other.
-  bite: To get from one function to another, walk the ring. Each step is either "take the reciprocal" or "use the Pythagorean identity". From cosecant to cotangent is one Pythagorean step: $\cot = \sqrt{\csc^2 - 1}$. From tangent to cosecant is two steps: reciprocal to cotangent, then Pythagorean to cosecant, so $\csc = \sqrt{1 + 1/\tan^2}$. (The square root gives the size; the quadrant gives the sign.)
-  !! GUESS: reading of the pairs table. Opposite corners of the ring (three steps either way) are left out.
-  ? row: Which Pythagorean pair lies on the shortest path between these two?
-    | cosecant and cotangent     = cotangent and cosecant
-    | tangent and cosecant       = cotangent and cosecant
-    | sine and cotangent         = cotangent and cosecant
-    | secant and sine            = sine and cosine
-    | secant and tangent         = tangent and secant
-    | cotangent and secant       = tangent and secant
+- From any function to any other   @m3.trig.pairs.path
+  can: Find the Pythagorean pair behind any two functions and write one in terms of the other.
+  bite: Any two of the six functions can be written in terms of each other. Either they are the same function, or they are direct reciprocals (same shape), or they live on two different shapes. In that last case exactly one Pythagorean pair joins those two shapes, and your two functions are that pair after zero, one or two reciprocal flips. Tangent and secant are a Pythagorean pair as they stand: zero flips. Tangent and cosine: flip cosine to secant, one flip. Cotangent and cosine: flip both, two flips. So to write cosine from cotangent: flip to tangent, use $\sec^2 = \tan^2 + 1$, flip secant to cosine. (A square root gives the size; the quadrant gives the sign.)
+  ? row: Which Pythagorean pair is behind each pair of functions?
+    | cosecant, cotangent     = cotangent and cosecant
+    | tangent, cosecant       = cotangent and cosecant
+    | sine, cotangent         = cotangent and cosecant
+    | cosecant, secant        = sine and cosine
+    | secant, sine            = sine and cosine
+    | secant, tangent         = tangent and secant
+    | sine, tangent           = cotangent and cosecant
+    | cotangent, cosine       = tangent and secant
+  ? row: How many reciprocal flips does it take to reach that Pythagorean pair?
+    slider: 0 | 1 | 2
+    | tangent, secant         = 0
+    | tangent, cosine         = 1
+    | cotangent, cosine       = 2
+    | cosecant, secant        = 2
+    | sine, cotangent         = 1
+    | sine, cosine            = 0
+  ? row: What kind of pair is each?
+    | sine, cosecant          = direct reciprocals
+    | cosine, cosine          = the same function
+    | secant, tangent         = Pythagorean pair
+    | tangent, cotangent      = direct reciprocals
   ? choice: Which gives cotangent from cosecant (as a size)?
     (x) $\sqrt{\csc^2 - 1}$
     ( ) $\sqrt{1 - \csc^2}$
@@ -115,7 +153,13 @@
     ( ) $\sqrt{\sec^2 - 1}$
     ( ) $1 / \sec$
     ( ) $\sqrt{1 + 1/\sec^2}$
-    why: Reciprocal first, to cosine, and then the Pythagorean step from cosine to sine.
+    why: One flip, secant to cosine, lands on the pair sine and cosine.
+  ? choice: Which gives cosecant from tangent (as a size)?
+    (x) $\sqrt{1 + 1/\tan^2}$
+    ( ) $\sqrt{\tan^2 + 1}$
+    ( ) $\sqrt{1 - 1/\tan^2}$
+    ( ) $1 / \tan$
+    why: One flip, tangent to cotangent, lands on the pair cotangent and cosecant.
   ? numeric: The tangent of an acute angle is 0.75. What is its secant?
     = 1.25
     why: $\sec^2 = \tan^2 + 1 = 0.5625 + 1 = 1.5625$.
@@ -148,10 +192,20 @@
 
 - Regular polygons   @m3.trig.use.poly
   can: Find the area of a regular polygon from its edge length.
-  bite: Cut a regular polygon with $n$ sides into $n$ equal triangles meeting at the center. Each has the edge $L$ as its base and a central angle of $360°/n$. Halve one and you have a right triangle with the angle $180°/n$ at the center and $L/2$ across from it. Its other leg, the height of the triangle, is $\tfrac{L}{2}\cot(180°/n)$. So each triangle has area $\tfrac{L^2}{4}\cot(180°/n)$, and the polygon has $n$ of them.
+  bite: Cut a regular polygon with $n$ sides into $n$ equal triangles meeting at the center. Each has the edge $L$ as its base and a central angle of $360°/n$. Halve one and you have a right triangle with the angle $180°/n$ at the center and $L/2$ across from it. Its other leg, the height of the triangle, is $\tfrac{L}{2}\cot(180°/n)$. That center-to-edge-midpoint length is the apothem. The hypotenuse, from the center to a vertex, is the circumradius: $\tfrac{L}{2}\csc(180°/n)$. So each triangle has area $\tfrac{L^2}{4}\cot(180°/n)$, and the polygon has $n$ of them.
   ? row: For a regular pentagon cut this way, how many degrees is:
     | the central angle of one triangle        = 72
     | the angle at the center after halving    = 36
+  ? match: Match each line in a regular polygon to its name.
+    | center to the midpoint of an edge     = apothem
+    | center to a vertex                    = circumradius
+    | vertex to the next vertex             = edge
+  ? row: With the half-angle $180°/n$ at the center and $L/2$ across from it, which function of the half-angle gives each length when multiplied by $L/2$?
+    | apothem          = cotangent
+    | circumradius     = cosecant
+  ? numeric: A regular hexagon has edge length 2. How long is its apothem?
+    = 1.732
+    why: $\cot 30° = \sqrt3$.
   ? numeric: A regular pentagon has edge length $L$. Its area is what number times $L^2$?
     = 1.7205
     why: $\tfrac54\cot 36°$.
@@ -567,4 +621,23 @@
     ( ) the table is cut off to save space
   ? numeric: How many arrangements does AAAAABB have? Its table is a single triangle.
     = 21
+
+- Tabulating three letters   @m3.simplex.lattice.tab3
+  can: Tabulate the arrangements of a string with three different letters.
+  bite: For AAABBCC, tabulate in two stages. First place the two B's: any two of the seven places, a triangle of 21 cells. Inside each of those cells, place the two C's among the five places still free: a small triangle of 10. The A's take what is left. The table is a triangle of triangles with $21 \cdot 10 = 210$ cells, which is $\frac{7!}{3!\,2!\,2!}$: a mapping with degrees 3, 2 and 2.
+  links: @m3.count.slot.map @m3.binom.pascal.multi
+  figure: tabulate AAABBCC
+  ? numeric: How many arrangements does AAABBCC have?
+    = 210
+  ? row: In the table for AAABBCC, how many:
+    | ways to place the two B's among seven places             = 21
+    | ways to place the two C's among the five places left     = 10
+  ? choice: Why is the count for AAABBCC a product of two triangular numbers?
+    (x) the B's are placed first and then the C's, and each placement is tabulated by a triangle
+    ( ) there are two letters that appear twice, so the count is doubled
+    ( ) the string has two halves
+    ( ) triangular numbers always multiply to factorials
+  ? numeric: How many arrangements does AABBC have?
+    = 30
+    why: $\frac{5!}{2!\,2!\,1!}$.
 
