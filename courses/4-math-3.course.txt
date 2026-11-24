@@ -169,7 +169,8 @@
 
 - Inverse-obverse composition   @m3.trig.inv.comp
   can: Find what $\cos^{-1}(\cos\theta)$ and $\sin^{-1}(\sin\theta)$ return.
-  bite: Sine and cosine take an angle and return information about it, but some is lost: whole laps make no difference, for one. So an inverse function cannot return the original angle. It returns a default angle that has the same value. For the cosine pair, the default keeps how far the angle is from the zero direction: $\cos^{-1}(\cos\theta)$ is the angle of the minor arc, between 0° and 180°, with laps and the sense of turning forgotten. For the sine pair, the default lies between −90° and 90°: it keeps how far the angle is above or below the horizontal.
+  figure: wrap
+  bite: Sine and cosine take an angle and return information about it, but some is lost: whole laps make no difference, for one. The figure winds the whole number line of the angle around a center so that you can see what each composition keeps. So an inverse function cannot return the original angle. It returns a default angle that has the same value. For the cosine pair, the default keeps how far the angle is from the zero direction: $\cos^{-1}(\cos\theta)$ is the angle of the minor arc, between 0° and 180°, with laps and the sense of turning forgotten. For the sine pair, the default lies between −90° and 90°: it keeps how far the angle is above or below the horizontal.
   ? row: What is $\cos^{-1}(\cos\theta)$ for each angle? Answer in degrees.
     | 60°       = 60
     | 300°      = 60
@@ -269,9 +270,33 @@
 ### How the operations interact   @m3.dogma.rules
     can: Predict what happens when one operation meets another.
 
+- Regrouping and reordering   @m3.dogma.rules.props
+  can: Say what the associative and commutative properties allow, and which operations have them.
+  bite: Draw an expression as a tree: an operation on top, the things it combines underneath. Two changes to the tree's shape are worth naming. Regrouping moves a grouping from one pair to another. Reordering swaps two things under the same operation. Addition and multiplication allow both without changing the value, so their trees can be drawn flat, with no inner grouping at all. Try both changes under each operation, and then try them on a power.
+  figure: structure properties
+  ? row: Does the value stay the same?
+    | regrouping a sum              = yes
+    | reordering a product          = yes
+    | regrouping a power            = no
+    | reordering a power            = no
+  ? match: Match each property to the change it allows.
+    | associative      = moving the grouping
+    | commutative      = swapping the order
+  ? numeric: What is $(2^3)^2$?
+    = 64
+  ? numeric: What is $2^{(3^2)}$?
+    = 512
+  ? choice: Why can $A + B + C$ be written with no parentheses at all?
+    (x) addition is associative, so every grouping gives the same value
+    ( ) addition is always done left to right
+    ( ) parentheses are optional in algebra
+    ( ) it cannot; a grouping is always implied
+
 - Multiplication over addition   @m3.dogma.rules.dist
   can: Distribute a factor over a sum and say why it works.
-  bite: $3(a + b)$ means $(a + b) + (a + b) + (a + b)$. Regroup the terms and there are three $a$'s and three $b$'s: $3a + 3b$. Distribution is what repeating a sum looks like after regrouping. It works because the outer operation is repetition of the inner one.
+  links: @m3.dogma.rules.props
+  bite: A count on a sum is the sum repeated. Take $3(A + B)$ apart in the figure: unpack the count, remove the inner groupings, swap terms until like ones are together, group them, and pack each group back into a count. Every step is one of the two properties, and the result is $3A + 3B$. Distribution is what a repeated sum looks like after regrouping and reordering.
+  figure: structure distribute
   ? typed: Expand $4(x + y)$.
     = 4x + 4y
     = 4y + 4x
@@ -511,9 +536,10 @@
     = 12
     why: $\binom{3}{2}\,x\,2^2 = 3 \cdot 4$.
 
-- More than two terms   @m3.binom.pascal.multi
+- Polynomial coefficients   @m3.binom.pascal.multi
   can: Count and weigh the terms of a power of a sum of several terms.
-  bite: In $(A + B + C + D)^5$ each of the five factors contributes one of four letters. A term such as $A^2BCD$ has coefficient $\tfrac{5!}{2!\,1!\,1!\,1!}$: a mapping of five factors onto letters with those degrees. The distinct terms are all the ways to share 5 among four exponents, which are the lattice points of a tetrahedron: $\frac{8!}{5!\,3!} = 56$ of them.
+  bite: In $(A + B + C + D)^5$ each of the five factors contributes one of four letters. A term such as $A^2BCD$ has a polynomial coefficient, the factorial of the total over the factorial of every category: $\frac{5!}{2!\,1!\,1!\,1!}$, a mapping of five factors onto letters with those degrees. A polynomial coefficient is also a product of binomial coefficients, one for each split of a nested two-way tree. Open the one in the figure.
+  figure: coef 3 2 2 The distinct terms are all the ways to share 5 among four exponents, which are the lattice points of a tetrahedron: $\frac{8!}{5!\,3!} = 56$ of them.
   links: @m3.count.slot.map @m3.simplex.lattice.shape
   ? numeric: How many distinct terms does $(A + B + C + D)^5$ have after like terms are collected?
     = 56
@@ -624,9 +650,9 @@
 
 - Tabulating three letters   @m3.simplex.lattice.tab3
   can: Tabulate the arrangements of a string with three different letters.
-  bite: For AAABBCC, tabulate in two stages. First place the two B's: any two of the seven places, a triangle of 21 cells. Inside each of those cells, place the two C's among the five places still free: a small triangle of 10. The A's take what is left. The table is a triangle of triangles with $21 \cdot 10 = 210$ cells, which is $\frac{7!}{3!\,2!\,2!}$: a mapping with degrees 3, 2 and 2.
+  bite: For AAABBCC, tabulate in two stages. First place the two B's: any two of the seven places, a triangle of 21 cells. Inside each of those cells, place the two C's among the five places still free: a small triangle of 10. The A's take what is left. The table is a triangle of triangles with $21 \cdot 10 = 210$ cells, which is the polynomial coefficient $\frac{7!}{3!\,2!\,2!}$. The two stages are two binomial coefficients: split 7 into 2 and 5, then split the 5 into 2 and 3. The 5 is an inner node of that tree. It sits under the first fraction and on top of the second, and cancels. Open the coefficient below the table to see it, and scroll on it to split in another order.
   links: @m3.count.slot.map @m3.binom.pascal.multi
-  figure: tabulate AAABBCC
+  figure: tabulate AAABBCC ;; coef 3 2 2
   ? numeric: How many arrangements does AAABBCC have?
     = 210
   ? row: In the table for AAABBCC, how many:
@@ -637,6 +663,19 @@
     ( ) there are two letters that appear twice, so the count is doubled
     ( ) the string has two halves
     ( ) triangular numbers always multiply to factorials
+  ? numeric: $\frac{7!}{3!\,2!\,2!} = \frac{7!}{3!\,4!} \cdot \frac{4!}{2!\,2!}$. What are the two factors multiplied? Give the first one.
+    = 35
+  ? choice: In $\frac{7!}{3!\,4!} \cdot \frac{4!}{2!\,2!}$, which number is neither the root of the tree nor a leaf?
+    (x) 4
+    ( ) 7
+    ( ) 3
+    ( ) 2
+    why: 7 is the root and 3, 2, 2 are the leaves. The 4 is the inner node, and it cancels.
+  ? choice: After the inner nodes cancel, what is left in the denominator?
+    (x) the factorials of all the leaves
+    ( ) the factorial of the root
+    ( ) the factorials of the inner nodes
+    ( ) nothing
   ? numeric: How many arrangements does AABBC have?
     = 30
     why: $\frac{5!}{2!\,2!\,1!}$.

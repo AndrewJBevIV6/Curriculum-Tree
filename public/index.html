@@ -211,6 +211,22 @@ code { font: .92em ui-monospace, "SF Mono", Menlo, Consolas, monospace; backgrou
 .tabcell { width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid var(--line); background: transparent; transition: background .2s; }
 .tabb.s1 { background: hsl(212 85% 60% / .4); } .tabblk { padding: 3px; border-radius: 5px; border: 1.5px solid var(--line); } .tablayers { display: flex; flex-wrap: wrap; gap: 14px 18px; align-items: flex-end; }
 .tabbody.small .tabcell { width: 7px; height: 7px; border-radius: 2px; border-width: 1px; } .tabbody.small .tabtri, .tabbody.small .tabrow { gap: 2px; } .tabbody.small > .tabtri, .tabbody.small > .tabtri > .tabrow { gap: 5px; }
+.figwrap.stfig, .figwrap.coeffig, .figwrap.wrapfig { display: grid; gap: 10px; justify-items: start; }
+.st-view { padding: 4px 0; overflow-x: auto; max-width: 100%; } .st-node { display: inline-flex; flex-direction: column; align-items: center; }
+.st-head { display: flex; gap: 6px; align-items: center; } .st-op { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--ink); color: var(--paper); font: 700 1.05rem/1 ui-monospace, Menlo, monospace; }
+.st-count { font-size: .74rem; padding: 2px 7px; border-radius: 99px; background: hsl(44 95% 56% / .4); border: 1.5px solid hsl(40 80% 50% / .6); white-space: nowrap; }
+.st-kids { display: flex; gap: 8px; margin-top: 9px; padding-top: 9px; position: relative; } .st-kids::before { content: ""; position: absolute; left: 50%; top: -9px; height: 9px; border-left: 2px solid var(--line); }
+.st-kid { position: relative; display: flex; justify-content: center; } .st-kid::before { content: ""; position: absolute; top: -9px; left: 50%; height: 9px; border-left: 2px solid var(--line); }
+.st-kid::after { content: ""; position: absolute; top: -9px; left: -4px; right: -4px; border-top: 2px solid var(--line); } .st-kid:first-child::after { left: 50%; } .st-kid:last-child::after { right: 50%; } .st-kid:only-child::after { display: none; }
+.st-leaf { min-width: 34px; height: 34px; padding: 0 8px; border-radius: 9px; border: 1.5px solid var(--line); background: var(--paper); font: 600 1.05rem/1 var(--math, serif); font-style: italic; cursor: default; color: var(--ink); display: grid; place-items: center; }
+button.st-leaf { cursor: pointer; } .st-leaf.st-A { background: hsl(212 85% 60% / .2); border-color: hsl(212 60% 50% / .6); } .st-leaf.st-B { background: hsl(330 80% 60% / .18); border-color: hsl(330 55% 50% / .6); } .st-leaf.st-C { background: hsl(150 60% 45% / .2); border-color: hsl(150 45% 40% / .6); }
+.st-leaf.st-num { font-style: normal; } .st-leaf.picked { box-shadow: 0 0 0 3px var(--ink); } .st-line { font-size: 1.15rem; min-height: 1.6em; } .st-val { font-weight: 700; } .st-note { min-height: 2.6em; max-width: 60ch; } .st-note.st-warn { color: var(--ink); font-weight: 600; }
+.coefform { display: inline-block; padding: 8px 12px; border-radius: 11px; border: 1.5px solid hsl(var(--h, 230) 45% 50% / .6); background: hsl(var(--h, 230) 60% 50% / .07); font-size: 1.25rem; cursor: pointer; max-width: 100%; overflow-x: auto; }
+.coefnode { fill: var(--paper); stroke: var(--ink); stroke-width: 2; } .coefnode.leaf { stroke: hsl(212 60% 50%); fill: hsl(212 85% 60% / .15); } .coefnode.inner { stroke-dasharray: 4 3; } .coeflab { font: 600 14px ui-sans-serif, system-ui, sans-serif; fill: var(--ink); } .coefedge { stroke: var(--line); stroke-width: 2; }
+.wrapsvg { width: min(100%, 340px); height: auto; cursor: crosshair; } .wrapspiral { fill: none; stroke: hsl(215 55% 55%); stroke-width: 5; stroke-linecap: round; } .wrapbase { fill: none; stroke: var(--line); stroke-width: 2; }
+.wraprange { fill: none; stroke: hsl(44 95% 56% / .8); stroke-width: 9; stroke-linecap: round; } .wrapzero { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 3; } .wrapzdot { fill: var(--muted); }
+.wrapray { stroke: hsl(215 55% 55% / .45); stroke-width: 2; } .wrapkept { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; } .wrapguide { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 4 4; opacity: .6; }
+.wrapdot { fill: hsl(215 70% 45%); stroke: var(--paper); stroke-width: 2; } .wrapkdot { fill: var(--ink); } .wrapread { font-size: 1.15rem; min-height: 1.6em; }
 .figwrap.hexfig { display: grid; gap: 8px; justify-items: start; } .hexsvg { width: min(100%, 330px); height: auto; } .hexlab { font: 600 21px ui-monospace, Menlo, Consolas, monospace; fill: var(--ink); } .hexline { stroke-dasharray: 400; stroke-dashoffset: 400; animation: hexgrow .7s ease-out forwards; }
 @keyframes hexgrow { to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) { .hexline { animation: none; stroke-dashoffset: 0; } }
@@ -2735,10 +2751,134 @@ if (typeof document !== 'undefined') (() => {
     const labs = F.map((f, i) => { const g = document.createElementNS(ns, 'text'), [x, y] = pt(i); g.setAttribute('x', x); g.setAttribute('y', y + 7); g.setAttribute('text-anchor', 'middle'); g.setAttribute('class', 'hexlab'); svg.append(g); return g; });
     const label = () => labs.forEach((g, i) => { g.textContent = F[i][names]; });
     const draw = k => { lines.replaceChildren(); if (k == null) { cap.textContent = 'Choose a kind of pair.'; return; } KIND[k][1].forEach(([a, b]) => { const l = document.createElementNS(ns, 'line'), p = pt(a), q = pt(b); l.setAttribute('x1', p[0]); l.setAttribute('y1', p[1]); l.setAttribute('x2', q[0]); l.setAttribute('y2', q[1]); l.setAttribute('stroke', 'hsl(' + KIND[k][2] + ' 70% 78%)'); l.setAttribute('stroke-width', 40); l.setAttribute('stroke-linecap', 'round'); l.setAttribute('class', 'hexline'); lines.append(l); }); cap.textContent = KIND[k][3]; };
+    // Pointing at one function shows all three of its partners at once, each in its kind's color.
+    const partners = i => KIND.map(kd => { const pr = kd[1].find(p => p.includes(i)); return pr[0] === i ? pr[1] : pr[0]; });
+    labs.forEach((g, i) => { g.style.cursor = 'pointer'; const on = () => { lines.replaceChildren(); const ps = partners(i), [x, y] = pt(i);
+        ps.forEach((j, k) => { const l = document.createElementNS(ns, 'line'), q = pt(j), off = (k - 1) * 7, dx = q[0] - x, dy = q[1] - y, len = Math.hypot(dx, dy) || 1; l.setAttribute('x1', x - dy / len * off); l.setAttribute('y1', y + dx / len * off); l.setAttribute('x2', q[0] - dy / len * off); l.setAttribute('y2', q[1] + dx / len * off); l.setAttribute('stroke', 'hsl(' + KIND[k][2] + ' 65% 62%)'); l.setAttribute('stroke-width', 6); l.setAttribute('stroke-linecap', 'round'); lines.append(l); });
+        cap.innerHTML = '<b>' + F[i][0] + '</b> (' + F[i][1] + '): ' + ps.map((j, k) => '<span style="border-bottom:3px solid hsl(' + KIND[k][2] + ' 65% 62%)">' + ['reciprocal', 'Pythagorean', 'complementary'][k] + ' ' + F[j][0] + '</span>').join(', ') + '.'; };
+      g.addEventListener('pointerenter', on); g.addEventListener('click', on); });
     KIND.forEach((kd, k) => { const b = btn('btn', kd[0]); b.onclick = () => draw(k); bar.append(b); });
     const clear = btn('btn', 'Clear'); clear.onclick = () => draw(null); const sw = btn('btn', 'Show shape names'); sw.onclick = () => { names = 1 - names; sw.textContent = names ? 'Show function names' : 'Show shape names'; label(); };
     bar.append(clear, sw); label(); el.append(bar, svg, cap);
     return { el };
+  };
+  // ---------- structure trees: an expression drawn as a tree whose shape can be changed by the properties ----------
+  const stTree = (t, onLeaf, asTimes) => {
+    if (typeof t === 'string') { const l = $('button', 'st-leaf st-' + t, t); l.type = 'button'; return l; }
+    const node = $('div', 'st-node'), times = asTimes && t.count, head = $('div', 'st-head', '<span class="st-op">' + (times ? '×' : t.op) + '</span>' + (t.count && !times ? '<span class="st-count">count = ' + t.count + '</span>' : '')), kids = $('div', 'st-kids');
+    t.kids.forEach(k => { const w = $('div', 'st-kid'); w.append(stTree(k, onLeaf, asTimes)); kids.append(w); });
+    if (times) { const w = $('div', 'st-kid'); w.append($('span', 'st-leaf st-num', String(t.count))); kids.append(w); }
+    node.append(head, kids); return node;
+  };
+  const stLeaves = root => [...root.querySelectorAll('button.st-leaf')];
+  // "properties": regroup and reorder three terms under +, × or ^ and watch whether the value survives.
+  // "distribute": 3(A + B) taken apart and put back together, one property at a time.
+  const structureFigure = spec => {
+    const el = $('div', 'figwrap stfig'), bar = $('div', 'figbar'), view = $('div', 'st-view'), line = $('div', 'st-line'), note = $('div', 'quiet st-note');
+    el.append(bar, view, line, note);
+    if (/distribute/.test(spec)) {
+      const N = 3; let stage = 0, terms = [], times = false;
+      const sorted = () => terms.join('').replace(/^A+B+$/, '') === '', paired = () => terms.join('') === 'AB'.repeat(N);
+      let pick = null;
+      const draw = () => {
+        const AB = { op: '+', kids: ['A', 'B'] }, rep = x => Array.from({ length: N }, () => x);
+        const tree = [{ op: '+', count: N, kids: [AB] }, { op: '+', kids: rep(AB) }, { op: '+', kids: terms }, { op: '+', kids: [{ op: '+', kids: rep('A') }, { op: '+', kids: rep('B') }] }, { op: '+', kids: [{ op: '+', count: N, kids: ['A'] }, { op: '+', count: N, kids: ['B'] }] }][stage];
+        const texs = [N + '(A+B)', rep('(A+B)').join('+'), terms.join('+'), '(' + rep('A').join('+') + ')+(' + rep('B').join('+') + ')', N + 'A+' + N + 'B'];
+        view.replaceChildren(stTree(tree, null, times)); line.innerHTML = tex(texs[stage]);
+        note.textContent = ['A count on a sum: the sum is repeated ' + N + ' times.', 'The same thing written out: ' + N + ' copies under one +.', sorted() ? 'Like terms are together. They can be grouped.' : 'Associative property used: the inner groupings are gone. Now reorder: click two terms to swap them, until the A’s are together.', 'Associative property again: like terms grouped.', 'Each group packed back into a count. The count has been distributed.'][stage];
+        bar.replaceChildren();
+        const add = (label, ok, fn) => { const b = btn('btn', label); b.disabled = !ok; b.onclick = () => { fn(); pick = null; draw(); }; bar.append(b); };
+        if (stage === 0) add('Unpack the count', true, () => { stage = 1; });
+        if (stage === 1) { add('Pack into a count', true, () => { stage = 0; }); add('Remove the inner groupings', true, () => { stage = 2; terms = 'AB'.repeat(N).split(''); }); }
+        if (stage === 2) { add('Restore the groupings', paired(), () => { stage = 1; }); add('Group like terms', sorted(), () => { stage = 3; }); }
+        if (stage === 3) { add('Remove the groupings', true, () => { stage = 2; terms = ('A'.repeat(N) + 'B'.repeat(N)).split(''); }); add('Pack each group into a count', true, () => { stage = 4; }); }
+        if (stage === 4) add('Unpack the counts', true, () => { stage = 3; });
+        const tg = btn('btn', times ? 'Show counts as counts' : 'Show counts as ×'); tg.onclick = () => { times = !times; draw(); }; bar.append(tg);
+        if (stage === 2) stLeaves(view).forEach((l, i) => { l.classList.toggle('picked', pick === i); l.onclick = () => { if (pick === null) pick = i; else { [terms[pick], terms[i]] = [terms[i], terms[pick]]; pick = null; } draw(); }; });
+      };
+      draw(); return { el };
+    }
+    const VAL = { A: 2, B: 3, C: 2 }, OPS = { '+': (a, b) => a + b, '×': (a, b) => a * b, '^': (a, b) => Math.pow(a, b) };
+    let op = '+', order = ['A', 'B', 'C'], group = 'left', pick = null, before = null;
+    const value = () => { const f = OPS[op], [a, b, c] = order.map(x => VAL[x]); return group === 'right' ? f(a, f(b, c)) : f(f(a, b), c); };
+    const draw = () => {
+      const [a, b, c] = order, tree = group === 'flat' ? { op, kids: [a, b, c] } : group === 'left' ? { op, kids: [{ op, kids: [a, b] }, c] } : { op, kids: [a, { op, kids: [b, c] }] };
+      const o = op === '+' ? '+' : op === '×' ? '\\cdot ' : null;
+      const t = o ? (group === 'flat' ? a + o + b + o + c : group === 'left' ? '(' + a + o + b + ')' + o + c : a + o + '(' + b + o + c + ')') : (group === 'left' ? '(' + a + '^{' + b + '})^{' + c + '}' : a + '^{(' + b + '^{' + c + '})}');
+      const v = value(); view.replaceChildren(stTree(tree)); line.innerHTML = tex(t) + '<span class="st-val"> = ' + v + '</span><span class="quiet">  with A = 2, B = 3, C = 2</span>';
+      note.textContent = before === null ? 'Regroup, or click two letters to swap them, and watch the value.' : v === before ? 'The structure changed and the value did not.' : 'The value changed from ' + before + ' to ' + v + ': this operation does not have that property.';
+      note.classList.toggle('st-warn', before !== null && v !== before);
+      bar.replaceChildren();
+      const seg = $('div', 'seg'); ['+', '×', '^'].forEach(x => { const b = btn('segb', x === '^' ? 'power' : x); b.setAttribute('aria-checked', String(op === x)); b.onclick = () => { op = x; if (x === '^' && group === 'flat') group = 'left'; before = null; pick = null; draw(); }; seg.append(b); }); bar.append(seg);
+      [['Group the first two', 'left'], ['Group the last two', 'right'], ['No grouping', 'flat']].forEach(([label, g]) => { const b = btn('btn', label); b.disabled = group === g || (g === 'flat' && op === '^'); b.onclick = () => { before = value(); group = g; pick = null; draw(); }; bar.append(b); });
+      stLeaves(view).forEach((l, i) => { l.classList.toggle('picked', pick === i); l.onclick = () => { if (pick === null) { pick = i; draw(); return; } before = value(); [order[pick], order[i]] = [order[i], order[pick]]; pick = null; draw(); }; });
+    };
+    draw(); return { el };
+  };
+  // A coefficient with several parts, opened into a product of two-part coefficients along a nested tree.
+  const coefFigure = spec => {
+    const parts = (spec.match(/\d+/g) || ['3', '2', '2']).map(Number).slice(0, 4), N = parts.reduce((p, c) => p + c, 0), k = parts.length, el = $('div', 'figwrap coeffig');
+    const form = $('div', 'coefform'), tree = $('div', 'coeftree'), note = $('div', 'quiet'), bar = $('div', 'figbar'); let open = false, rot = 0;
+    const fact = m => (m < 2 ? 1 : m * fact(m - 1)), HUE = ['#b45309', '#7c3aed'];
+    const draw = () => {
+      const o = parts.map((_, i) => parts[(i + rot) % k]), rest = o.map((_, i) => o.slice(i + 1).reduce((p, c) => p + c, 0));   // rest[i]: what is left after part i is split off
+      const inner = i => '\\textcolor{' + HUE[i % 2] + '}{' + rest[i] + '!}';
+      const whole = '\\frac{' + N + '!}{' + parts.map(p => p + '!').join('\\,') + '}';
+      const factors = o.slice(0, k - 1).map((p, i) => '\\frac{' + (i ? inner(i - 1) : N + '!') + '}{' + p + '!\\,' + (i < k - 2 ? inner(i) : o[k - 1] + '!') + '}');
+      const vals = o.slice(0, k - 1).map((p, i) => fact(i ? rest[i - 1] : N) / (fact(p) * fact(rest[i])));
+      form.innerHTML = open ? tex(whole + '=' + factors.join('\\cdot ') + '=' + vals.join('\\cdot ') + '=' + vals.reduce((p, c) => p * c, 1)) : tex(whole);
+      form.classList.toggle('open', open);
+      // the nested tree: each split takes one part off and leaves the rest as an inner node
+      const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg'), W = 90 + 62 * (k - 1), H = 44 + 50 * (k - 1); svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.style.width = Math.min(W * 1.25, 330) + 'px';
+      const P = d => [44 + 62 * d, 22 + 50 * d], put = (x, y, text, cls, fill) => { const c = document.createElementNS(ns, 'circle'); c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 15); c.setAttribute('class', cls); if (fill) c.style.stroke = fill; const t = document.createElementNS(ns, 'text'); t.setAttribute('x', x); t.setAttribute('y', y + 5); t.setAttribute('text-anchor', 'middle'); t.setAttribute('class', 'coeflab'); t.textContent = text; if (fill) t.style.fill = fill; svg.append(c, t); };
+      const edge = (a, b) => { const l = document.createElementNS(ns, 'line'); l.setAttribute('x1', a[0]); l.setAttribute('y1', a[1]); l.setAttribute('x2', b[0]); l.setAttribute('y2', b[1]); l.setAttribute('class', 'coefedge'); svg.append(l); };
+      for (let d = 0; d < k - 1; d++) { const p = P(d), leaf = [p[0] - 30, p[1] + 50], nxt = P(d + 1); edge(p, leaf); edge(p, nxt); }
+      for (let d = 0; d < k - 1; d++) { const p = P(d); put(p[0], p[1], d ? rest[d - 1] : N, d ? 'coefnode inner' : 'coefnode root', d ? HUE[(d - 1) % 2] : null); put(p[0] - 30, p[1] + 50, o[d], 'coefnode leaf'); }
+      const lastp = P(k - 1); put(lastp[0], lastp[1], o[k - 1], 'coefnode leaf');
+      tree.replaceChildren(svg);
+      note.textContent = open ? 'The root is on top of the first fraction. Each inner node appears twice, once below and once on top, and cancels. The leaves are all that is left underneath.' : 'Point at the coefficient to open it into a product of two-part coefficients. Scroll on it to split the parts off in another order.';
+    };
+    form.onmouseenter = () => { open = true; draw(); }; form.onmouseleave = () => { open = false; draw(); }; form.onclick = () => { open = !open; draw(); };
+    form.addEventListener('wheel', ev => { ev.preventDefault(); if (Math.abs(ev.deltaY) < 4) return; rot = (rot + (ev.deltaY > 0 ? 1 : k - 1)) % k; draw(); }, { passive: false });
+    const other = btn('btn', 'Another order'); other.onclick = () => { rot = (rot + 1) % k; open = true; draw(); }; bar.append(other);
+    draw(); el.append(form, tree, note, bar); return { el };
+  };
+  // The whole number line of an angle wound around a center. Pointing along the winding picks one real angle;
+  // the chosen collapse shows which angle is kept of it and what is forgotten.
+  const wrapFigure = () => {
+    const el = $('div', 'figwrap wrapfig'), bar = $('div', 'seg'), read = $('div', 'wrapread'), note = $('div', 'quiet');
+    const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg'); svg.setAttribute('viewBox', '0 0 320 320'); svg.setAttribute('class', 'wrapsvg');
+    const C = 160, R0 = 96, K = 0.03, MAX = 990, R = d => R0 + K * d, at = (d, r) => [C + r * Math.cos(d * Math.PI / 180), C - r * Math.sin(d * Math.PI / 180)], Rb = 52;
+    const mk = (tag, cls, attrs) => { const e = document.createElementNS(ns, tag); if (cls) e.setAttribute('class', cls); Object.entries(attrs || {}).forEach(([k, v]) => e.setAttribute(k, v)); svg.append(e); return e; };
+    const arc = (r, a, b) => { let d = ''; for (let t = a; t <= b + 0.01; t += 3) { const p = at(Math.min(t, b), r); d += (d ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); } return d; };
+    let sp = ''; for (let d = -MAX; d <= MAX; d += 3) { const p = at(d, R(d)); sp += (sp ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }
+    mk('circle', 'wrapbase', { cx: C, cy: C, r: Rb }); const range = mk('path', 'wraprange'); mk('line', 'wrapzero', { x1: C, y1: C, x2: C + Rb + 6, y2: C });
+    mk('path', 'wrapspiral neg', { d: arc(0, 0, 0) }); const spiral = mk('path', 'wrapspiral', { d: sp }); const zero = at(0, R(0)); mk('circle', 'wrapzdot', { cx: zero[0], cy: zero[1], r: 3.5 });
+    const guide = mk('line', 'wrapguide'), ray = mk('line', 'wrapray'), kept = mk('line', 'wrapkept'), dot = mk('circle', 'wrapdot', { r: 6 }), kdot = mk('circle', 'wrapkdot', { r: 5 });
+    const norm = d => ((d % 360) + 360) % 360, sind = d => Math.sin(d * Math.PI / 180), cosd = d => Math.cos(d * Math.PI / 180), deg = r => r * 180 / Math.PI;
+    const MODES = [
+      ['Whole turns', '\\theta \\bmod 360^\\circ', d => norm(d), [0, 359.9], 'Whole turns are forgotten. Everything else is kept.'],
+      ['cos⁻¹(cos θ)', '\\cos^{-1}(\\cos\\theta)', d => deg(Math.acos(cosd(d))), [0, 180], 'Kept: the angle with the same cosine and a sine that is not negative. Turns and the sense of turning are forgotten.'],
+      ['sin⁻¹(sin θ)', '\\sin^{-1}(\\sin\\theta)', d => deg(Math.asin(sind(d))), [-90, 90], 'Kept: the angle with the same sine and a cosine that is not negative. Which side of the vertical it was on is forgotten.'],
+      ['tan⁻¹(tan θ)', '\\tan^{-1}(\\tan\\theta)', d => deg(Math.atan(Math.tan(d * Math.PI / 180))), [-90, 90], 'Kept: the angle with the same tangent and a positive cosine. Half turns are forgotten.']];
+    let mode = 1, theta = 400;
+    const draw = () => {
+      const M = MODES[mode], k = M[2](theta), p = at(theta, R(theta)), q = at(k, Rb), o = at(theta, Rb);
+      range.setAttribute('d', arc(Rb, M[3][0], M[3][1]));
+      dot.setAttribute('cx', p[0]); dot.setAttribute('cy', p[1]); kdot.setAttribute('cx', q[0]); kdot.setAttribute('cy', q[1]);
+      ray.setAttribute('x1', C); ray.setAttribute('y1', C); ray.setAttribute('x2', p[0]); ray.setAttribute('y2', p[1]);
+      kept.setAttribute('x1', C); kept.setAttribute('y1', C); kept.setAttribute('x2', q[0]); kept.setAttribute('y2', q[1]);
+      // the guide joins the original direction to the kept one along the line on which the kept value is the same
+      guide.setAttribute('x1', o[0]); guide.setAttribute('y1', o[1]); guide.setAttribute('x2', q[0]); guide.setAttribute('y2', q[1]); guide.style.display = mode && Math.hypot(o[0] - q[0], o[1] - q[1]) > 2 ? '' : 'none';
+      read.innerHTML = tex('\\theta = ' + Math.round(theta) + '^\\circ \\quad\\longmapsto\\quad ' + M[1] + ' = ' + Math.round(k) + '^\\circ');
+      note.textContent = M[4] + ' Point along the winding to choose an angle; scroll to change what is kept.';
+      [...bar.children].forEach((b, i) => b.setAttribute('aria-checked', String(i === mode)));
+    };
+    MODES.forEach((m, i) => { const b = btn('segb', m[0]); b.onclick = () => { mode = i; draw(); }; bar.append(b); });
+    const pointAt = ev => { const r = svg.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width * 320 - C, y = C - (ev.clientY - r.top) / r.height * 320, phi = deg(Math.atan2(y, x)), rho = Math.hypot(x, y); let best = null; for (let n = -3; n <= 3; n++) { const d = phi + 360 * n; if (Math.abs(d) > MAX) continue; const e = Math.abs(R(d) - rho); if (best === null || e < best[0]) best = [e, d]; } if (best) { theta = best[1]; draw(); } };
+    svg.addEventListener('pointermove', pointAt); svg.addEventListener('pointerdown', pointAt); svg.style.touchAction = 'none';
+    svg.addEventListener('wheel', ev => { ev.preventDefault(); if (Math.abs(ev.deltaY) < 4) return; mode = (mode + (ev.deltaY > 0 ? 1 : MODES.length - 1)) % MODES.length; draw(); }, { passive: false });
+    draw(); el.append(bar, svg, read, note); return { el };
   };
   const frenchFigure = spec => {
     const src = spec.replace(/^french\s*/, ''), el = $('div', 'figwrap frfig'), line = $('div', 'frline'), note = $('div', 'quiet frnote'), bar = $('div', 'figbar');
@@ -2778,7 +2918,7 @@ if (typeof document !== 'undefined') (() => {
     line.lang = 'fr'; draw(); el.append(line, note, bar);
     return { el };
   };
-  const makeFigure = spec => { const s = String(spec || '').trim(); return /^tabulate/.test(s) ? tabulateFigure(s) : /^hexagon/.test(s) ? hexagonFigure() : /^french/.test(s) ? frenchFigure(s) : /^vowels/.test(s) ? vowelFigure() : /^table/.test(s) ? tableFigure(s) : /^rings/.test(s) ? pulleyFigure(s) : /^roll/.test(s) ? rollFigure(s) : /^spin/.test(s) ? spinFigure(s) : /^components/.test(s) ? componentsFigure(s) : null; };
+  const makeFigure = spec => { const s = String(spec || '').trim(); return /^tabulate/.test(s) ? tabulateFigure(s) : /^hexagon/.test(s) ? hexagonFigure() : /^structure/.test(s) ? structureFigure(s) : /^coef/.test(s) ? coefFigure(s) : /^wrap/.test(s) ? wrapFigure() : /^french/.test(s) ? frenchFigure(s) : /^vowels/.test(s) ? vowelFigure() : /^table/.test(s) ? tableFigure(s) : /^rings/.test(s) ? pulleyFigure(s) : /^roll/.test(s) ? rollFigure(s) : /^spin/.test(s) ? spinFigure(s) : /^components/.test(s) ? componentsFigure(s) : null; };
 
   // ---------- answer fields ----------
   // units: a list of answer units to offer as buttons. The first is preselected and marked recommended.
@@ -3156,7 +3296,7 @@ if (typeof document !== 'undefined') (() => {
       if (e.built) return; e.built = true;
       if (isLeaf(n)) {
         e.body.innerHTML = biteHtml(n);
-        const fig = n.figure && makeFigure(n.figure); if (fig) e.body.append(fig.el);
+        String(n.figure || '').split(/\s*;;\s*/).filter(Boolean).forEach(f => { const fig = makeFigure(f); if (fig) e.body.append(fig.el); });
         const foot = $('div', 'bitefoot');
         if (n.links.length) { const l = $('div', 'links', '<span class="quiet">Related</span>'); n.links.forEach(id => { const t = course.nodes[id]; if (!t) return; const c = btn('chip link', esc(t.title)); c.style.setProperty('--h', t.hue); c.onclick = () => focusOn(id); l.append(c); }); foot.append(l); }
         const fl = btn('chip flag', '');
