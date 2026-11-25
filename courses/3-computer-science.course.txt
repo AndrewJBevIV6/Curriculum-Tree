@@ -28,6 +28,7 @@
 !! ---------------------------------------------------------------------------
 
 ## Data as bits   @cs.data
+   standard: H.DA.1A
    can: Move between binary, hexadecimal and decimal, read signed and multi-byte values, and count what a number of bits can tell apart.
 
 ### Writing numbers in other bases   @cs.data.base
@@ -179,6 +180,7 @@
     = 65536
 
 ## The machine   @cs.mach
+   standard: H.CS.1A H.CS.1B
    can: Follow a program down to the instructions, the pipeline, the caches and the page tables that run it.
 
 ### The instruction set   @cs.mach.isa
@@ -253,6 +255,7 @@
     why: Instructions × 2 cycles each, divided by 4 × 10⁹ cycles per second.
 
 ### Memory   @cs.mach.mem
+    standard: H.AP.1D
     can: Explain why caches work and compute with cache and page sizes.
 
 - Caches   @cs.mach.mem.cache
@@ -295,6 +298,7 @@
     | 64 KiB (65536 bytes)     = 16
 
 ## Operating systems and languages   @cs.os
+   standard: H.CS.1A
    can: Say what the operating system shares out, where concurrency goes wrong, and how source code becomes a running program.
 
 ### Processes and threads   @cs.os.proc
@@ -361,6 +365,7 @@
     why: Each call gets a stack frame for its locals. Returning pops the frame.
 
 ## Algorithms   @cs.alg
+   standard: H.AP.1C
    can: Compare ways of doing a task by how the work grows.
 
 ### Searching   @cs.alg.search
@@ -397,6 +402,7 @@
     ( ) the square of the old number
 
 ### Growth   @cs.alg.grow
+    standard: H.AP.2A
     can: Say how the work grows as the input grows.
 
 - Doubling the input   @cs.alg.grow.double
@@ -440,6 +446,7 @@
    !! No response file has answers for these deck sections. Kept in case they were covered another way; cut freely.
 
 ### Layers and transport   @cs.net.stack
+    standard: H.NI.1A H.NI.1B
     can: Place protocols in their layers and estimate delays.
 
 - Layers and TCP   @cs.net.stack.layers
@@ -475,6 +482,7 @@
     = 0.8 s
 
 ### The web   @cs.net.web
+    standard: H.NI.1B
     can: Say what DNS, HTTP status codes, HTTPS and origins are.
 
 - Names, codes and HTTPS   @cs.net.web.http
@@ -602,6 +610,7 @@
     ( ) In the HTML
 
 ## Anatomy of a phishing scheme   @cs.ph
+   standard: H.NI.2B H.IC.3B
    can: Trace an invitation scam from the lure to the spread and say which habits and mechanisms stop it.
 
 ### The lure and the ask   @cs.ph.social
@@ -729,6 +738,7 @@
     why: Holding steady means one new victim per victim: 1 ÷ 200.
 
 ### What email checks prove   @cs.ph.mail
+    standard: H.NI.2C
     can: Say what SPF, DKIM and DMARC check and what they leave unchecked.
 
 - Sender checks   @cs.ph.mail.auth
@@ -826,6 +836,7 @@
     ( ) Yes; the padlock means the site was vetted
 
 ### Infrastructure   @cs.ph.infra
+    standard: H.IC.3D
     can: Say how certificates, look-alike names and blocklists work.
 
 - Certificates   @cs.ph.infra.cert
@@ -966,6 +977,7 @@
     why: Cost and reach run opposite ways: the cheap template goes to millions, and the expensive exploit is saved for a few.
 
 ### Relays and what resists them   @cs.ph.relay
+    standard: H.NI.2C
     can: Explain how a relay defeats codes and why a passkey resists it.
 
 - The relay   @cs.ph.relay.aitm
@@ -1012,6 +1024,7 @@
     ( ) Real popups have no address bar
 
 ### Defence   @cs.ph.defence
+    standard: H.NI.2A
     can: Choose the habits and mechanisms that stop the scheme.
 
 - Passkeys and passphrases   @cs.ph.defence.passkey
@@ -1055,6 +1068,7 @@
     ( ) Reject it all; nothing in it is true
 
 ## Information and compression   @cs.info
+   standard: H.DA.1A
    can: Measure information in bits and say what compression can and cannot do.
 
 ### Information   @cs.info.bits
@@ -1134,6 +1148,7 @@
    can: Say what a short JavaScript program does by following it line by line.
 
 ### Variables   @cs.js.vars
+    standard: H.AP.1A H.AP.1D
     can: Track the value a variable holds as lines run.
 
 - Assignment replaces   @cs.js.vars.assign
@@ -1163,6 +1178,7 @@
     | a running total                        = let
 
 ### Control flow   @cs.js.flow
+    standard: H.AP.2A
     can: Follow branches and loops.
 
 - if and else   @cs.js.flow.if
@@ -1198,6 +1214,7 @@
     ( ) 3, 2, 1
 
 ### Scope   @cs.js.scope
+    standard: H.AP.1A
     can: Say where a name can be seen.
 
 - Blocks   @cs.js.scope.block

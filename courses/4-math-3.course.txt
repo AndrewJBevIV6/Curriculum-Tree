@@ -86,6 +86,7 @@
     why: Cosine is adjacent over hypotenuse, so the adjacent leg is the hypotenuse times the cosine.
 
 ### How the six relate   @m3.trig.pairs
+    standard: F-TF.C.8
     can: Move from any one of the six functions to any other.
 
 - Three kinds of pair   @m3.trig.pairs.two
@@ -165,6 +166,7 @@
     why: $\sec^2 = \tan^2 + 1 = 0.5625 + 1 = 1.5625$.
 
 ### What the functions forget   @m3.trig.inv
+    standard: F-BF.B.4 F-TF.A.2
     can: Say what angle an inverse function gives back.
 
 - Inverse-obverse composition   @m3.trig.inv.comp
@@ -249,6 +251,7 @@
    can: Build addition, multiplication and exponentiation by repetition and predict how they interact.
 
 ### Three operations, each from the last   @m3.dogma.build
+    standard: N-RN.A.1
     can: Say how each operation is repeated use of the one before.
 
 - Iteration   @m3.dogma.build.iter
@@ -268,6 +271,7 @@
     ( ) $3^5$
 
 ### How the operations interact   @m3.dogma.rules
+    standard: A-SSE.A.2 A-SSE.B.3c N-RN.A.2
     can: Predict what happens when one operation meets another.
 
 - Regrouping and reordering   @m3.dogma.rules.props
@@ -384,6 +388,7 @@
     = 25
 
 - Undoing a power   @m3.dogma.rules.undo
+  standard: F-BF.B.4a N-RN.A.1
   can: Isolate a variable from under a fractional power.
   bite: A power is undone by the reciprocal power, because the exponents multiply to 1. To isolate $\varphi$ in $32 + (\varphi - 100)^{5/4} = 64$, peel from the outside in: subtract 32, raise both sides to the power $\tfrac45$, then add 100. Since $32 = 2^5$, $32^{4/5} = 2^4 = 16$, so $\varphi = 116$.
   ? numeric: Solve $32 + (\varphi - 100)^{5/4} = 64$ for $\varphi$.
@@ -435,6 +440,7 @@
     ( ) there are three labels
 
 ## Expanding binomials   @m3.binom
+   standard: A-APR.C.4 A-SSE.A.2
    can: Expand a power of a binomial by counting.
 
 ### Expansion is counting   @m3.binom.count

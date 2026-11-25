@@ -175,6 +175,7 @@ term: moment of inertia = I | extensive
     why: Force is to momentum what acceleration is to velocity: the amount gained each second.
 
 ### Three relations   @table.rel
+    standard: HS-PS2-1
     can: Sort the variables by frame, by kind and by temporal order, and find one from its three traits.
 
 ? match: Match each word to its meaning.
@@ -484,6 +485,7 @@ term: moment of inertia = I | extensive
     = A center to measure the angle around. The distance does not depend on it, and the angle does.
 
 ### Angle as arc over radius   @frame.ratio
+    standard: F-TF.A.1
     can: Find an angle by dividing an arc length by the radius from a chosen center.
     links: @sf.radius.pos @sf.radius.sizes
 
@@ -658,6 +660,7 @@ term: moment of inertia = I | extensive
     | mass             = total
 
 ### Total quantities   @ext.total
+    standard: HS-PS2-2
     can: Add the momentum or force of the parts to get the whole, and find a part's share from its extent.
 
 ? match: Match each word to its meaning.
@@ -685,6 +688,7 @@ term: moment of inertia = I | extensive
     why: Shared acceleration: [= F / M]. The slice needs {[ms]} × {[= F / M]}.
 
 ### Equal acceleration   @ext.eqacc
+    standard: HS-PS2-1
     can: Conclude that two objects with the same acceleration feel forces proportional to their masses, as in surface gravity.
 
 - Forces in proportion to mass   @ext.eqacc.prop
@@ -711,6 +715,7 @@ term: moment of inertia = I | extensive
     why: Force in proportion to mass is what equal acceleration requires.
 
 ### Equal force   @ext.eqforce
+    standard: HS-PS2-1
     can: Conclude that two objects under equal forces accelerate in inverse proportion to their masses, as around a barycenter.
     links: @force.third
 
@@ -825,6 +830,7 @@ term: moment of inertia = I | extensive
     why: Weight is gravity. The table's push is a contact force, so it is electromagnetic.
 
 ### Two laws, one pattern   @force.laws
+    standard: HS-PS2-4
     can: Set Newton's law of gravitation beside Coulomb's law and name what each proportionality says.
 
 - Universal gravitation   @force.laws.grav
@@ -858,6 +864,7 @@ term: moment of inertia = I | extensive
     = Both are a constant times the two objects' amounts (masses or charges), divided by the square of their separation.
 
 ### Calculating with the laws   @force.calc
+    standard: HS-PS2-4
     can: Find a gravitational or electrostatic force, and say how it changes when a mass, a charge or the separation is scaled.
     links: @sf.idea
 
@@ -1171,6 +1178,7 @@ term: moment of inertia = I | extensive
 
 
 ### The inertia factor, between impetus and acceleration   @sf.inertia
+    standard: HS-PS2-1
     can: Use a mass or a moment of inertia as the factor between an impetus and the acceleration it gives.
     links: @table.factors.inertia @mass.alpha.find
 
@@ -1391,6 +1399,7 @@ term: moment of inertia = I | extensive
     vary: numbers
 
 ### Center of mass and momentum   @mass.ensemble
+    standard: HS-PS2-2
     can: Relate the motion of the center of mass to the total momentum of the collection.
 
 - The velocity of the whole   @mass.ensemble.p
