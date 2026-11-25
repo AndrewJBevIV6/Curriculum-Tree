@@ -221,8 +221,12 @@ code { font: .92em ui-monospace, "SF Mono", Menlo, Consolas, monospace; backgrou
 .st-leaf { min-width: 34px; height: 34px; padding: 0 8px; border-radius: 9px; border: 1.5px solid var(--line); background: var(--paper); font: 600 1.05rem/1 var(--math, serif); font-style: italic; cursor: default; color: var(--ink); display: grid; place-items: center; }
 button.st-leaf { cursor: pointer; } .st-leaf.st-A { background: hsl(212 85% 60% / .2); border-color: hsl(212 60% 50% / .6); } .st-leaf.st-B { background: hsl(330 80% 60% / .18); border-color: hsl(330 55% 50% / .6); } .st-leaf.st-C { background: hsl(150 60% 45% / .2); border-color: hsl(150 45% 40% / .6); }
 .st-leaf.st-num { font-style: normal; } .st-leaf.picked { box-shadow: 0 0 0 3px var(--ink); } .st-line { font-size: 1.15rem; min-height: 1.6em; } .st-val { font-weight: 700; } .st-note { min-height: 2.6em; max-width: 60ch; } .st-note.st-warn { color: var(--ink); font-weight: 600; }
-.coefform { display: inline-grid; box-sizing: content-box; overflow: hidden; transition: width .3s ease; padding: 8px 12px; border-radius: 11px; border: 1.5px solid hsl(var(--h, 230) 45% 50% / .6); background: hsl(var(--h, 230) 60% 50% / .07); font-size: 1.25rem; cursor: pointer; max-width: 100%; overflow-x: auto; }
-.coefnode { fill: var(--paper); stroke: var(--ink); stroke-width: 2; } .coefnode.leaf { stroke: hsl(212 60% 50%); fill: hsl(212 85% 60% / .15); } .coefnode.inner { stroke-dasharray: 4 3; } .coeflab { font: 600 14px ui-sans-serif, system-ui, sans-serif; fill: var(--ink); } .coefedge { stroke: var(--line); stroke-width: 2; }
+.coefform { display: inline-grid; box-sizing: content-box; overflow: hidden; transition: width .3s ease; padding: 8px 12px; border-radius: 11px; border: 1.5px solid hsl(var(--h, 230) 45% 50% / .6); background: hsl(var(--h, 230) 60% 50% / .07); font-size: 1.25rem; cursor: pointer; }
+.coefsvg { display: block; margin-left: 10px; max-width: 100%; height: auto; } .coefnode { fill: var(--paper); stroke: var(--ink); stroke-width: 2; } .coefnode.leaf { stroke: hsl(212 60% 50%); fill: hsl(212 85% 60% / .15); } .coefnode.inner { stroke-dasharray: 4 3; } .coeflab { font: 600 14px ui-sans-serif, system-ui, sans-serif; fill: var(--ink); } .coefedge { fill: none; stroke: var(--line); stroke-width: 2; }
+.coefruby { font: 500 10.5px ui-sans-serif, system-ui, sans-serif; fill: var(--muted); letter-spacing: .02em; } .coefdot { font: 700 22px ui-sans-serif, system-ui, sans-serif; fill: var(--ink); }
+.vcell.focus { box-shadow: 0 0 0 3px var(--ink); } .vcell.hit b::after { content: " ✓"; font-size: .7em; }
+.hexrow { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; } .hexid { padding: 12px 16px; border-radius: 13px; background: hsl(235 70% 90%); color: hsl(235 45% 22%); font-size: 1.25rem; cursor: ns-resize; min-width: 210px; text-align: center; }
+.hexidnote { margin-top: 8px; font-size: .74rem; color: hsl(235 30% 35%); }
 .wrapsvg { width: min(100%, 340px); height: auto; cursor: crosshair; } .wrapspiral { fill: none; stroke-width: 5; stroke-linecap: butt; } .wrapbase { fill: none; stroke: var(--line); stroke-width: 2; }
 .wraprange { fill: none; stroke: hsl(44 95% 56% / .8); stroke-width: 9; stroke-linecap: round; } .wrapzero { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 3; } .wrapzdot { fill: var(--muted); }
 .wrapray { stroke: var(--muted); opacity: .55; stroke-width: 2; } .wrapkept { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; } .wrapguide { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 4 4; opacity: .6; }
@@ -2916,30 +2920,39 @@ if (typeof document !== 'undefined') (() => {
     const boxes = VBOX.map(bx => { const ids = [...new Set(bx.map(c => c[1]))], b = $('div', 'vbox'); b.style.left = ids.reduce((p, i) => p + PX[i], 0) / ids.length + '%'; b.style.top = ids.reduce((p, i) => p + PY[i], 0) / ids.length + '%';
       bx.forEach(([label, i]) => { const c = $('div', 'vcell', '<b>' + label + '</b><span></span>'); cells.push({ el: c, idx: i }); b.append(c); }); chart.append(b); return { el: b, ids }; });
     const now = $('i', 'vdot'); now.hidden = true; chart.append(now);
-    // ---- word practice: a vetted word, judged vowel by vowel, averaged over attempts ----
-    const WORDS = (typeof WORDS_NATIVE !== 'undefined' ? WORDS_NATIVE : []).filter(w => w[2] >= 0.8), wbar = $('div', 'figbar'), pick = document.createElement('select'), say = btn('btn', 'Say this word'), wres = $('div', 'vword'), wnote = $('div', 'quiet');
-    pick.className = 'vpick'; WORDS.forEach((w, i) => { const o = document.createElement('option'); o.value = i; o.textContent = w[0] + '  (' + w[1].split(' ').join(', ') + ')'; pick.append(o); }); wbar.append(pick, say);
-    let tally = null, rec = null;
-    const wordShow = () => { const w = WORDS[+pick.value]; if (!w) return; const seq = w[1].split(' '); if (!tally || tally.word !== w[0]) tally = { word: w[0], n: 0, own: seq.map(() => 0), got: seq.map(() => null) };
-      wres.replaceChildren($('span', 'vwordname', esc(w[0])), ...seq.map((v, k) => { const c = $('div', 'vcell solo', '<b>' + v + '</b><span></span>'), g = tally.n ? tally.own[k] / tally.n : 0; c.style.setProperty('--g', Math.min(1, g * 1.6).toFixed(3)); c.lastChild.textContent = tally.n ? Math.round(g * 100) + '%' + (tally.got[k] && tally.got[k] !== v ? ', last nearest ' + tally.got[k] : '') : ''; return c; }));
-      wnote.textContent = tally.n ? tally.n + (tally.n > 1 ? ' attempts' : ' attempt') + ', averaged. Native speakers light every vowel of this word ' + Math.round(w[2] * 100) + '% of the time, so one faint attempt means little: say it a few times.' : 'Choose a word and say it a few times. Each vowel glows by how much of it was heard as that vowel.'; };
-    pick.onchange = () => { tally = null; wordShow(); }; wordShow();
+    // ---- word practice: the word's vowels are a stack. The chart waits for a clear hit on the first, then moves
+    // its attention to the second, and so on to the end of the word. There is no clock: take as long as you like.
+    const LONGER = [['avertissement', 'a è i an'], ['université', 'u i è i é'], ['anniversaire', 'a i è è'], ['ordinateur', 'o i a œu'], ['télévision', 'é é i on'], ['appartement', 'a a eu an'], ['bibliothèque', 'i i o è'], ['restaurant', 'è o an'], ['magnifique', 'a i i'], ['aujourd’hui', 'ô ou i']];
+    const WORDS = (typeof WORDS_NATIVE !== 'undefined' ? WORDS_NATIVE : []).filter(w => w[2] >= 0.8).concat(LONGER), wbar = $('div', 'figbar'), pick = document.createElement('select'), say = btn('btn', 'Start the word'), wres = $('div', 'vword'), wnote = $('div', 'quiet');
+    pick.className = 'vpick'; const grp = [document.createElement('optgroup'), document.createElement('optgroup')]; grp[0].label = 'Short words'; grp[1].label = 'Longer words';
+    WORDS.forEach((w, i) => { const o = document.createElement('option'); o.value = i; o.textContent = w[0] + '  (' + w[1].split(' ').join(', ') + ')'; grp[w.length > 2 ? 0 : 1].append(o); }); pick.append(...grp); wbar.append(pick, say);
+    const letterIdx = l => VOWELS.findIndex(v => v.letter === l), boxOf = i => VBOX.findIndex(bx => bx.some(c => c[1] === i));
+    let stack = null, wcells = [];
+    const wordShow = () => { const w = WORDS[+pick.value]; if (!w) return; const seq = w[1].split(' ');
+      wcells = seq.map((v, k) => { const c = $('div', 'vcell solo' + (stack && k === stack.at && !stack.done ? ' focus' : '') + (stack && k < stack.at ? ' hit' : ''), '<b>' + v + '</b><span></span>'); c.style.setProperty('--g', stack && k < stack.at ? 1 : 0); return c; });
+      wres.replaceChildren($('span', 'vwordname', esc(w[0])), ...wcells);
+      wnote.textContent = !stack ? 'Choose a word and press Start. Say its vowels in order: the chart waits on each one until it hears it clearly, then moves to the next.' : stack.done ? (seq.length > 1 ? 'All ' + seq.length + ' vowels, in order.' : 'Heard it.') : 'Waiting for “' + seq[stack.at] + '”, vowel ' + (stack.at + 1) + ' of ' + seq.length + '.'; };
+    pick.onchange = () => { stack = null; say.textContent = 'Start the word'; wordShow(); }; wordShow();
     el.append(bar, chart, read, wbar, wres, wnote);
     let an = null, stream = null, ctx = null, buf = null, last = 0;
     const s = VOWELS.map(() => 0);
-    const stop = () => { if (stream) stream.getTracks().forEach(t => t.stop()); if (ctx) ctx.close(); an = stream = ctx = null; rec = null; go.textContent = 'Listen'; say.textContent = 'Say this word'; };
+    const stop = () => { if (stream) stream.getTracks().forEach(t => t.stop()); if (ctx) ctx.close(); an = stream = ctx = null; go.textContent = 'Listen'; };
     const listen = then => {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { read.textContent = 'This browser gives the page no microphone.'; return; }
       navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: true } }).then(st => { stream = st; ctx = new (window.AudioContext || window.webkitAudioContext)(); an = ctx.createAnalyser(); an.fftSize = 2048; buf = new Float32Array(an.fftSize); ctx.createMediaStreamSource(st).connect(an); go.textContent = 'Stop listening'; read.textContent = 'Listening.'; if (then) then(); })
         .catch(() => { read.textContent = 'The microphone could not be opened. A preview page is not allowed to use it. On the deployed site the browser asks for permission.'; });
     };
     go.onclick = () => (an ? stop() : listen());
-    const HOP = 1 / 60;
-    say.onclick = () => { const begin = () => { rec = { frames: [], k: 0, voiced: 0, quiet: 0 }; say.textContent = 'Listening for the word…'; }; if (rec) { rec = null; say.textContent = 'Say this word'; return; } if (an) begin(); else listen(begin); };
-    const wordDone = () => { const w = WORDS[+pick.value], seq = w[1].split(' '), frames = rec.frames; rec = null; say.textContent = 'Say it again';
-      let res = null; try { res = VOICE.judgeWord(frames, voiceState, seq, HOP); } catch (e) { res = null; }
-      if (!res) { wnote.textContent = 'That could not be lined up with the word’s vowels. Try again, a little slower.'; return; }
-      tally.n++; res.forEach((r, k) => { tally.own[k] += r.own; tally.got[k] = r.got; }); wordShow(); };
+    say.onclick = () => { const begin = () => { const seq = WORDS[+pick.value][1].split(' '); stack = { ids: seq.map(letterIdx), at: 0, hold: 0, armed: true, done: false }; say.textContent = 'Start over'; wordShow(); }; if (an) begin(); else listen(begin); };
+    // One frame of the stack. A hit is the wanted vowel's box holding at least half the shares for a tenth of a second.
+    // Two like vowels in a row need a release between them, so one long vowel cannot count twice.
+    const stackStep = p => {
+      if (!stack || stack.done) return; const want = stack.ids[stack.at], bx = VBOX[boxOf(want)], share = p ? Math.min(1, [...new Set(bx.map(c => c[1]))].reduce((a, i) => a + p[i], 0)) : 0;
+      if (!stack.armed) { if (share < 0.25) stack.armed = true; else return; }
+      if (wcells[stack.at]) wcells[stack.at].style.setProperty('--g', (share * 0.8).toFixed(3));
+      stack.hold = share >= 0.5 ? stack.hold + 1 : Math.max(0, stack.hold - 1); if (stack.hold < 6) return;
+      const prev = want; stack.at++; stack.hold = 0; stack.done = stack.at >= stack.ids.length; if (!stack.done && boxOf(stack.ids[stack.at]) === boxOf(prev)) stack.armed = false; if (stack.done) say.textContent = 'Again'; wordShow();
+    };
     // Two warmth fields on a coarse grid over the chart, each spreading a little and cooling every frame.
     // foot: a footprint wherever the live dot lands, gone in about a second; together they are its trail and a map of where it has been.
     // heat: fed inside a box while its vowels are heard, slower to cool, spreading only just past the box's outline.
@@ -2958,8 +2971,8 @@ if (typeof document !== 'undefined') (() => {
       const t = performance.now(), dt = Math.min(0.1, (t - (last || t)) / 1000); last = t;
       let j = null, ft = null; if (an) { an.getFloatTimeDomainData(buf); ft = VOICE.features(Core.analyze(buf, ctx.sampleRate), buf, ctx.sampleRate); }
       if (ft) { j = VOICE.judge(ft, voiceState, { dot: false }); if (j.notVowel < 0.5 && ft.f0) VOICE.speaker(voiceState, ft); }
-      if (rec) { if (ft) rec.frames.push({ t: rec.k * HOP, ft }); rec.k++; const v = j && j.notVowel < 0.5; if (v) { rec.voiced++; rec.quiet = 0; } else rec.quiet++; if ((rec.voiced > 8 && rec.quiet > 30) || rec.k > 240) { if (rec.voiced > 5) wordDone(); else { rec = null; say.textContent = 'Say this word'; wnote.textContent = 'Nothing was heard. Try again.'; } } }
-      const p = j && j.notVowel < 0.5 ? j.shares : null;
+      const p = j && j.notVowel < 0.5 ? j.shares : null; stackStep(p);
+
       // The live dot stands at the average of the vowels' places, weighted by their shares, so dot and glow cannot disagree.
       let dot = null; if (p) { let w = 0, x = 0, y = 0; p.forEach((q, i) => { w += q; x += q * PX[i]; y += q * PY[i]; }); if (w > 0.05) dot = [x / w, y / w]; }
       s.forEach((v, i) => { s[i] = p ? v * 0.72 + p[i] * 0.28 : v * 0.88; });
@@ -3021,25 +3034,45 @@ if (typeof document !== 'undefined') (() => {
     // Pointing at one function shows all three of its partners at once, each in its kind's color.
     const partners = i => KIND.map(kd => { const pr = kd[1].find(p => p.includes(i)); return pr[0] === i ? pr[1] : pr[0]; });
     const thick = (a, b, k) => { const l = document.createElementNS(ns, 'line'), p = pt(a), q = pt(b); l.setAttribute('x1', p[0]); l.setAttribute('y1', p[1]); l.setAttribute('x2', q[0]); l.setAttribute('y2', q[1]); l.setAttribute('stroke', 'hsl(' + KIND[k][2] + ' 70% 78%)'); l.setAttribute('stroke-width', 40); l.setAttribute('stroke-linecap', 'round'); l.setAttribute('class', 'hexline'); lines.append(l); };
-    const one = i => { lines.replaceChildren(); const ps = partners(i), [x, y] = pt(i);
+    const one = i => { lines.replaceChildren(); idt = null; identity(); const ps = partners(i), [x, y] = pt(i);
       ps.forEach((j, k) => { const l = document.createElementNS(ns, 'line'), q = pt(j), off = (k - 1) * 7, dx = q[0] - x, dy = q[1] - y, len = Math.hypot(dx, dy) || 1; l.setAttribute('x1', x - dy / len * off); l.setAttribute('y1', y + dx / len * off); l.setAttribute('x2', q[0] - dy / len * off); l.setAttribute('y2', q[1] + dx / len * off); l.setAttribute('stroke', 'hsl(' + KIND[k][2] + ' 65% 62%)'); l.setAttribute('stroke-width', 6); l.setAttribute('stroke-linecap', 'round'); lines.append(l); });
       cap.innerHTML = '<b>' + F[i][0] + '</b> (' + F[i][1] + '): ' + ps.map((j, k) => '<span style="border-bottom:3px solid hsl(' + KIND[k][2] + ' 65% 62%)">' + ['reciprocal', 'Pythagorean', 'complementary'][k] + ' ' + F[j][0] + '</span>').join(', ') + '. Click it, then a second function, to see how the two are related.'; };
     // Two functions chosen: the same function, direct reciprocals, or a Pythagorean pair after zero, one or two reciprocal steps.
     const flip = i => (i + 3) % 6, pyth = (x, y) => x !== y && KIND[1][1].some(p => p.includes(x) && p.includes(y));
-    const two = (a, b) => { lines.replaceChildren(); const A = F[a][0], B = F[b][0];
+    const two = (a, b) => { lines.replaceChildren(); idt = null; idn = 0; identity(); const A = F[a][0], B = F[b][0];
       if (a === b) { cap.innerHTML = '<b>' + A + '</b> twice: the same function.'; return; }
       if (b === flip(a)) { thick(a, b, 0); cap.innerHTML = '<b>' + A + '</b> and <b>' + B + '</b> are direct reciprocals. They live on the same shape, the ' + F[a][1] + '.'; return; }
       const [x, y] = [[a, b], [flip(a), b], [a, flip(b)], [flip(a), flip(b)]].find(([p, q]) => pyth(p, q)), steps = (x !== a) + (y !== b);
       if (x !== a) thick(a, x, 0); if (y !== b) thick(b, y, 0); thick(x, y, 1);
+      // which of p^2 + q^2 = r^2 each one is: sin, cos are the legs with r = 1; tan (or cot) is a leg beside 1 with sec (or csc) as r
+      { const ta = { f: a, rec: x !== a }, tb = { f: b, rec: y !== b }, one = { one: true }, isR = i => i === 4 || i === 5, isLeg = i => !isR(i);
+        const terms = isLeg(x) && isLeg(y) ? (x === 2 ? [ta, tb, one] : [tb, ta, one]) : isR(x) ? [tb, one, ta] : [ta, one, tb]; idt = { a: ta, b: tb, terms }; identity(); }
       cap.innerHTML = '<b>' + A + '</b> and <b>' + B + '</b>: ' + (steps ? [x !== a ? 'flip ' + A + ' to ' + F[x][0] : '', y !== b ? 'flip ' + B + ' to ' + F[y][0] : ''].filter(Boolean).join(' and ') + ' (' + steps + ' reciprocal step' + (steps > 1 ? 's' : '') + '). Then ' : 'no reciprocal step is needed: ') + '<b>' + F[x][0] + '</b> and <b>' + F[y][0] + '</b> are a Pythagorean pair.'; };
+    // The identity behind two chosen functions, in Pythagorean form, with reciprocated terms marked. It lies on a path
+    // of equivalent forms: the origin has all three terms on one side; each scroll notch one way is a step toward
+    // isolating the first function chosen, and the other way toward the second (square moved across, root taken, reciprocal undone).
+    const idbox = $('div', 'hexid'); idbox.hidden = true; let idt = null, idn = 0;
+    const FN = F.map(f => '\\' + f[0]);
+    const identity = () => {
+      if (!idt) { idbox.hidden = true; return; } idbox.hidden = false;
+      const G = '\\colorbox{#a9ecb9}{$', E = '$}', sq = t => (t.one ? '1' : t.rec ? G + '\\dfrac{1}{' + FN[t.f] + '^2}' + E : FN[t.f] + '^2'), plain = t => (t.rec ? G + '\\dfrac{1}{' + FN[t.f] + '}' + E : FN[t.f]);
+      // p^2 + q^2 = r^2: terms carries the three in that order
+      const [p, q, r] = idt.terms, signed = [[p, 1], [q, 1], [r, -1]], side = n => (n > 0 ? idt.a : idt.b), steps = Math.abs(idn);
+      let t;
+      if (!steps) t = sq(p) + '+' + sq(q) + '-' + sq(r) + '=0';
+      else { const T = side(idn), me = signed.find(s => s[0] === T), others = signed.filter(s => s[0] !== T).map(s => [s[0], -s[1] * me[1]]).sort((x, y) => y[1] - x[1]), rhs = others.map((s, i) => (s[1] < 0 ? '-' : i ? '+' : '') + sq(s[0])).join('');
+        t = steps === 1 ? sq(T) + '=' + rhs : steps === 2 ? plain(T) + '=\\sqrt{' + rhs + '}' : FN[T.f] + '=\\dfrac{1}{\\sqrt{' + rhs + '}}'; }
+      idbox.innerHTML = (typeof katex !== 'undefined' ? katex.renderToString(t, { throwOnError: false, strict: false, displayMode: false }) : tex(t)) + '<div class="hexidnote">' + (steps ? 'Step ' + steps + ' toward ' + F[side(idn).f][0] + '.' : 'Scroll on this box: one way isolates ' + F[idt.a.f][0] + ', the other ' + F[idt.b.f][0] + '.') + '</div>';
+    };
+    idbox.addEventListener('wheel', ev => { ev.preventDefault(); if (!idt || Math.abs(ev.deltaY) < 4 || idbox._lock) return; idbox._lock = true; setTimeout(() => { idbox._lock = false; }, 180); const lim = t => (t.rec ? 3 : 2); idn = Math.max(-lim(idt.b), Math.min(lim(idt.a), idn + (ev.deltaY > 0 ? 1 : -1))); identity(); }, { passive: false });
     let sel = [];
     const mark = () => labs.forEach((g, i) => g.setAttribute('class', 'hexlab' + (sel.includes(i) ? ' sel' : '')));
     labs.forEach((g, i) => { g.style.cursor = 'pointer';
       g.addEventListener('pointerenter', () => { if (sel.length === 0) one(i); else if (sel.length === 1) two(sel[0], i); });
       g.addEventListener('click', () => { if (sel.length === 1) { sel.push(i); two(sel[0], i); } else { sel = [i]; one(i); } mark(); }); });
     KIND.forEach((kd, k) => { const b = btn('btn', kd[0]); b.onclick = () => draw(k); bar.append(b); });
-    const clear = btn('btn', 'Clear'); clear.onclick = () => { sel = []; mark(); draw(null); }; const sw = btn('btn', 'Show shape names'); sw.onclick = () => { names = 1 - names; sw.textContent = names ? 'Show function names' : 'Show shape names'; label(); };
-    bar.append(clear, sw); label(); el.append(bar, svg, cap);
+    const clear = btn('btn', 'Clear'); clear.onclick = () => { sel = []; mark(); idt = null; identity(); draw(null); }; const sw = btn('btn', 'Show shape names'); sw.onclick = () => { names = 1 - names; sw.textContent = names ? 'Show function names' : 'Show shape names'; label(); };
+    bar.append(clear, sw); label(); const row = $('div', 'hexrow'); row.append(svg, idbox); el.append(bar, row, cap);
     return { el };
   };
   // ---------- structure trees: an expression drawn as a tree whose shape can be changed by the properties ----------
@@ -3103,8 +3136,39 @@ if (typeof document !== 'undefined') (() => {
     const form = $('div', 'coefform'), closed = $('span', 'cf-closed'), opened = $('span', 'cf-open'), tree = $('div', 'coeftree'), note = $('div', 'quiet'), bar = $('div', 'figbar'); form.append(closed, opened);
     let state = 0, rot = 0, num = false, timer = 0, wC = 0, wO = 0;   // state: 0 closed, 1 together, 2 open
     const fact = m => (m < 2 ? 1 : m * fact(m - 1)), HUE = ['#b45309', '#7c3aed'];
+    // The tree has three presentations, walked in step with the box: all leaves under the root (closed); each inner
+    // node drawn out of the root, making a nested two-way tree (together); and the tree split at every inner node
+    // into two-way trees standing side by side as a product, the inner node appearing as a leaf of one and the root of the next (open).
+    const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg'), NW = 38, NH = 26, DX = 34, DY = 56, VAL = ['', '', 'dyadic', 'triadic', 'tetradic', 'pentadic']; svg.setAttribute('class', 'coefsvg'); tree.append(svg);
+    let model = null, pos = null, anim = 0;
+    const layout = st => {
+      const { o } = model, L = {}, x0 = 0;
+      if (st === 0) { L.R = [x0, 0, 1]; o.forEach((_, i) => { L['L' + i] = [x0 + (i - (k - 1) / 2) * (NW + 14), DY, 1]; }); for (let d = 1; d < k - 1; d++) { L['A' + d] = [x0, 0, 0]; L['B' + d] = [x0, 0, 0]; } L.lab = [[x0, VAL[k] || k + '-adic']]; L.dots = []; }
+      else if (st === 1) { L.R = [x0, 0, 1]; L.lab = [[x0, VAL[2]]]; for (let d = 0; d < k - 1; d++) { const px = x0 + d * DX, py = d * DY; L['L' + d] = [px - DX, py + DY, 1]; if (d < k - 2) { L['A' + (d + 1)] = [px + DX, py + DY, 1]; L['B' + (d + 1)] = [px + DX, py + DY, 1]; } else L['L' + (k - 1)] = [px + DX, py + DY, 1]; } L.dots = []; }
+      else { const W = 2 * DX + NW + 30; L.dots = []; L.lab = []; for (let d = 0; d < k - 1; d++) { const cx = x0 + d * W; if (d) L['B' + d] = [cx, 0, 1]; else L.R = [cx, 0, 1]; L.lab.push([cx, VAL[2]]); L['L' + d] = [cx - DX, DY, 1]; if (d < k - 2) { L['A' + (d + 1)] = [cx + DX, DY, 1]; L.dots.push(cx + W / 2); } else L['L' + (k - 1)] = [cx + DX, DY, 1]; } }
+      return L;
+    };
+    const paint = P => {
+      const { o, rest } = model, keys = Object.keys(P).filter(q => Array.isArray(P[q]) && q !== 'lab' && q !== 'dots'), xs = keys.map(q => P[q][0]), ys = keys.map(q => P[q][1]), minX = Math.min(...xs) - NW / 2 - 26, maxX = Math.max(...xs) + NW / 2 + 26, maxY = Math.max(...ys) + NH / 2 + 6;
+      svg.setAttribute('viewBox', minX + ' -34 ' + (maxX - minX) + ' ' + (maxY + 34)); svg.style.width = (maxX - minX) * 1.15 + 'px'; svg.replaceChildren();
+      const edge = (a, b) => { if (!P[a] || !P[b]) return; const [px, py] = P[a], [cx, cy, op] = P[b], y1 = py + NH / 2, y2 = cy - NH / 2, my = (y1 + y2) / 2, dx = cx - px, r = Math.min(7, Math.abs(dx) / 2, (y2 - y1) / 2), s = Math.sign(dx), e = document.createElementNS(ns, 'path'); if (y2 - y1 < 2) return;
+        e.setAttribute('d', Math.abs(dx) < 1 ? 'M' + px + ' ' + y1 + 'V' + y2 : 'M' + px + ' ' + y1 + 'V' + (my - r) + 'Q' + px + ' ' + my + ' ' + (px + s * r) + ' ' + my + 'H' + (cx - s * r) + 'Q' + cx + ' ' + my + ' ' + cx + ' ' + (my + r) + 'V' + y2); e.setAttribute('class', 'coefedge'); e.style.opacity = op; svg.append(e); };
+      for (let d = 0; d < k - 1; d++) { const par = d ? 'B' + d : 'R'; edge(par, 'L' + d); edge(par, d < k - 2 ? 'A' + (d + 1) : 'L' + (k - 1)); }
+      const node = (key, text, cls, col) => { if (!P[key]) return; const [x, y, op] = P[key], g = document.createElementNS(ns, 'g'), rc = document.createElementNS(ns, 'rect'), t = document.createElementNS(ns, 'text'); g.style.opacity = op; rc.setAttribute('x', x - NW / 2); rc.setAttribute('y', y - NH / 2); rc.setAttribute('width', NW); rc.setAttribute('height', NH); rc.setAttribute('rx', 8); rc.setAttribute('class', cls); if (col) rc.style.stroke = col; t.setAttribute('x', x); t.setAttribute('y', y + 5); t.setAttribute('text-anchor', 'middle'); t.setAttribute('class', 'coeflab'); t.textContent = text; if (col) t.style.fill = col; g.append(rc, t); svg.append(g); };
+      for (let d = 1; d < k - 1; d++) { node('A' + d, rest[d - 1], 'coefnode inner', HUE[(d - 1) % 2]); node('B' + d, rest[d - 1], 'coefnode inner', HUE[(d - 1) % 2]); }
+      o.forEach((v, i) => node('L' + i, v, 'coefnode leaf')); node('R', N, 'coefnode root');
+      (P.lab || []).forEach(([x, w]) => { const t = document.createElementNS(ns, 'text'); t.setAttribute('x', x); t.setAttribute('y', -NH / 2 - 7); t.setAttribute('text-anchor', 'middle'); t.setAttribute('class', 'coefruby'); t.textContent = w; t.style.opacity = P.labOp === undefined ? 1 : P.labOp; svg.append(t); });
+      (P.dots || []).forEach(x => { const t = document.createElementNS(ns, 'text'); t.setAttribute('x', x); t.setAttribute('y', DY / 2 + 8); t.setAttribute('text-anchor', 'middle'); t.setAttribute('class', 'coefdot'); t.textContent = '·'; t.style.opacity = P.labOp === undefined ? 1 : P.labOp; svg.append(t); });
+    };
+    const treeTo = (st, jump) => {
+      if (!model) return; const to = layout(st), from = pos; cancelAnimationFrame(anim);
+      if (jump || !from || (typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches)) { pos = to; paint(pos); return; }
+      const t0 = performance.now(), D = 300, tick = () => { const u2 = Math.min(1, (performance.now() - t0) / D), e = u2 * u2 * (3 - 2 * u2), P = { lab: to.lab, dots: to.dots, labOp: e };
+        Object.keys(to).forEach(q => { if (q === 'lab' || q === 'dots') return; const a = from[q] || to[q], b = to[q]; P[q] = [a[0] + (b[0] - a[0]) * e, a[1] + (b[1] - a[1]) * e, a[2] + (b[2] - a[2]) * e]; });
+        pos = P; paint(P); if (u2 < 1) anim = requestAnimationFrame(tick); else { pos = to; paint(to); } }; tick();
+    };
     const kx = t => (typeof katex !== 'undefined' ? katex.renderToString(t, { throwOnError: false, strict: false, trust: true }) : tex(t.replace(/\\htmlClass\{[^}]*\}/g, '')));
-    const show = () => { form.classList.toggle('together', state >= 1); form.classList.toggle('open', state === 2); form.style.width = (state ? wO : wC) + 'px'; };
+    const show = () => { treeTo(state); form.classList.toggle('together', state >= 1); form.classList.toggle('open', state === 2); form.style.width = (state ? wO : wC) + 'px'; };
     const go = to => { clearTimeout(timer); if (to === state) return; state += to > state ? 1 : -1; show(); if (state !== to) timer = setTimeout(() => go(to), state === 1 ? 190 : 270); };
     const draw = () => {
       const o = parts.map((_, i) => parts[(i + rot) % k]), rest = o.map((_, i) => o.slice(i + 1).reduce((p, c) => p + c, 0));   // rest[i]: what is left after part i is split off
@@ -3116,14 +3180,7 @@ if (typeof document !== 'undefined') (() => {
       // widths of the two forms, measured from copies so that the box can ease between them
       const probe = $('div', 'coefform together open'); probe.style.cssText = 'position:absolute;visibility:hidden;transition:none;width:auto'; const pc = closed.cloneNode(true), po = opened.cloneNode(true); probe.append(pc, po); el.append(probe);
       [...probe.querySelectorAll('*')].forEach(e => { e.style.transition = 'none'; }); wC = Math.ceil(pc.getBoundingClientRect().width) + 2; wO = Math.ceil(po.getBoundingClientRect().width) + 2; probe.remove(); show();
-      // the nested tree: each split takes one part off and leaves the rest as an inner node
-      const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg'), W = 90 + 62 * (k - 1), H = 44 + 50 * (k - 1); svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.style.width = Math.min(W * 1.25, 330) + 'px';
-      const P = d => [44 + 62 * d, 22 + 50 * d], put = (x, y, text, cls, fill) => { const c = document.createElementNS(ns, 'circle'); c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 15); c.setAttribute('class', cls); if (fill) c.style.stroke = fill; const t = document.createElementNS(ns, 'text'); t.setAttribute('x', x); t.setAttribute('y', y + 5); t.setAttribute('text-anchor', 'middle'); t.setAttribute('class', 'coeflab'); t.textContent = text; if (fill) t.style.fill = fill; svg.append(c, t); };
-      const edge = (a, b) => { const l = document.createElementNS(ns, 'line'); l.setAttribute('x1', a[0]); l.setAttribute('y1', a[1]); l.setAttribute('x2', b[0]); l.setAttribute('y2', b[1]); l.setAttribute('class', 'coefedge'); svg.append(l); };
-      for (let d = 0; d < k - 1; d++) { const p = P(d), leaf = [p[0] - 30, p[1] + 50], nxt = P(d + 1); edge(p, leaf); edge(p, nxt); }
-      for (let d = 0; d < k - 1; d++) { const p = P(d); put(p[0], p[1], d ? rest[d - 1] : N, d ? 'coefnode inner' : 'coefnode root', d ? HUE[(d - 1) % 2] : null); put(p[0] - 30, p[1] + 50, o[d], 'coefnode leaf'); }
-      const lastp = P(k - 1); put(lastp[0], lastp[1], o[k - 1], 'coefnode leaf');
-      tree.replaceChildren(svg);
+      model = { o, rest }; treeTo(state, true);
       note.textContent = 'Point at the coefficient to open it into a product of two-part coefficients: the root on top of the first, each inner node once below and once on top, the leaves underneath. Scroll one notch on it to switch between factorials and values.';
     };
     form.onmouseenter = () => go(2); form.onmouseleave = () => go(0); form.onclick = () => go(state === 2 ? 0 : 2);

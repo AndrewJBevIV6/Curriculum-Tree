@@ -91,3 +91,100 @@
   ? typed: Ask in French: "What is he taking?"
     = fr{take 3m ?}
     why: Either form is accepted: Qu'est-ce qu'il prend ? or Que prend-il ?
+
+- A line from a film, taken apart   @fr.sent.small.film
+  can: Find the verbs, pronouns and tenses in a short spoken line.
+  bite: In Ratatouille, Rémy scolds his brother: "Émile, tu leur as dit ? C'est ça que j'avais dit de ne pas faire !" Word for word: "Émile, you told them? That is what I had said not to do!" There are four verbs. "As dit" is dire in the passé composé: something done and finished. "Est" is être in the present. "Avais dit" is dire again, one step further back, in the plus-que-parfait: what had already been said before the telling. "Faire" is an infinitive, and its negation "ne pas" stands together in front of it. The pronouns are tu, leur ("to them", before the verb), ce (in c'est), ça, que and je.
+  !! The worksheet prompt has "tu leur a dit"; the standard spelling "as" is used here. Context wording is from memory of the film: check it.
+  figure: french {say.perf 2s recipient=3p}
+  ? match: Match each verb form in the line to its tense.
+    | as dit          = passé composé
+    | est             = present
+    | avais dit       = plus-que-parfait
+    | faire           = infinitive
+  ? choice: Which of these is NOT a pronoun in the line?
+    (x) dit
+    ( ) leur
+    ( ) ça
+    ( ) que
+  ? choice: In "tu leur as dit", what does "leur" mean and where does it stand?
+    (x) "to them", before the verb
+    ( ) "their", before a noun
+    ( ) "them", after the verb
+    ( ) "to him", before the verb
+  ? choice: Why is it "avais dit" and not "ai dit" in the second sentence?
+    (x) the saying came before the telling, one step further back in the past
+    ( ) the subject is plural
+    ( ) it is a question
+    ( ) "dire" always takes the imperfect
+  ? typed: Where does "ne pas" go with an infinitive? Complete: "J'avais dit de ___ ___ faire."
+    = ne pas
+  ? typed: Say in French: "You told them."
+    = fr{say.perf 2s recipient=3p}
+
+## Shared roots   @fr.roots
+   can: Use the Greek and Latin roots that English and French share to recognize and spell words.
+   !! From Andrew's conceptual checks. He wants these highlighted: the close lexical relationship between English and French is the lever for the whole course.
+
+### Greek in both languages   @fr.roots.greek
+    can: Recognize a word of Greek origin and its Latin counterpart.
+
+- i grec and i latin   @fr.roots.greek.y
+  can: Explain why French calls y "i grec".
+  bite: The Romans had the letter i. When they borrowed Greek words, they needed a way to write the Greek letter upsilon, a sound Latin did not have, so they borrowed the letter too: Y. French remembers this in the letters' names. Y is "i grec", the Greek i, and i is sometimes called "i latin" to tell them apart. That is why y shows up in words that came from Greek: système, rythme, physique, type, cycle.
+  ? choice: Why is the letter y called "i grec" in French?
+    (x) it was borrowed into the Latin alphabet to write a Greek letter in Greek words
+    ( ) it was invented in Greece for the French language
+    ( ) it sounds like the Greek word for "i"
+    ( ) Greek has no letter i
+  ? choice: A French word is spelled with a y in the middle, like "système". What does that suggest?
+    (x) the word probably came from Greek
+    ( ) the word is probably a verb
+    ( ) the word was borrowed from English
+    ( ) nothing; y is as common as i
+  ? row: Which is the letter's French name?
+    | y      = i grec
+    | i      = i latin
+
+- The same Greek word in English and French   @fr.roots.greek.same
+  can: Give Greek-origin words that are nearly identical in English and French.
+  bite: Words built from Greek came into English and French by the same learned road, so they look almost the same in both. The differences are small and regular: French writes é and è where it says them, ends in -e or -ie where English has nothing or -y, and keeps ph, th, y and ch in the same places. Système and system. Philosophie and philosophy. Théâtre and theater. Rythme and rhythm. Psychologie and psychology.
+  ? match: Match each French word to its English twin.
+    | système          = system
+    | philosophie      = philosophy
+    | rythme           = rhythm
+    | théâtre          = theater
+    | psychologie      = psychology
+  ? typed: Write the French for "system", with its accent.
+    = système
+    ~ systeme :: The letters are right. The second vowel takes a grave accent.
+    ~ system :: That is the English spelling. French adds a final e and an accent.
+  ? typed: Write the French for "philosophy".
+    = philosophie
+  ? choice: Which spelling clue most often marks a word as Greek in both languages?
+    (x) ph, th, y or ch for a k sound
+    ( ) a doubled consonant
+    ( ) an ending in -ment
+    ( ) a silent final t
+
+- Greek and Latin for the same idea   @fr.roots.greek.pairs
+  can: Pair a Greek-origin word or prefix with its Latin counterpart.
+  bite: Greek and Latin often built the same idea from their own parts, and English and French kept both. Greek sym-pathie and Latin com-passion are the same construction: "with" plus "feeling". Hypo-thèse and sup-position: "under" plus "placing". Péri-phérie and circon-férence: "around" plus "carrying". Knowing one prefix of each pair gives you two families of words in two languages.
+  ? match: Match each Greek prefix to its Latin counterpart.
+    | hyper-      = super-
+    | hypo-       = sub-
+    | poly-       = multi-
+    | hémi-       = semi-
+    | syn-        = con-
+    | péri-       = circon-
+  ? match: Match each Greek-origin word to the Latin-origin word built the same way.
+    | sympathie        = compassion
+    | hypothèse        = supposition
+    | périphérie       = circonférence
+    | métamorphose     = transformation
+  ? choice: "Sympathie" and "compassion" are built from parts meaning:
+    (x) "with" and "feeling"
+    ( ) "under" and "placing"
+    ( ) "around" and "carrying"
+    ( ) "many" and "shapes"
+
