@@ -13,7 +13,7 @@
 
 - Holding a vowel   @fr.sounds.vowels.hold
   can: Produce a steady French vowel and see how close it lands.
-  bite: A French vowel is held in one place from start to finish, without the glide an English vowel usually has. Say one and hold it. The chart listens and shows which French vowels your sound is near. A clean vowel lights one box strongly. An English-colored one lights it faintly and spills into its neighbors.
+  bite: A French vowel is held in one place from start to finish, without the glide an English vowel usually has. Say one and hold it. The chart listens and shows which French vowels your sound is near. Vowels that sound nearly alike share a box, split by a dashed line. A clean vowel lights its cell strongly. An English-colored one lights it faintly and spills elsewhere. Some glow on a neighbor is normal, even for native speakers. Below the chart you can practice a whole word: say it a few times and watch each of its vowels.
   figure: vowels
   ? reveal: Hold a French "a" for two seconds. Did its box light clearly, with little light elsewhere?
     = A steady, open "a" lights the a box almost alone. If "an" lit as well, the sound sat too far back.
