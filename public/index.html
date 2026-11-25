@@ -77,6 +77,20 @@ main { max-width: 900px; margin: 0 auto; padding: 16px 16px 40px; }
 .rail > i::before { content: ""; position: absolute; left: 5px; top: 10px; width: 7px; height: 7px; border-left: 2.5px solid hsl(var(--h) 45% 38%); border-top: 2.5px solid hsl(var(--h) 45% 38%); transform: rotate(45deg); }
 .node.open:not(.top) > .body, .node.open:not(.top) > .face, .node.open:not(.top) > .kids { grid-column: 2; grid-row: 2; }
 .node:not(.open) > .kids, .node:not(.open) > .body, .node:not(.open) > .face, .node[data-mode="check"] > .kids, .node[data-mode="check"] > .body, .node[data-mode="expo"] > .face, .kids:empty, .body:empty { display: none; }
+.node:not(.open) > .paper, .node[data-mode="expo"] > .paper, .node[data-mode="check"] > .paper, .node[data-mode="paper"] > .kids, .node[data-mode="paper"] > .body, .node[data-mode="paper"] > .face { display: none; }
+.node.open:not(.top) > .paper { grid-column: 2; grid-row: 2; min-width: 0; }
+/* The paper test is plain on purpose: black on white, room to write, nothing that needs a screen. */
+.pbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+.psheet { background: #fff; color: #000; border: 1px solid #999; border-radius: 4px; padding: 26px 30px; font: 15px/1.5 Georgia, 'Times New Roman', serif; max-width: 780px; }
+.psheet .given, .psheet .dq { border: 1px solid #000; background: none; box-shadow: none; } .psheet code { background: none; border: 1px solid #bbb; color: #000; } .psheet .term, .psheet .katex { color: #000; }
+.phead { display: flex; justify-content: space-between; gap: 12px; border-bottom: 2px solid #000; padding-bottom: 6px; font-size: 17px; } .phead span { font-size: 13px; } .pname { margin: 12px 0 6px; white-space: pre-wrap; }
+.pblank { display: inline-block; border-bottom: 1px solid #000; height: 1.1em; vertical-align: baseline; }
+.pq { padding-left: 1.6em; margin: 8px 0 0; } .pq > li { margin: 0 0 18px; break-inside: avoid; } .pprompt { margin-bottom: 6px; }
+.popts { list-style: upper-alpha; padding-left: 1.8em; margin: 4px 0; } .pleft, .psteps { padding-left: 1.6em; margin: 4px 0; } .pleft { list-style: decimal; } .pleft li, .psteps li, .prank li { margin: 5px 0; } .prank { list-style: none; padding-left: .4em; margin: 4px 0; }
+.pmatch { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 26px; } .prows td { padding: 5px 14px 5px 0; vertical-align: bottom; } .pans { margin-top: 10px; } .pnote { font-style: italic; font-size: 13px; }
+.plines span { display: block; border-bottom: 1px solid #000; height: 1.9em; } .pkey { break-before: page; margin-top: 26px; border-top: 2px solid #000; padding-top: 8px; font-size: 13px; } .pkey ol { columns: 2; padding-left: 1.8em; }
+@media print { body.printing > *:not(#printroot) { display: none !important; } body.printing { background: #fff; } #printroot .psheet { border: 0; padding: 0; max-width: none; } }
+.vcell.opt { border-style: dashed; } .vcell.skip { opacity: .45; } .vcell.skip b { text-decoration: line-through; }
 .body, .face { margin-left: 0; min-width: 0; padding: 14px 16px; border-radius: 13px; background: var(--paper); border-left: 3px solid var(--ringc); box-shadow: var(--shadow); }
 .bite { margin: 0; max-width: 66ch; font-size: 1.04rem; line-height: 1.6; }
 .bitefoot { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; justify-content: space-between; margin-top: 12px; }
@@ -2922,16 +2936,19 @@ if (typeof document !== 'undefined') (() => {
     const now = $('i', 'vdot'); now.hidden = true; chart.append(now);
     // ---- word practice: the word's vowels are a stack. The chart waits for a clear hit on the first, then moves
     // its attention to the second, and so on to the end of the word. There is no clock: take as long as you like.
-    const LONGER = [['avertissement', 'a è i an'], ['université', 'u i è i é'], ['anniversaire', 'a i è è'], ['ordinateur', 'o i a œu'], ['télévision', 'é é i on'], ['appartement', 'a a eu an'], ['bibliothèque', 'i i o è'], ['restaurant', 'è o an'], ['magnifique', 'a i i'], ['aujourd’hui', 'ô ou i']];
+    // A vowel in parentheses is optional: the mute e, which may be said or dropped. Glides are listed as the vowels they pass through: oi is ou then a, the u of "hui" is u.
+    const LONGER = [['avertissement', 'a è i (e) an'], ['appartement', 'a a (e) an'], ['maintenant', 'in (e) an'], ['samedi', 'a (e) i'], ['au revoir', 'ô (e) ou a'], ['aujourd’hui', 'ô ou u i'], ['bonsoir', 'on ou a'], ['histoire', 'i ou a'], ['trois', 'ou a'], ['université', 'u i è i é'], ['anniversaire', 'a i è è'], ['ordinateur', 'o i a œu'], ['télévision', 'é é i on'], ['bibliothèque', 'i i o è'], ['restaurant', 'è o an'], ['magnifique', 'a i i']];
     const WORDS = (typeof WORDS_NATIVE !== 'undefined' ? WORDS_NATIVE : []).filter(w => w[2] >= 0.8).concat(LONGER), wbar = $('div', 'figbar'), pick = document.createElement('select'), say = btn('btn', 'Start the word'), wres = $('div', 'vword'), wnote = $('div', 'quiet');
     pick.className = 'vpick'; const grp = [document.createElement('optgroup'), document.createElement('optgroup')]; grp[0].label = 'Short words'; grp[1].label = 'Longer words';
-    WORDS.forEach((w, i) => { const o = document.createElement('option'); o.value = i; o.textContent = w[0] + '  (' + w[1].split(' ').join(', ') + ')'; grp[w.length > 2 ? 0 : 1].append(o); }); pick.append(...grp); wbar.append(pick, say);
-    const letterIdx = l => VOWELS.findIndex(v => v.letter === l), boxOf = i => VBOX.findIndex(bx => bx.some(c => c[1] === i));
+    WORDS.forEach((w, i) => { const o = document.createElement('option'); o.value = i; o.textContent = w[0] + '  (' + w[1].replace(/\((\w+)\)/g, '[$1]').split(' ').join(', ') + ')'; grp[w.length > 2 ? 0 : 1].append(o); }); pick.append(...grp); wbar.append(pick, say);
+    const parseSeq = s => s.split(' ').map(tk => { const opt = tk[0] === '(', l = tk.replace(/[()]/g, ''); return { label: l, opt, i: VOWELS.findIndex(v => v.letter === (l === 'e' ? 'eu' : l)) }; });
+    const boxOf = i => VBOX.findIndex(bx => bx.some(c => c[1] === i));
     let stack = null, wcells = [];
-    const wordShow = () => { const w = WORDS[+pick.value]; if (!w) return; const seq = w[1].split(' ');
-      wcells = seq.map((v, k) => { const c = $('div', 'vcell solo' + (stack && k === stack.at && !stack.done ? ' focus' : '') + (stack && k < stack.at ? ' hit' : ''), '<b>' + v + '</b><span></span>'); c.style.setProperty('--g', stack && k < stack.at ? 1 : 0); return c; });
+    const wordShow = () => { const w = WORDS[+pick.value]; if (!w) return; const seq = parseSeq(w[1]);
+      wcells = seq.map((v, k) => { const stt = stack ? stack.state[k] : null, c = $('div', 'vcell solo' + (v.opt ? ' opt' : '') + (stack && k === stack.at && !stack.done ? ' focus' : '') + (stt ? ' ' + stt : ''), '<b>' + v.label + '</b><span>' + (stt === 'skip' ? 'dropped' : '') + '</span>'); c.style.setProperty('--g', stt === 'hit' ? 1 : 0); return c; });
       wres.replaceChildren($('span', 'vwordname', esc(w[0])), ...wcells);
-      wnote.textContent = !stack ? 'Choose a word and press Start. Say its vowels in order: the chart waits on each one until it hears it clearly, then moves to the next.' : stack.done ? (seq.length > 1 ? 'All ' + seq.length + ' vowels, in order.' : 'Heard it.') : 'Waiting for “' + seq[stack.at] + '”, vowel ' + (stack.at + 1) + ' of ' + seq.length + '.'; };
+      const left = stack && !stack.done ? seq[stack.at] : null;
+      wnote.textContent = !stack ? 'Choose a word and press Start. Say its vowels in order: the chart waits on each one until it hears it, then moves to the next. A dashed vowel is the mute e: say it or drop it.' : stack.done ? (seq.length > 1 ? 'All the vowels, in order.' : 'Heard it.') : 'Waiting for “' + left.label + '”' + (left.opt ? ' (optional)' : '') + ', vowel ' + (stack.at + 1) + ' of ' + seq.length + '.'; };
     pick.onchange = () => { stack = null; say.textContent = 'Start the word'; wordShow(); }; wordShow();
     el.append(bar, chart, read, wbar, wres, wnote);
     let an = null, stream = null, ctx = null, buf = null, last = 0;
@@ -2943,15 +2960,24 @@ if (typeof document !== 'undefined') (() => {
         .catch(() => { read.textContent = 'The microphone could not be opened. A preview page is not allowed to use it. On the deployed site the browser asks for permission.'; });
     };
     go.onclick = () => (an ? stop() : listen());
-    say.onclick = () => { const begin = () => { const seq = WORDS[+pick.value][1].split(' '); stack = { ids: seq.map(letterIdx), at: 0, hold: 0, armed: true, done: false }; say.textContent = 'Start over'; wordShow(); }; if (an) begin(); else listen(begin); };
-    // One frame of the stack. A hit is the wanted vowel's box holding at least half the shares for a tenth of a second.
+    say.onclick = () => { const begin = () => { const seq = parseSeq(WORDS[+pick.value][1]); stack = { seq, at: 0, acc: 0, accNext: 0, armed: true, done: false, state: seq.map(() => null) }; say.textContent = 'Start over'; wordShow(); }; if (an) begin(); else listen(begin); };
+    // One frame of the stack. Evidence for the wanted vowel's box builds up over frames and leaks away, so a short
+    // vowel in fluent speech can register in about a twentieth of a second, and a faint smear across a neighbor cannot.
+    // While an optional vowel is wanted, the one after it is listened for as well; if that comes first, the optional one counts as dropped.
     // Two like vowels in a row need a release between them, so one long vowel cannot count twice.
+    const boxShare = (p, i) => (p ? Math.min(1, [...new Set(VBOX[boxOf(i)].map(c => c[1]))].reduce((a, q) => a + p[q], 0)) : 0);
     const stackStep = p => {
-      if (!stack || stack.done) return; const want = stack.ids[stack.at], bx = VBOX[boxOf(want)], share = p ? Math.min(1, [...new Set(bx.map(c => c[1]))].reduce((a, i) => a + p[i], 0)) : 0;
+      if (!stack || stack.done) return; const cur = stack.seq[stack.at], nxt = cur.opt ? stack.seq[stack.at + 1] : null, share = boxShare(p, cur.i), shareN = nxt ? boxShare(p, nxt.i) : 0;
       if (!stack.armed) { if (share < 0.25) stack.armed = true; else return; }
       if (wcells[stack.at]) wcells[stack.at].style.setProperty('--g', (share * 0.8).toFixed(3));
-      stack.hold = share >= 0.5 ? stack.hold + 1 : Math.max(0, stack.hold - 1); if (stack.hold < 6) return;
-      const prev = want; stack.at++; stack.hold = 0; stack.done = stack.at >= stack.ids.length; if (!stack.done && boxOf(stack.ids[stack.at]) === boxOf(prev)) stack.armed = false; if (stack.done) say.textContent = 'Again'; wordShow();
+      stack.acc = stack.acc * 0.8 + share; stack.accNext = stack.accNext * 0.8 + shareN;
+      const hit = stack.acc >= 1.2 && share >= 0.35, hitN = nxt && boxOf(nxt.i) !== boxOf(cur.i) && stack.accNext >= 1.2 && shareN >= 0.35; if (!hit && !hitN) return;
+      const last = hit ? cur : nxt; if (hit) stack.state[stack.at] = 'hit'; else { stack.state[stack.at] = 'skip'; stack.state[stack.at + 1] = 'hit'; }
+      stack.at += hit ? 1 : 2; stack.acc = stack.accNext = 0;
+      // an optional vowel left at the very end may simply go unsaid
+      stack.done = stack.at >= stack.seq.length || stack.seq.slice(stack.at).every(v => v.opt); if (stack.done) { for (let k = stack.at; k < stack.seq.length; k++) stack.state[k] = 'skip'; say.textContent = 'Again'; }
+      else if (boxOf(stack.seq[stack.at].i) === boxOf(last.i)) stack.armed = false;
+      wordShow();
     };
     // Two warmth fields on a coarse grid over the chart, each spreading a little and cooling every frame.
     // foot: a footprint wherever the live dot lands, gone in about a second; together they are its trail and a map of where it has been.
@@ -3614,32 +3640,34 @@ if (typeof document !== 'undefined') (() => {
       const acts = $('div', 'acts');
       const bf = btn('act focus', 'Focus'); bf.title = 'Make this the top of the screen (F)';
       const seg = $('div', 'seg'); seg.setAttribute('role', 'radiogroup'); seg.setAttribute('aria-label', 'Side of the card');
-      const bx = btn('segb', 'Exposition'), bc = btn('segb', 'Self-check'); bx.setAttribute('role', 'radio'); bc.setAttribute('role', 'radio');
-      if (!hasItems(n)) bc.disabled = true;
-      seg.append(bx, bc); const note = $('span', 'clsnote'); acts.append(bf, seg); card.append(mark, note, txt, acts);
-      const body = $('div', 'body'), face = $('div', 'face'), kids = $('div', 'kids');
+      const bx = btn('segb', 'Exposition'), bc = btn('segb', 'Self-check'), bp = btn('segb', 'Paper test'); [bx, bc, bp].forEach(b => b.setAttribute('role', 'radio'));
+      if (!hasItems(n)) bc.disabled = bp.disabled = true;
+      seg.append(bx, bc, bp); const note = $('span', 'clsnote'); acts.append(bf, seg); card.append(mark, note, txt, acts);
+      const body = $('div', 'body'), face = $('div', 'face'), kids = $('div', 'kids'), paper = $('div', 'paper');
       const rail = btn('rail', '<i></i>'); rail.title = 'Close “' + n.title + '”'; rail.setAttribute('aria-label', rail.title);
       rail.onclick = () => { if (n.id === ui.focus && !isLeaf(n)) return; setOpen(n, false); if (card.getBoundingClientRect().top < 56) card.scrollIntoView({ block: 'start' }); };
-      root.append(card, rail, body, face, kids);
-      const e = (els[n.id] = { n, root, card, mark, note, kids, body, face, bx, bc, built: false, faced: false });
+      root.append(card, rail, body, face, paper, kids);
+      const e = (els[n.id] = { n, root, card, mark, note, kids, body, face, paper, bx, bc, bp, built: false, faced: false, papered: false });
       card.onclick = ev => { if (ev.target.closest('.acts')) return; toggle(n); };
       bf.onclick = () => focusOn(n.id);
       bx.onclick = () => { setMode(n, 'expo'); setOpen(n, true); };
       bc.onclick = () => { setMode(n, 'check'); setOpen(n, true); };
-      setMode(n, ui.mode[n.id] === 'check' && hasItems(n) ? 'check' : 'expo', true);
+      bp.onclick = () => { setMode(n, 'paper'); setOpen(n, true); };
+      setMode(n, (ui.mode[n.id] === 'check' || ui.mode[n.id] === 'paper') && hasItems(n) ? ui.mode[n.id] : 'expo', true);
       refresh([n.id]);
       return e;
     };
     const setMode = (n, mode, quiet) => {
       const e = els[n.id]; e.root.dataset.mode = mode;
-      e.bx.setAttribute('aria-checked', String(mode === 'expo')); e.bc.setAttribute('aria-checked', String(mode === 'check'));
-      if (mode === 'check') ui.mode[n.id] = 'check'; else delete ui.mode[n.id];
+      e.bx.setAttribute('aria-checked', String(mode === 'expo')); e.bc.setAttribute('aria-checked', String(mode === 'check')); e.bp.setAttribute('aria-checked', String(mode === 'paper'));
+      if (mode !== 'expo') ui.mode[n.id] = mode; else delete ui.mode[n.id];
       if (!quiet) { fillSide(e); save(); }
     };
     // Build whichever side is showing, the first time it shows.
     const fillSide = e => {
       const n = e.n;
       if (e.root.dataset.mode === 'check') { if (!e.faced) { e.faced = true; mountFace(e); } return; }
+      if (e.root.dataset.mode === 'paper') { if (!e.papered) { e.papered = true; mountPaper(e); } return; }
       if (e.built) return; e.built = true;
       if (isLeaf(n)) {
         e.body.innerHTML = biteHtml(n);
@@ -3651,6 +3679,36 @@ if (typeof document !== 'undefined') (() => {
         fl.onclick = () => { progress.flag(n.id); paint(); paintFlags(); save(); }; paint();
         foot.append(fl); e.body.append(foot);
       } else n.children.forEach(c => e.kids.append(build(c).root));
+    };
+    // The paper test: the same items laid out for pencil, with no checking and nothing that needs a screen.
+    // A leaf gives all of its items; a larger node gives one from each leaf under it. Each version draws new numbers.
+    const mountPaper = e => {
+      const n = e.n, leaves = []; const walk = x => { if (isLeaf(x)) { if (x.items.length) leaves.push(x); } else x.children.forEach(walk); }; walk(n);
+      let version = 1, showKey = false;
+      const make = () => {
+        let sd = (version * 2654435761 + n.id.length * 97) >>> 0; const rnd = () => { sd = (sd + 0x6D2B79F5) >>> 0; let t = sd; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+        const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+        const MAXQ = 24, step = Math.max(1, Math.ceil(leaves.length / MAXQ));
+        const chosen = isLeaf(n) ? n.items.slice(0, 10) : leaves.filter((_, i) => i % step === 0).map(l => l.items[Math.floor(rnd() * l.items.length)]);
+        const blank = w => '<span class="pblank" style="min-width:' + (w || 9) + 'em"></span>', L = i => String.fromCharCode(65 + i), qs = [], key = [];
+        chosen.forEach(item => {
+          let it; try { it = Core.instantiate(item, true, rnd); } catch (err) { return; }
+          let h = '<div class="pprompt">' + rich(it.prompt) + '</div>', k = '';
+          if (it.kind === 'choice') { const o = shuffle(it.opts); h += '<ol class="popts">' + o.map(x => '<li>' + rich(x.text) + '</li>').join('') + '</ol>'; k = L(o.findIndex(x => x.right)); }
+          else if (it.kind === 'match') { const right = shuffle(it.rows.map(r => r.answer)); h += '<div class="pmatch"><ol class="pleft">' + it.rows.map(r => '<li>' + blank(2) + ' ' + rich(r.variant) + '</li>').join('') + '</ol><ol class="popts">' + right.map(x => '<li>' + rich(x) + '</li>').join('') + '</ol></div>'; k = it.rows.map(r => L(right.indexOf(r.answer))).join(' '); }
+          else if (it.kind === 'rank') { const vals = it.rows.map(r => Core.parseQ(r.answer)), numeric = vals.every(Boolean), order = it.rows.map((r, i) => ({ name: r.variant, v: numeric ? vals[i].v : -i })).sort((a, b) => b.v - a.v).map(x => x.name), shown = shuffle(order); h += '<div class="pnote">Number these in order.</div><ul class="prank">' + shown.map(x => '<li>' + blank(2) + ' ' + rich(x) + '</li>').join('') + '</ul>'; k = shown.map(x => order.indexOf(x) + 1).join(' '); }
+          else if (it.rows && it.rows.length) { h += '<table class="prows">' + it.rows.map(r => '<tr><td>' + rich(r.variant) + '</td><td>' + blank() + '</td></tr>').join('') + '</table>'; k = it.rows.map(r => r.answer).join('; '); }
+          else if (it.steps && it.steps.length) { h += '<ol class="psteps">' + it.steps.map(s => '<li>' + rich(s.prompt) + ' ' + blank() + '</li>').join('') + '</ol>'; k = it.steps.map(s => s.answer).join('; '); }
+          else { h += it.kind === 'reveal' ? '<div class="plines"><span></span><span></span></div>' : '<div class="pans">Answer: ' + blank(12) + '</div>'; k = String(it.answer); }
+          qs.push('<li>' + h + '</li>'); key.push('<li>' + rich(k) + '</li>');
+        });
+        e.paper.innerHTML = '<div class="pbar"></div><div class="psheet"><div class="phead"><b>' + esc(n.title) + '</b><span>Practice test, version ' + version + '</span></div><div class="pname">Name ' + blank(16) + '   Date ' + blank(8) + '</div><ol class="pq">' + qs.join('') + '</ol>' + (showKey ? '<div class="pkey"><b>Answer key, version ' + version + '</b><ol>' + key.join('') + '</ol></div>' : '') + '</div>';
+        const bar = e.paper.firstChild, pr = btn('btn primary', 'Print'), nv = btn('btn', 'New version'), kb = btn('btn', showKey ? 'Hide the answer key' : 'Add the answer key');
+        pr.onclick = () => { const root = $('div', 'paper'); root.id = 'printroot'; root.append(e.paper.querySelector('.psheet').cloneNode(true)); document.body.append(root); document.body.classList.add('printing'); const done = () => { document.body.classList.remove('printing'); root.remove(); window.removeEventListener('afterprint', done); }; window.addEventListener('afterprint', done); window.print(); setTimeout(() => { if (document.body.classList.contains('printing') && !window.matchMedia('print').matches) done(); }, 60000); };
+        nv.onclick = () => { version++; make(); }; kb.onclick = () => { showKey = !showKey; make(); };
+        bar.append(pr, nv, kb, $('span', 'quiet', qs.length + (qs.length === 1 ? ' question' : ' questions') + (isLeaf(n) ? '' : ', one from each of ' + Math.min(leaves.length, qs.length) + ' leaves') + '. Figures and hints are left out.'));
+      };
+      make();
     };
     const setOpen = (n, open) => {
       const e = build(n); if (open) fillSide(e);
