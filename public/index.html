@@ -355,8 +355,8 @@ button.st-leaf { cursor: pointer; } .st-leaf.st-A { background: hsl(212 85% 60% 
 .steps { margin: 12px 0 0; padding-left: 22px; display: grid; gap: 12px; } .steps:empty { display: none; }
 .revealed { padding: 10px 12px; border-left: 3px solid var(--good); background: hsl(162 60% 45% / .08); border-radius: 0 10px 10px 0; max-width: 70ch; }
 .after { margin-top: 14px; display: grid; gap: 8px; justify-items: start; } .after:empty { display: none; }
-.verdictrow { display: flex; align-items: center; } .verdictrow .verdict { position: relative; z-index: 1; }
-.resetpill { font: inherit; font-size: .88em; font-weight: 600; color: var(--muted); background: hsl(230 12% 50% / .14); border: 0; border-radius: 0 999px 999px 0; padding: 3px 12px 3px 22px; margin-left: -14px; cursor: pointer; } .resetpill:hover { color: var(--ink); background: hsl(230 12% 50% / .24); }
+.verdictrow { display: flex; align-items: stretch; } .verdictrow .verdict { border-radius: 999px 0 0 999px; }
+.resetpill { font: inherit; font-size: .88em; font-weight: 600; color: var(--muted); background: hsl(230 12% 50% / .14); border: 0; border-radius: 0 999px 999px 0; padding: 3px 12px 3px 9px; cursor: pointer; } .resetpill:hover { color: var(--ink); background: hsl(230 12% 50% / .24); }
 .node.fresh > .card, .node.freshin > .card { position: relative; } .node.fresh > .card::before, .node.freshin > .card::before { content: "\2192"; position: absolute; left: -7px; top: -5px; font: 700 13px/1 ui-sans-serif, system-ui, sans-serif; color: #c2410c; } .node.freshin > .card::before { opacity: .45; }
 .verdict { font-weight: 700; padding: 3px 12px; border-radius: 999px; }
 .verdict.ok { color: var(--good); background: hsl(162 60% 45% / .14); } .verdict.no { color: var(--notyet); background: hsl(40 90% 50% / .15); }
@@ -2199,7 +2199,9 @@ const Core = (() => {
   const DIMN = { '0,1,0,0': 'a length', '0,0,1,0': 'a time', '1,0,0,0': 'a mass', '0,0,-1,0': 'a rate in reciprocal seconds', '0,0,-2,0': 'a quantity in reciprocal seconds squared', '0,1,-1,0': 'a velocity', '0,1,-2,0': 'an acceleration', '1,1,-1,0': 'a momentum', '1,1,-2,0': 'a force', '1,2,-2,0': 'a torque', '1,2,-1,0': 'an angular momentum', '1,2,0,0': 'a moment of inertia', '0,2,0,0': 'a square length', '0,0,0,1': 'a charge', '0,0,0,0': 'a dimensionless number' };
   const dimName = d => { const k = d.join(','); return DIMN[k] ? DIMN[k] + (zeroD(d) ? '' : ' (' + fmtUnit(d) + ')') : 'a quantity in ' + fmtUnit(d); };
   const close = (a, b, tol = 0.01) => (b === 0 ? Math.abs(a) < 1e-9 : Math.abs(a - b) <= tol * Math.abs(b));
-  const norm = s => String(s).replace(/[’‘`]/g, "'").replace(/\s+([?!:;])/g, '$1').toLowerCase().replace(/^the\s+/, '').replace(/[.?!]+$/, '').replace(/\s+/g, ' ').trim();
+  const SUPS = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+  // Typed superscripts are the same as a caret and digits, and a typographic minus is a hyphen.
+  const norm = s => String(s).replace(/[⁰¹²³⁴-⁹]+/g, m => '^' + [...m].map(c => SUPS.indexOf(c)).join('')).replace(/\u2212/g, '-').replace(/[’‘`]/g, "'").replace(/\s+([?!:;])/g, '$1').toLowerCase().replace(/^the\s+/, '').replace(/[.?!]+$/, '').replace(/\s+/g, ' ').trim();
 
   // Compare one student input with one expected answer.
   // Returns { ok } or { ok:false, invalid:true, msg } (not counted) or { ok:false, msg }.
@@ -2643,7 +2645,7 @@ const Core = (() => {
         return;
       }
       const s = stats[e.i] || (stats[e.i] = { n: 0, streak: 0, last: null });
-      s.n++; s.last = !!e.ok; s.streak = e.ok ? s.streak + 1 : 0;
+      s.n++; s.last = !!e.ok; s.streak = e.ok ? s.streak + (e.r ? 0.5 : 1) : 0;   // a success on a retried question counts half
       (credited[e.n] || (credited[e.n] = new Set())).add(e.i);
     };
     const itemsOf = leaf => { const set = new Set(leaf.items.map(i => i.id)); (credited[leaf.id] || []).forEach(i => set.add(i)); return [...set]; };
@@ -2665,7 +2667,7 @@ const Core = (() => {
     rebuild();
     return {
       log, flags, seen, stats, agg, SOLID_N,
-      attempt: (itemId, nodeId, ok, ans) => { const e = { t: Date.now(), i: itemId, n: nodeId, ok: ok ? 1 : 0, a: String(ans).slice(0, 80) }; log.push(e); apply(e); return bubble(nodeId); },
+      attempt: (itemId, nodeId, ok, ans, retry) => { const e = { t: Date.now(), i: itemId, n: nodeId, ok: ok ? 1 : 0, a: String(ans).slice(0, 80) }; if (retry) e.r = 1; log.push(e); apply(e); return bubble(nodeId); },
       see: id => { if (seen[id]) return []; seen[id] = 1; return bubble(id); },
       // amount: 1 or 2 steps of extra practice, or 'reset'. Returns every node id, since marks change up and down the tree.
       rust: (id, amount) => { const e = amount === 'reset' ? { t: Date.now(), k: 'reset', n: id } : { t: Date.now(), k: 'rust', n: id, a: amount }; log.push(e); apply(e); if (amount === 'reset') { const w = n => { delete seen[n.id]; n.children.forEach(w); }; w(course.nodes[id]); } Object.keys(agg).forEach(k => delete agg[k]); const walk = n => { n.children.forEach(walk); compute(n); }; walk(course.root); return course.order.map(n => n.id); },
@@ -2701,7 +2703,7 @@ if (typeof document !== 'undefined') (() => {
   const WORD = { ok: 'Mastered', no: 'Not yet mastered' };
   // Development aid: nodes whose features are new or changed in the current pass. Each gets a small arrow off the left end of its
   // title card, and so does every node on the way down to it. Reset this list at the start of each pass.
-  const FRESH = ['@m3.binom.pascal.multi', '@m3.simplex.lattice.tab3', '@table.path.one'];
+  const FRESH = ['@m3.simplex.lattice.tab3', '@fr.sounds.vowels.hold', '@m3.binom.pascal.thm'];
   const prefs = { auto: false, save: () => {} };   // set from saved state when a course starts
 
   // ---------- rich text: [boxed givens], {term :: note}, $maths$ ----------
@@ -3027,11 +3029,19 @@ if (typeof document !== 'undefined') (() => {
       for (let i = 0; i < GW * GH; i++) { const v = Math.min(1, foot[i] * 0.9 + heat[i] * 0.75); img.data[4 * i] = 245; img.data[4 * i + 1] = 166 + 40 * v; img.data[4 * i + 2] = 35; img.data[4 * i + 3] = 215 * v; }
       cv.getContext('2d').putImageData(img, 0, 0);
     };
+    // A plain record of each held vowel, for reporting what the model heard: the shares averaged over the hold.
+    const holds = $('div', 'quiet vholds'), hold = { sum: null, n: 0, gap: 0 }, heldLines = []; read.after(holds);
+    const holdStep = p => {
+      if (p) { if (!hold.sum) hold.sum = p.map(() => 0); p.forEach((q, i) => { hold.sum[i] += q; }); hold.n++; hold.gap = 0; return; }
+      if (!hold.sum || ++hold.gap < 10) return;
+      if (hold.n >= 18) { const ord = hold.sum.map((q, i) => [q / hold.n, i]).sort((a, b) => b[0] - a[0]).filter(x => x[0] >= 0.05).slice(0, 5); heldLines.unshift('Held ' + (hold.n / 60).toFixed(1) + ' s: ' + ord.map(x => VOWELS[x[1]].letter + ' ' + Math.round(x[0] * 100) + '%').join(', ')); heldLines.length = Math.min(heldLines.length, 4); holds.innerHTML = heldLines.map((l, i) => '<div' + (i ? ' style="opacity:.55"' : '') + '>' + esc(l) + '</div>').join(''); }
+      hold.sum = null; hold.n = 0;
+    };
     clock.add({ el, rest: 0, draw: () => {
       const t = performance.now(), dt = Math.min(0.1, (t - (last || t)) / 1000); last = t;
       let j = null, ft = null; if (an) { an.getFloatTimeDomainData(buf); ft = VOICE.features(Core.analyze(buf, ctx.sampleRate), buf, ctx.sampleRate); }
       if (ft) { j = VOICE.judge(ft, voiceState, { dot: false }); if (j.notVowel < 0.5 && ft.f0) VOICE.speaker(voiceState, ft); }
-      const p = j && j.notVowel < 0.5 ? j.shares : null; stackStep(p, ft ? ft.level : 0);
+      const p = j && j.notVowel < 0.5 ? j.shares : null; stackStep(p, ft ? ft.level : 0); holdStep(p);
 
       // The live dot stands at the average of the vowels' places, weighted by their shares, so dot and glow cannot disagree.
       let dot = null; if (p) { let w = 0, x = 0, y = 0; p.forEach((q, i) => { w += q; x += q * PX[i]; y += q * PY[i]; }); if (w > 0.05) dot = [x / w, y / w]; }
@@ -3874,11 +3884,11 @@ if (typeof document !== 'undefined') (() => {
           if (res.resolved) { if (res.ok) { after.replaceChildren($('div', 'verdict ok', 'There it is')); block.classList.add('late'); } finishItem(); return; }
           const touched = new Set();
           (res.credits || []).forEach(c => progress.attempt(c.item, c.node, c.ok, c.answer).forEach(x => touched.add(x)));
-          progress.attempt(item.id, item.node.id, res.ok, res.answer).forEach(x => touched.add(x));
+          progress.attempt(item.id, item.node.id, res.ok, res.answer, !!(slot && slot.retry)).forEach(x => touched.add(x));
           lastOk = res.ok; t.ok = res.ok; save(); paintTally(); refresh([...touched]); block.classList.add(res.ok ? 'ok' : 'no');
           const vd = $('div', 'verdict ' + (res.ok ? 'ok' : 'no'), res.ok ? WORD.ok : WORD.no); after.replaceChildren(vd);
           // A miss can be tried again in place: the same question with the same numbers. The miss stays in the record.
-          if (!res.ok) { const rs = btn('resetpill', '\u21ba Reset'); rs.title = 'Clear this question and try it again'; rs.onclick = () => { const again = addBlock(item, { t, block, inst }); if (again && again.focus) again.focus(); paintTally(); }; const vw = $('div', 'verdictrow'); vw.append(vd, rs); after.replaceChildren(vw); }
+          { const rs = btn('resetpill', '\u21ba Reset'); rs.title = 'Clear this question and try it again. A retry counts half toward mastery.'; rs.onclick = () => { const again = addBlock(item, { t, block, inst, retry: true }); if (again && again.focus) again.focus(); paintTally(); }; const vw = $('div', 'verdictrow'); vw.append(vd, rs); after.replaceChildren(vw); }
           if (!res.open) finishItem();
         });
         block.append(where, r.el, after);

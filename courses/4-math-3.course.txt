@@ -658,7 +658,7 @@
   can: Tabulate the arrangements of a string with three different letters.
   bite: For AAABBCC, tabulate in two stages. First place the two B's: any two of the seven places, a triangle of 21 cells. Inside each of those cells, place the two C's among the five places still free: a small triangle of 10. The A's take what is left. The table is a triangle of triangles with $21 \cdot 10 = 210$ cells, which is the polynomial coefficient $\frac{7!}{3!\,2!\,2!}$. The two stages are two binomial coefficients: split 7 into 2 and 5, then split the 5 into 2 and 3. The 5 is an inner node of that tree. It sits under the first fraction and on top of the second, and cancels. Open the coefficient below the table to see it, and scroll on it to split in another order.
   links: @m3.count.slot.map @m3.binom.pascal.multi
-  figure: tabulate AAABBCC ;; coef 3 2 2
+  figure: tabulate AAABBCC ;; coef 2 3 2
   ? numeric: How many arrangements does AAABBCC have?
     = 210
   ? row: In the table for AAABBCC, how many:
