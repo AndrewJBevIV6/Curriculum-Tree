@@ -93,7 +93,7 @@ main { max-width: 900px; margin: 0 auto; padding: 16px 16px 40px; }
 .ckeys { display: flex; flex-wrap: wrap; gap: 6px; align-items: stretch; max-width: 480px; }
 .cslot { display: inline-flex; align-items: center; gap: 4px; padding: 5px 6px 6px; border-radius: 8px; background: rgb(0 0 0 / .22); box-shadow: inset 0 1px 3px rgb(0 0 0 / .55), 0 1px 0 rgb(255 255 255 / .05); }
 .ctyped { font: 700 17px/1 'Lucida Console', 'DejaVu Sans Mono', Menlo, Consolas, monospace; letter-spacing: .06em; color: #dfe8d2; padding: 0 2px; }
-.cchord i { font: 700 11px/1 'Lucida Console', 'DejaVu Sans Mono', monospace; font-style: normal; color: #9fc3ee; margin-right: 2px; }
+.cchord { position: relative; margin-bottom: 15px; } .cchord i { position: absolute; left: 0; right: 0; top: calc(100% + 3px); text-align: center; font: 700 11px/1 'Lucida Console', 'DejaVu Sans Mono', monospace; font-style: normal; color: #9fc3ee; }
 .ckeys kbd { font: 700 11px/1 ui-sans-serif, system-ui, sans-serif; min-width: 26px; padding: 6px 5px; text-align: center; border-radius: 5px; background: #4a4d55; color: #f2f2f2; box-shadow: 0 2px 0 #1b1c20; }
 .ckeys kbd.num { background: #e9e9e4; color: #1b1c20; } .ckeys kbd.op { background: #8d939e; color: #101114; } .ckeys kbd.second { background: #3f7fc4; } .ckeys kbd.enter { background: #5b6068; padding: 6px 9px; } .ckeys .quiet { color: #b9bcc4; }
 .pbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
@@ -252,7 +252,8 @@ code { font: .92em ui-monospace, "SF Mono", Menlo, Consolas, monospace; backgrou
 .st-leaf { min-width: 34px; height: 34px; padding: 0 8px; border-radius: 9px; border: 1.5px solid var(--line); background: var(--paper); font: 600 1.05rem/1 var(--math, serif); font-style: italic; cursor: default; color: var(--ink); display: grid; place-items: center; }
 button.st-leaf { cursor: pointer; } .st-leaf.st-A { background: hsl(212 85% 60% / .2); border-color: hsl(212 60% 50% / .6); } .st-leaf.st-B { background: hsl(330 80% 60% / .18); border-color: hsl(330 55% 50% / .6); } .st-leaf.st-C { background: hsl(150 60% 45% / .2); border-color: hsl(150 45% 40% / .6); }
 .st-leaf.st-num { font-style: normal; } .st-leaf.picked { box-shadow: 0 0 0 3px var(--ink); } .st-line { font-size: 1.15rem; min-height: 1.6em; } .st-val { font-weight: 700; } .st-note { min-height: 2.6em; max-width: 60ch; } .st-note.st-warn { color: var(--ink); font-weight: 600; }
-.coefform { display: inline-grid; box-sizing: content-box; overflow: hidden; transition: width .3s ease; padding: 8px 12px; border-radius: 11px; border: 1.5px solid hsl(var(--h, 230) 45% 50% / .6); background: hsl(var(--h, 230) 60% 50% / .07); font-size: 1.25rem; cursor: pointer; }
+.coefform { display: inline-block; padding: 8px 12px 4px; border-radius: 11px; border: 1.5px solid hsl(var(--h, 230) 45% 50% / .6); background: hsl(var(--h, 230) 60% 50% / .07); font-size: 1.25rem; cursor: pointer; white-space: nowrap; transition: opacity .11s ease; } .coefform.swap { opacity: .15; }
+.coefpips { display: inline-flex; gap: 5px; align-items: center; } .coefpips i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); opacity: .35; } .coefpips i.on { opacity: 1; background: var(--ink); }
 .coefsvg { display: block; margin-left: 10px; max-width: 100%; height: auto; } .coefnode { fill: var(--paper); stroke: var(--ink); stroke-width: 2; } .coefnode.leaf { stroke: hsl(212 60% 50%); fill: hsl(212 85% 60% / .15); } .coefnode.inner { stroke-dasharray: 4 3; } .coeflab { font: 600 14px ui-sans-serif, system-ui, sans-serif; fill: var(--ink); } .coefedge { fill: none; stroke: var(--line); stroke-width: 2; }
 .coefruby { font: 500 10.5px ui-sans-serif, system-ui, sans-serif; fill: var(--muted); letter-spacing: .02em; } .coefdot { font: 700 22px ui-sans-serif, system-ui, sans-serif; fill: var(--ink); }
 .vcell.focus { box-shadow: 0 0 0 3px var(--ink); } .vcell.hit b::after { content: " ✓"; font-size: .7em; }
@@ -278,10 +279,6 @@ button.st-leaf { cursor: pointer; } .st-leaf.st-A { background: hsl(212 85% 60% 
 .vcell span { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 2px; font-size: .68rem; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .vword { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; min-height: 58px; padding-bottom: 16px; } .vwordname { font-size: 1.3rem; font-weight: 600; margin-right: 6px; }
 .vpick { font: inherit; padding: 6px 8px; border-radius: 9px; border: 1.5px solid var(--line); background: var(--paper); color: var(--ink); max-width: 100%; }
-.cf-closed, .cf-open { grid-area: 1 / 1; justify-self: start; white-space: nowrap; transition: opacity .18s ease; } .cf-open { display: inline-flex; align-items: center; opacity: 0; }
-.coefform.together .cf-open { opacity: 1; } .coefform.together .cf-closed { opacity: 0; }
-.cf-dot { display: inline-block; max-width: 0; opacity: 0; margin: 0; overflow: hidden; transition: max-width .26s ease, opacity .26s ease, margin .26s ease; } .coefform.open .cf-dot { max-width: 1em; opacity: 1; margin: 0 .3em; }
-.cf-x { opacity: 0; transition: opacity .26s ease; } .coefform.open .cf-x { opacity: 1; }
 .hexlab.sel { text-decoration: underline; text-decoration-thickness: 3px; font-weight: 800; }
 .vtrace { position: absolute; inset: -34px; width: calc(100% + 68px); height: calc(100% + 68px); pointer-events: none; }
 .vdot { position: absolute; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; background: var(--ink); opacity: .6; pointer-events: none; }
@@ -3190,23 +3187,30 @@ if (typeof document !== 'undefined') (() => {
   // factorials fade in. Closing runs the same way back. A scroll notch switches between factorials and values.
   const coefFigure = spec => {
     const parts = (spec.match(/\d+/g) || ['3', '2', '2']).map(Number).slice(0, 4), N = parts.reduce((p, c) => p + c, 0), k = parts.length, el = $('div', 'figwrap coeffig');
-    const form = $('div', 'coefform'), closed = $('span', 'cf-closed'), opened = $('span', 'cf-open'), tree = $('div', 'coeftree'), note = $('div', 'quiet'), bar = $('div', 'figbar'); form.append(closed, opened);
-    let state = 0, rot = 0, num = false, timer = 0, wC = 0, wO = 0;   // state: 0 closed, 1 together, 2 open
+    const form = $('div', 'coefform'), tree = $('div', 'coeftree'), note = $('div', 'quiet'), bar = $('div', 'figbar'), pips = $('span', 'coefpips');
+    // A path with the fused coefficient as its origin (sprout A). With k parts it has 2(k - 2) steps after the origin:
+    // first each inner node is drawn out of the node above it, one per step, until every node is two-way (the tree nests);
+    // then, from the deepest inner node back up, each one splits into a leaf of the tree above and the root of its own tree,
+    // which settles beside the others as one more factor. `m` counts the inner nodes drawn out, `f` the ones split.
+    const LAST = 2 * Math.max(0, k - 2); let state = 0, rot = 0;
     const fact = m => (m < 2 ? 1 : m * fact(m - 1)), HUE = ['#b45309', '#7c3aed'];
-    // The tree has three presentations, walked in step with the box: all leaves under the root (closed); each inner
-    // node drawn out of the root, making a nested two-way tree (together); and the tree split at every inner node
-    // into two-way trees standing side by side as a product, the inner node appearing as a leaf of one and the root of the next (open).
     const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg'), NW = 38, NH = 26, DX = 34, DY = 56, VAL = ['', '', 'dyadic', 'triadic', 'tetradic', 'pentadic']; svg.setAttribute('class', 'coefsvg'); tree.append(svg);
     let model = null, pos = null, anim = 0;
+    const split = st => { const m = Math.min(st, k - 2), f = Math.max(0, st - (k - 2)); return { m, f, u: m - f }; };
     const layout = st => {
-      const { o } = model, L = {}, x0 = 0;
-      if (st === 0) { L.R = [x0, 0, 1]; o.forEach((_, i) => { L['L' + i] = [x0 + (i - (k - 1) / 2) * (NW + 14), DY, 1]; }); for (let d = 1; d < k - 1; d++) { L['A' + d] = [x0, 0, 0]; L['B' + d] = [x0, 0, 0]; } L.lab = [[x0, VAL[k] || k + '-adic']]; L.dots = []; }
-      else if (st === 1) { L.R = [x0, 0, 1]; L.lab = [[x0, VAL[2]]]; for (let d = 0; d < k - 1; d++) { const px = x0 + d * DX, py = d * DY; L['L' + d] = [px - DX, py + DY, 1]; if (d < k - 2) { L['A' + (d + 1)] = [px + DX, py + DY, 1]; L['B' + (d + 1)] = [px + DX, py + DY, 1]; } else L['L' + (k - 1)] = [px + DX, py + DY, 1]; } L.dots = []; }
-      else { const W = 2 * DX + NW + 30; L.dots = []; L.lab = []; for (let d = 0; d < k - 1; d++) { const cx = x0 + d * W; if (d) L['B' + d] = [cx, 0, 1]; else L.R = [cx, 0, 1]; L.lab.push([cx, VAL[2]]); L['L' + d] = [cx - DX, DY, 1]; if (d < k - 2) { L['A' + (d + 1)] = [cx + DX, DY, 1]; L.dots.push(cx + W / 2); } else L['L' + (k - 1)] = [cx + DX, DY, 1]; } }
+      const { m, u } = split(st), L = { lab: [], dots: [] };
+      for (let d = 0; d <= u; d++) {
+        const px = d * DX, py = d * DY; if (d) { L['A' + d] = [px, py, 1]; L['B' + d] = [px, py, 1]; } else L.R = [px, py, 1];
+        if (d < u) { L['L' + d] = [px - DX, py + DY, 1]; L.lab.push([px, VAL[2], py]); continue; }
+        if (m < k - 2) { const n = k - u; for (let j = 0; j < n; j++) L['L' + (u + j)] = [px + (j - (n - 1) / 2) * (NW + 14), py + DY, 1]; for (let e = u + 1; e <= k - 2; e++) { L['A' + e] = [px, py, 0]; L['B' + e] = [px, py, 0]; } L.lab.push([px, VAL[n] || n + '-adic', py]); }
+        else { L['L' + u] = [px - DX, py + DY, 1]; L[u < k - 2 ? 'A' + (u + 1) : 'L' + (k - 1)] = [px + DX, py + DY, 1]; L.lab.push([px, VAL[2], py]); }
+      }
+      let right = (m < k - 2 ? u * DX + ((k - u - 1) / 2) * (NW + 14) : (u + 1) * DX) + NW / 2;
+      for (let d = u + 1; d <= k - 2 && m === k - 2; d++) { const cx = right + 34 + NW / 2 + DX; L.dots.push(right + 17); L['B' + d] = [cx, 0, 1]; L['L' + d] = [cx - DX, DY, 1]; L[d < k - 2 ? 'A' + (d + 1) : 'L' + (k - 1)] = [cx + DX, DY, 1]; L.lab.push([cx, VAL[2], 0]); right = cx + DX + NW / 2; }
       return L;
     };
     const paint = P => {
-      const { o, rest } = model, keys = Object.keys(P).filter(q => Array.isArray(P[q]) && q !== 'lab' && q !== 'dots'), xs = keys.map(q => P[q][0]), ys = keys.map(q => P[q][1]), minX = Math.min(...xs) - NW / 2 - 26, maxX = Math.max(...xs) + NW / 2 + 26, maxY = Math.max(...ys) + NH / 2 + 6;
+      const { o, rest } = model, keys = Object.keys(P).filter(q => Array.isArray(P[q]) && q !== 'lab' && q !== 'dots'), xs = keys.map(q => P[q][0]), ys = keys.map(q => P[q][1]), minX = Math.min(...xs) - NW / 2 - 26, maxX = Math.max(...xs) + NW / 2 + 26 + ((P.lab || []).some(l => l[2] > 0) ? 34 : 0), maxY = Math.max(...ys) + NH / 2 + 6;
       svg.setAttribute('viewBox', minX + ' -34 ' + (maxX - minX) + ' ' + (maxY + 34)); svg.style.width = (maxX - minX) * 1.15 + 'px'; svg.replaceChildren();
       const edge = (a, b) => { if (!P[a] || !P[b]) return; const [px, py] = P[a], [cx, cy, op] = P[b], y1 = py + NH / 2, y2 = cy - NH / 2, my = (y1 + y2) / 2, dx = cx - px, r = Math.min(7, Math.abs(dx) / 2, (y2 - y1) / 2), s = Math.sign(dx), e = document.createElementNS(ns, 'path'); if (y2 - y1 < 2) return;
         e.setAttribute('d', Math.abs(dx) < 1 ? 'M' + px + ' ' + y1 + 'V' + y2 : 'M' + px + ' ' + y1 + 'V' + (my - r) + 'Q' + px + ' ' + my + ' ' + (px + s * r) + ' ' + my + 'H' + (cx - s * r) + 'Q' + cx + ' ' + my + ' ' + cx + ' ' + (my + r) + 'V' + y2); e.setAttribute('class', 'coefedge'); e.style.opacity = op; svg.append(e); };
@@ -3214,7 +3218,7 @@ if (typeof document !== 'undefined') (() => {
       const node = (key, text, cls, col) => { if (!P[key]) return; const [x, y, op] = P[key], g = document.createElementNS(ns, 'g'), rc = document.createElementNS(ns, 'rect'), t = document.createElementNS(ns, 'text'); g.style.opacity = op; rc.setAttribute('x', x - NW / 2); rc.setAttribute('y', y - NH / 2); rc.setAttribute('width', NW); rc.setAttribute('height', NH); rc.setAttribute('rx', 8); rc.setAttribute('class', cls); if (col) rc.style.stroke = col; t.setAttribute('x', x); t.setAttribute('y', y + 5); t.setAttribute('text-anchor', 'middle'); t.setAttribute('class', 'coeflab'); t.textContent = text; if (col) t.style.fill = col; g.append(rc, t); svg.append(g); };
       for (let d = 1; d < k - 1; d++) { node('A' + d, rest[d - 1], 'coefnode inner', HUE[(d - 1) % 2]); node('B' + d, rest[d - 1], 'coefnode inner', HUE[(d - 1) % 2]); }
       o.forEach((v, i) => node('L' + i, v, 'coefnode leaf')); node('R', N, 'coefnode root');
-      (P.lab || []).forEach(([x, w]) => { const t = document.createElementNS(ns, 'text'); t.setAttribute('x', x); t.setAttribute('y', -NH / 2 - 7); t.setAttribute('text-anchor', 'middle'); t.setAttribute('class', 'coefruby'); t.textContent = w; t.style.opacity = P.labOp === undefined ? 1 : P.labOp; svg.append(t); });
+      (P.lab || []).forEach(([x, w, y]) => { const t = document.createElementNS(ns, 'text'), side = y > 0; t.setAttribute('x', side ? x + NW / 2 + 5 : x); t.setAttribute('y', side ? y - NH / 2 - 3 : -NH / 2 - 7); t.setAttribute('text-anchor', side ? 'start' : 'middle'); t.setAttribute('class', 'coefruby'); t.textContent = w; t.style.opacity = P.labOp === undefined ? 1 : P.labOp; svg.append(t); });
       (P.dots || []).forEach(x => { const t = document.createElementNS(ns, 'text'); t.setAttribute('x', x); t.setAttribute('y', DY / 2 + 8); t.setAttribute('text-anchor', 'middle'); t.setAttribute('class', 'coefdot'); t.textContent = '·'; t.style.opacity = P.labOp === undefined ? 1 : P.labOp; svg.append(t); });
     };
     const treeTo = (st, jump) => {
@@ -3224,25 +3228,27 @@ if (typeof document !== 'undefined') (() => {
         Object.keys(to).forEach(q => { if (q === 'lab' || q === 'dots') return; const a = from[q] || to[q], b = to[q]; P[q] = [a[0] + (b[0] - a[0]) * e, a[1] + (b[1] - a[1]) * e, a[2] + (b[2] - a[2]) * e]; });
         pos = P; paint(P); if (u2 < 1) anim = requestAnimationFrame(tick); else { pos = to; paint(to); } }; tick();
     };
-    const kx = t => (typeof katex !== 'undefined' ? katex.renderToString(t, { throwOnError: false, strict: false, trust: true }) : tex(t.replace(/\\htmlClass\{[^}]*\}/g, '')));
-    const show = () => { treeTo(state); form.classList.toggle('together', state >= 1); form.classList.toggle('open', state === 2); form.style.width = (state ? wO : wC) + 'px'; };
-    const go = to => { clearTimeout(timer); if (to === state) return; state += to > state ? 1 : -1; show(); if (state !== to) timer = setTimeout(() => go(to), state === 1 ? 190 : 270); };
-    const draw = () => {
-      const o = parts.map((_, i) => parts[(i + rot) % k]), rest = o.map((_, i) => o.slice(i + 1).reduce((p, c) => p + c, 0));   // rest[i]: what is left after part i is split off
-      const inner = i => '\\htmlClass{cf-x}{\\textcolor{' + HUE[i % 2] + '}{' + rest[i] + '!}}';
-      const vals = o.slice(0, k - 1).map((p, i) => fact(i ? rest[i - 1] : N) / (fact(p) * fact(rest[i]))), total = vals.reduce((p, c) => p * c, 1);
-      const factors = o.slice(0, k - 1).map((p, i) => '\\frac{' + (i ? inner(i - 1) : N + '!') + '}{' + p + '!\\,' + (i < k - 2 ? inner(i) : o[k - 1] + '!') + '}');
-      closed.innerHTML = kx(num ? String(total) : '\\frac{' + N + '!}{' + parts.map(p => p + '!').join('\\,') + '}');
-      opened.replaceChildren(...(num ? vals.map(String) : factors).flatMap((f, i) => { const s = $('span', 'cf-piece', kx(f)); return i ? [$('span', 'cf-dot', '·'), s] : [s]; }));
-      // widths of the two forms, measured from copies so that the box can ease between them
-      const probe = $('div', 'coefform together open'); probe.style.cssText = 'position:absolute;visibility:hidden;transition:none;width:auto'; const pc = closed.cloneNode(true), po = opened.cloneNode(true); probe.append(pc, po); el.append(probe);
-      [...probe.querySelectorAll('*')].forEach(e => { e.style.transition = 'none'; }); wC = Math.ceil(pc.getBoundingClientRect().width) + 2; wO = Math.ceil(po.getBoundingClientRect().width) + 2; probe.remove(); show();
-      model = { o, rest }; treeTo(state, true);
-      note.textContent = 'Point at the coefficient to open it into a product of two-part coefficients: the root on top of the first, each inner node once below and once on top, the leaves underneath. Scroll one notch on it to switch between factorials and values.';
+    const kx = t => (typeof katex !== 'undefined' ? katex.renderToString(t, { throwOnError: false, strict: false, trust: true }) : tex(t));
+    // The same step written as a formula. One tree is one fraction: drawing an inner node out writes its factorial above and below
+    // (it cancels, and is colored to say so); splitting it breaks the fraction there. Each fraction's value rides underneath.
+    const formula = st => {
+      const { o, rest } = model, { m, u } = split(st), F = x => x + '!', C = d => '\\textcolor{' + HUE[(d - 1) % 2] + '}{' + rest[d - 1] + '!}', fr = [];
+      const top = [F(N)], bot = [], botv = []; for (let d = 1; d <= u; d++) top.push(C(d));
+      for (let d = 0; d < u; d++) { bot.push(F(o[d]), C(d + 1)); botv.push(fact(o[d])); }
+      if (m < k - 2) for (let j = u; j < k; j++) { bot.push(F(o[j])); botv.push(fact(o[j])); } else { bot.push(F(o[u])); botv.push(fact(o[u])); if (u < k - 2) { bot.push(C(u + 1)); botv.push(fact(rest[u])); } else { bot.push(F(o[k - 1])); botv.push(fact(o[k - 1])); } }
+      fr.push(['\\frac{' + top.join('\\,') + '}{' + bot.join('\\,') + '}', fact(N) / botv.reduce((p, c) => p * c, 1)]);
+      for (let d = u + 1; d <= k - 2 && m === k - 2; d++) fr.push(['\\frac{' + C(d) + '}{' + F(o[d]) + '\\,' + (d < k - 2 ? C(d + 1) : F(o[k - 1])) + '}', fact(rest[d - 1]) / (fact(o[d]) * fact(rest[d]))]);
+      return fr.map(([t, v]) => '\\underbrace{' + t + '}_{' + Math.round(v) + '}').join('\\cdot');
     };
-    form.onmouseenter = () => go(2); form.onmouseleave = () => go(0); form.onclick = () => go(state === 2 ? 0 : 2);
-    form.addEventListener('wheel', ev => { ev.preventDefault(); if (Math.abs(ev.deltaY) < 4 || form._lock) return; form._lock = true; setTimeout(() => { form._lock = false; }, 250); num = !num; draw(); }, { passive: false });
-    const other = btn('btn', 'Another order'); other.onclick = () => { rot = (rot + 1) % k; draw(); go(2); }; const nb = btn('btn', 'Factorials or values'); nb.onclick = () => { num = !num; draw(); }; bar.append(other, nb);
+    const WORD = st => { const { m, f } = split(st); return !st ? 'One coefficient: every part hangs from the root.' : !f ? 'Inner node ' + m + ' is drawn out of the node above it. Its factorial is written above and below, so nothing has changed.' : 'The deepest unsplit inner node splits: a leaf of the tree above, and the root of its own two-part coefficient.'; };
+    const show = jump => { treeTo(state, jump); form.classList.add('swap'); clearTimeout(form._t); form._t = setTimeout(() => { form.innerHTML = kx(formula(state)); form.classList.remove('swap'); }, jump ? 0 : 110);
+      pips.replaceChildren(...Array.from({ length: LAST + 1 }, (_, i) => $('i', i === state ? 'on' : ''))); note.textContent = WORD(state) + ' Scroll on the figure to walk the path one step at a time; the number under each fraction is its value.'; };
+    const step = d => { const to = Math.max(0, Math.min(LAST, state + d)); if (to === state) return false; state = to; show(); return true; };
+    const draw = () => { const o = parts.map((_, i) => parts[(i + rot) % k]), rest = o.map((_, i) => o.slice(i + 1).reduce((p, c) => p + c, 0)); model = { o, rest }; show(true); };
+    const wheel = ev => { if (Math.abs(ev.deltaY) < 4) return; const d = ev.deltaY > 0 ? 1 : -1; if (state + d < 0 || state + d > LAST) return; ev.preventDefault(); if (el._lock) return; el._lock = true; setTimeout(() => { el._lock = false; }, 260); step(d); };
+    form.addEventListener('wheel', wheel, { passive: false }); tree.addEventListener('wheel', wheel, { passive: false });
+    form.onclick = () => { if (!step(1)) { state = 0; show(); } };
+    const back = btn('btn', '←'), fwd = btn('btn', '→'), other = btn('btn', 'Another order'); back.onclick = () => step(-1); fwd.onclick = () => step(1); other.onclick = () => { rot = (rot + 1) % k; draw(); }; bar.append(back, pips, fwd, other);
     el.append(form, tree, note, bar); setTimeout(draw, 0); return { el };
   };
   // The whole number line of an angle wound around a center. Pointing along the winding picks one real angle;
@@ -3423,7 +3429,7 @@ if (typeof document !== 'undefined') (() => {
     // The keystrokes as a row of shallow imprints, one per thing to do: plain typing is one run of calculator type,
     // a control key is one box, and a chord (2nd then another key) sits in a container named for what it makes.
     const K = (label, cls) => ({ k: label, cls: cls || '' }), T = s => ({ s }), CH = (name, ...ks) => ({ name, ks });
-    const keyHtml = t => (t.s !== undefined ? '<span class="ctyped">' + esc(t.s) + '</span>' : t.ks ? '<i>' + esc(t.name) + '</i>' + t.ks.map(keyHtml).join('') : '<kbd class="' + t.cls + '">' + t.k + '</kbd>');
+    const keyHtml = t => (t.s !== undefined ? '<span class="ctyped">' + esc(t.s) + '</span>' : t.ks ? t.ks.map(keyHtml).join('') + '<i>' + esc(t.name) + '</i>' : '<kbd class="' + t.cls + '">' + t.k + '</kbd>');
     const keysHtml = list => list.reduce((a, t) => { const l = a[a.length - 1]; if (l && l.s !== undefined && t.s !== undefined) l.s += t.s; else a.push(Object.assign({}, t)); return a; }, []).map(t => '<span class="cslot' + (t.ks ? ' cchord" title="Two keys, one after the other, make ' + esc(t.name) : '') + '">' + keyHtml(t) + '</span>').join('');
     const draw = () => {
       tray.replaceChildren(...tiles.map(t => tileEl(t))); top.replaceChildren(); bot.replaceChildren(); placed.forEach((w, i) => (w.z === 'num' ? top : bot).append(tileEl(w.t, w, i)));
