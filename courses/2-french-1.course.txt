@@ -6,6 +6,7 @@
 !! spelling with accents. None of the wording has been reviewed.
 
 ## Sounds   @fr.sounds
+   standard: MOD.CLL.NL.1.1
    can: Hear and produce the core French vowels.
 
 ### Core vowels   @fr.sounds.vowels
@@ -22,6 +23,7 @@
    can: Recall French words through their English relatives, and spell them exactly.
 
 ### Verbs with English relatives   @fr.words.verbs
+    standard: MOD.COD.NL.1.2 MOD.CLL.NH.2.3
     can: Use an English relative to recall a French verb.
 
 - éviter   @fr.words.verbs.eviter
@@ -52,6 +54,7 @@
    can: Build short French sentences and say why each word stands where it does.
 
 ### Small words around the verb   @fr.sent.small
+    standard: MOD.CLL.NM.1.1 MOD.CLL.NH.1.2
     can: Place object pronouns, contract à with the article, and ask what-questions.
 
 - The pronoun goes before the verb   @fr.sent.small.clitic
@@ -93,6 +96,7 @@
     why: Either form is accepted: Qu'est-ce qu'il prend ? or Que prend-il ?
 
 - A line from a film, taken apart   @fr.sent.small.film
+  standard: MOD.CLL.NM.2.1
   can: Find the verbs, pronouns and tenses in a short spoken line.
   bite: In Ratatouille, Rémy scolds his brother: "Émile, tu leur as dit ? C'est ça que j'avais dit de ne pas faire !" Word for word: "Émile, you told them? That is what I had said not to do!" There are four verbs. "As dit" is dire in the passé composé: something done and finished. "Est" is être in the present. "Avais dit" is dire again, one step further back, in the plus-que-parfait: what had already been said before the telling. "Faire" is an infinitive, and its negation "ne pas" stands together in front of it. The pronouns are tu, leur ("to them", before the verb), ce (in c'est), ça, que and je.
   !! The worksheet prompt has "tu leur a dit"; the standard spelling "as" is used here. Context wording is from memory of the film: check it.
@@ -123,6 +127,7 @@
     = fr{say.perf 2s recipient=3p}
 
 ## Shared roots   @fr.roots
+   standard: MOD.COD.NL.1.2 MOD.CLL.NH.2.3
    can: Use the Greek and Latin roots that English and French share to recognize and spell words.
    !! From Andrew's conceptual checks. He wants these highlighted: the close lexical relationship between English and French is the lever for the whole course.
 

@@ -90,9 +90,11 @@ main { max-width: 900px; margin: 0 auto; padding: 16px 16px 40px; }
 .lcd { background: linear-gradient(#c9d3bb, #bcc8ad); border-radius: 4px; padding: 8px 10px; min-width: 250px; min-height: 62px; font: 700 19px/1.25 'Lucida Console', 'DejaVu Sans Mono', Menlo, Consolas, monospace; letter-spacing: .06em; color: #1b241c; box-shadow: inset 0 0 6px rgb(0 0 0 / .35); overflow-x: auto; white-space: nowrap; }
 .lcdout { text-align: right; min-height: 1.25em; } .lcdcur { display: inline-block; width: .6em; height: 1em; background: #1b241c; vertical-align: -2px; margin-left: 1px; animation: lcdblink 1.1s steps(1) infinite; } @keyframes lcdblink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .lcdcur { animation: none; } }
-.ckeys { display: flex; flex-wrap: wrap; gap: 5px 6px; align-items: center; max-width: 460px; }
-.ctyped { font: 700 17px/1 'Lucida Console', 'DejaVu Sans Mono', Menlo, Consolas, monospace; letter-spacing: .06em; color: #dfe8d2; padding: 0 1px; } .cplus { font: 400 12px/1 ui-sans-serif, system-ui, sans-serif; color: #8d939e; }
-.cchord { display: inline-flex; align-items: center; gap: 5px; padding: 3px 5px 5px; border: 1.5px solid #6b7079; border-radius: 9px; } .cchord i { font: 700 11px/1 'Lucida Console', 'DejaVu Sans Mono', monospace; font-style: normal; color: #9fc3ee; margin-right: 1px; } .ckeys kbd { font: 700 11px/1 ui-sans-serif, system-ui, sans-serif; min-width: 26px; padding: 6px 5px; text-align: center; border-radius: 5px; background: #4a4d55; color: #f2f2f2; box-shadow: 0 2px 0 #1b1c20; }
+.ckeys { display: flex; flex-wrap: wrap; gap: 6px; align-items: stretch; max-width: 480px; }
+.cslot { display: inline-flex; align-items: center; gap: 4px; padding: 5px 6px 6px; border-radius: 8px; background: rgb(0 0 0 / .22); box-shadow: inset 0 1px 3px rgb(0 0 0 / .55), 0 1px 0 rgb(255 255 255 / .05); }
+.ctyped { font: 700 17px/1 'Lucida Console', 'DejaVu Sans Mono', Menlo, Consolas, monospace; letter-spacing: .06em; color: #dfe8d2; padding: 0 2px; }
+.cchord i { font: 700 11px/1 'Lucida Console', 'DejaVu Sans Mono', monospace; font-style: normal; color: #9fc3ee; margin-right: 2px; }
+.ckeys kbd { font: 700 11px/1 ui-sans-serif, system-ui, sans-serif; min-width: 26px; padding: 6px 5px; text-align: center; border-radius: 5px; background: #4a4d55; color: #f2f2f2; box-shadow: 0 2px 0 #1b1c20; }
 .ckeys kbd.num { background: #e9e9e4; color: #1b1c20; } .ckeys kbd.op { background: #8d939e; color: #101114; } .ckeys kbd.second { background: #3f7fc4; } .ckeys kbd.enter { background: #5b6068; padding: 6px 9px; } .ckeys .quiet { color: #b9bcc4; }
 .pbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
 .psheet { background: #fff; color: #000; border: 1px solid #999; border-radius: 4px; padding: 26px 30px; font: 15px/1.5 Georgia, 'Times New Roman', serif; max-width: 780px; }
@@ -3418,11 +3420,11 @@ if (typeof document !== 'undefined') (() => {
       return b; };
     [top, bot, tray].forEach(z => { z.ondragover = ev => { ev.preventDefault(); z.classList.add('over'); }; z.ondragleave = () => z.classList.remove('over');
       z.ondrop = ev => { ev.preventDefault(); z.classList.remove('over'); if (!drag) return; if (z === tray) { if (drag.from !== undefined) placed.splice(drag.from, 1); } else if (drag.from !== undefined) placed[drag.from].z = z.dataset.z; else placed.push({ t: drag.tile, z: z.dataset.z, p: 1 }); drag = null; draw(); }; });
-    // The keystrokes as a list of things to do, joined by plus signs: plain typing is one run of calculator type,
+    // The keystrokes as a row of shallow imprints, one per thing to do: plain typing is one run of calculator type,
     // a control key is one box, and a chord (2nd then another key) sits in a container named for what it makes.
     const K = (label, cls) => ({ k: label, cls: cls || '' }), T = s => ({ s }), CH = (name, ...ks) => ({ name, ks });
-    const keyHtml = t => (t.s !== undefined ? '<span class="ctyped">' + esc(t.s) + '</span>' : t.ks ? '<span class="cchord" title="Two keys, one after the other, make ' + esc(t.name) + '"><i>' + esc(t.name) + '</i>' + t.ks.map(keyHtml).join('<b class="cplus">+</b>') + '</span>' : '<kbd class="' + t.cls + '">' + t.k + '</kbd>');
-    const keysHtml = list => list.reduce((a, t) => { const l = a[a.length - 1]; if (l && l.s !== undefined && t.s !== undefined) l.s += t.s; else a.push(Object.assign({}, t)); return a; }, []).map(keyHtml).join('<b class="cplus">+</b>');
+    const keyHtml = t => (t.s !== undefined ? '<span class="ctyped">' + esc(t.s) + '</span>' : t.ks ? '<i>' + esc(t.name) + '</i>' + t.ks.map(keyHtml).join('') : '<kbd class="' + t.cls + '">' + t.k + '</kbd>');
+    const keysHtml = list => list.reduce((a, t) => { const l = a[a.length - 1]; if (l && l.s !== undefined && t.s !== undefined) l.s += t.s; else a.push(Object.assign({}, t)); return a; }, []).map(t => '<span class="cslot' + (t.ks ? ' cchord" title="Two keys, one after the other, make ' + esc(t.name) : '') + '">' + keyHtml(t) + '</span>').join('');
     const draw = () => {
       tray.replaceChildren(...tiles.map(t => tileEl(t))); top.replaceChildren(); bot.replaceChildren(); placed.forEach((w, i) => (w.z === 'num' ? top : bot).append(tileEl(w.t, w, i)));
       if (!top.children.length) top.append($('span', 'quiet', placed.length ? '1' : 'above the bar')); if (!bot.children.length) bot.append($('span', 'quiet', 'below the bar'));
@@ -3742,7 +3744,7 @@ if (typeof document !== 'undefined') (() => {
       if (e.root.dataset.mode === 'check') { if (!e.faced) { e.faced = true; mountFace(e); } return; }
       if (e.root.dataset.mode === 'paper') { if (!e.papered) { e.papered = true; mountPaper(e); } return; }
       if (e.built) return; e.built = true;
-      const stdRow = () => { if (!n.standards || !n.standards.length) return null; const l = $('div', 'links', '<span class="quiet">Standards</span>'), cat = typeof STANDARDS !== 'undefined' ? STANDARDS : {}; n.standards.forEach(c => { const d = $('details', 'std', '<summary class="chip">' + esc(c) + '</summary><div class="quiet">' + (cat[c] ? esc(cat[c][1]) + ' <i>' + esc(cat[c][0]) + '</i>' : 'Not in the catalog.') + '</div>'); l.append(d); }); return l; };
+      const stdRow = () => { const codes = []; for (let a = n; a; a = isLeaf(n) ? a.parent : null) (a.standards || []).forEach(c => { if (!codes.includes(c)) codes.push(c); }); if (!codes.length) return null; const l = $('div', 'links', '<span class="quiet">Standards</span>'), cat = typeof STANDARDS !== 'undefined' ? STANDARDS : {}; codes.forEach(c => { const d = $('details', 'std', '<summary class="chip">' + esc(c) + '</summary><div class="quiet">' + (cat[c] ? esc(cat[c][1]) + ' <i>' + esc(cat[c][0]) + '</i>' : 'Not in the catalog.') + '</div>'); l.append(d); }); return l; };
       if (isLeaf(n)) {
         e.body.innerHTML = biteHtml(n);
         String(n.figure || '').split(/\s*;;\s*/).filter(Boolean).forEach(f => { const fig = makeFigure(f); if (fig) e.body.append(fig.el); });
