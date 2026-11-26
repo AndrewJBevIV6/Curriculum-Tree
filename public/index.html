@@ -355,6 +355,9 @@ button.st-leaf { cursor: pointer; } .st-leaf.st-A { background: hsl(212 85% 60% 
 .steps { margin: 12px 0 0; padding-left: 22px; display: grid; gap: 12px; } .steps:empty { display: none; }
 .revealed { padding: 10px 12px; border-left: 3px solid var(--good); background: hsl(162 60% 45% / .08); border-radius: 0 10px 10px 0; max-width: 70ch; }
 .after { margin-top: 14px; display: grid; gap: 8px; justify-items: start; } .after:empty { display: none; }
+.verdictrow { display: flex; align-items: center; } .verdictrow .verdict { position: relative; z-index: 1; }
+.resetpill { font: inherit; font-size: .88em; font-weight: 600; color: var(--muted); background: hsl(230 12% 50% / .14); border: 0; border-radius: 0 999px 999px 0; padding: 3px 12px 3px 22px; margin-left: -14px; cursor: pointer; } .resetpill:hover { color: var(--ink); background: hsl(230 12% 50% / .24); }
+.node.fresh > .card, .node.freshin > .card { position: relative; } .node.fresh > .card::before, .node.freshin > .card::before { content: "\2192"; position: absolute; left: -7px; top: -5px; font: 700 13px/1 ui-sans-serif, system-ui, sans-serif; color: #c2410c; } .node.freshin > .card::before { opacity: .45; }
 .verdict { font-weight: 700; padding: 3px 12px; border-radius: 999px; }
 .verdict.ok { color: var(--good); background: hsl(162 60% 45% / .14); } .verdict.no { color: var(--notyet); background: hsl(40 90% 50% / .15); }
 .why { margin: 0; max-width: 70ch; line-height: 1.8; }
@@ -2696,6 +2699,9 @@ if (typeof document !== 'undefined') (() => {
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const HUES = [218, 172, 128, 28, 282, 342, 60, 200];
   const WORD = { ok: 'Mastered', no: 'Not yet mastered' };
+  // Development aid: nodes whose features are new or changed in the current pass. Each gets a small arrow off the left end of its
+  // title card, and so does every node on the way down to it. Reset this list at the start of each pass.
+  const FRESH = ['@m3.binom.pascal.multi', '@m3.simplex.lattice.tab3', '@table.path.one'];
   const prefs = { auto: false, save: () => {} };   // set from saved state when a course starts
 
   // ---------- rich text: [boxed givens], {term :: note}, $maths$ ----------
@@ -3186,7 +3192,7 @@ if (typeof document !== 'undefined') (() => {
   // Opening: the short form gives way to the fractions standing together, then they part and the cancelling
   // factorials fade in. Closing runs the same way back. A scroll notch switches between factorials and values.
   const coefFigure = spec => {
-    const parts = (spec.match(/\d+/g) || ['3', '2', '2']).map(Number).slice(0, 4), N = parts.reduce((p, c) => p + c, 0), k = parts.length, el = $('div', 'figwrap coeffig');
+    const parts = ((spec.replace(/^coef\s*/, '').match(/^[\d\s]+/) || [''])[0].match(/\d+/g) || ['3', '2', '2']).map(Number).slice(0, 4), N = parts.reduce((p, c) => p + c, 0), k = parts.length, el = $('div', 'figwrap coeffig');
     const form = $('div', 'coefform'), tree = $('div', 'coeftree'), note = $('div', 'quiet'), bar = $('div', 'figbar'), pips = $('span', 'coefpips');
     // A path with the fused coefficient as its origin (sprout A). With k parts it has 2(k - 2) steps after the origin:
     // first each inner node is drawn out of the node above it, one per step, until every node is two-way (the tree nests);
@@ -3714,10 +3720,10 @@ if (typeof document !== 'undefined') (() => {
     const biteHtml = n => '<p class="bite">' + rich(n.bite) + '</p>';
     const build = n => {
       if (els[n.id]) return els[n.id];
-      const root = $('section', 'node d' + n.level + (isLeaf(n) ? ' leaf' : '')); root.dataset.id = n.id; root.style.setProperty('--h', n.hue);
+      const root = $('section', 'node d' + n.level + (isLeaf(n) ? ' leaf' : '') + (FRESH.includes(n.id) ? ' fresh' : FRESH.some(f => f.startsWith(n.id + '.')) || (n.level <= 0 && FRESH.some(f => course.nodes[f] && (function up(a) { return a && (a === n || up(a.parent)); })(course.nodes[f]))) ? ' freshin' : '')); root.dataset.id = n.id; root.style.setProperty('--h', n.hue);
       const card = $('div', 'card'); card.tabIndex = 0; card.setAttribute('role', 'button'); card.setAttribute('aria-expanded', 'false');
       const mark = markEl();
-      const txt = $('div', 'txt', '<div class="title">' + esc(n.title) + '</div>' + (n.can ? '<div class="can">' + esc(n.can) + '</div>' : ''));
+      const txt = $('div', 'txt', '<div class="title">' + esc(n.title) + '</div>' + (n.can ? '<div class="can">' + (/[$`]/.test(n.can) ? rich(n.can) : esc(n.can)) + '</div>' : ''));
       const acts = $('div', 'acts');
       const bf = btn('act focus', 'Focus'); bf.title = 'Make this the top of the screen (F)';
       const seg = $('div', 'seg'); seg.setAttribute('role', 'radiogroup'); seg.setAttribute('aria-label', 'Side of the card');
@@ -3849,7 +3855,7 @@ if (typeof document !== 'undefined') (() => {
       const addBlock = (item, slot, forceFresh) => {
         const t = slot ? slot.t : { ok: null }; if (!slot) tally.push(t); else t.ok = null;
         const block = slot ? slot.block : $('div', 'q'); block.replaceChildren(); block.className = 'q';
-        const inst = Core.instantiate(item, forceFresh || progress.stat(item.id).n > 0);
+        const inst = (slot && slot.inst) || Core.instantiate(item, forceFresh || progress.stat(item.id).n > 0);
         const where = $('div', 'qhead', '<span class="where">' + (item.node === n ? '' : esc(item.node.title)) + '</span>');
         const after = $('div', 'after');
         let settled = false, lastOk = null;
@@ -3870,7 +3876,9 @@ if (typeof document !== 'undefined') (() => {
           (res.credits || []).forEach(c => progress.attempt(c.item, c.node, c.ok, c.answer).forEach(x => touched.add(x)));
           progress.attempt(item.id, item.node.id, res.ok, res.answer).forEach(x => touched.add(x));
           lastOk = res.ok; t.ok = res.ok; save(); paintTally(); refresh([...touched]); block.classList.add(res.ok ? 'ok' : 'no');
-          after.replaceChildren($('div', 'verdict ' + (res.ok ? 'ok' : 'no'), res.ok ? WORD.ok : WORD.no));
+          const vd = $('div', 'verdict ' + (res.ok ? 'ok' : 'no'), res.ok ? WORD.ok : WORD.no); after.replaceChildren(vd);
+          // A miss can be tried again in place: the same question with the same numbers. The miss stays in the record.
+          if (!res.ok) { const rs = btn('resetpill', '\u21ba Reset'); rs.title = 'Clear this question and try it again'; rs.onclick = () => { const again = addBlock(item, { t, block, inst }); if (again && again.focus) again.focus(); paintTally(); }; const vw = $('div', 'verdictrow'); vw.append(vd, rs); after.replaceChildren(vw); }
           if (!res.open) finishItem();
         });
         block.append(where, r.el, after);

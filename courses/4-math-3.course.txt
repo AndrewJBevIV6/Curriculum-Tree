@@ -544,8 +544,8 @@
 
 - Polynomial coefficients   @m3.binom.pascal.multi
   can: Count and weigh the terms of a power of a sum of several terms.
-  bite: In $(A + B + C + D)^5$ each of the five factors contributes one of four letters. A term such as $A^2BCD$ has a polynomial coefficient, the factorial of the total over the factorial of every category: $\frac{5!}{2!\,1!\,1!\,1!}$, a mapping of five factors onto letters with those degrees. A polynomial coefficient is also a product of binomial coefficients, one for each split of a nested two-way tree. Open the one in the figure.
-  figure: coef 3 2 2 The distinct terms are all the ways to share 5 among four exponents, which are the lattice points of a tetrahedron: $\frac{8!}{5!\,3!} = 56$ of them.
+  bite: In $(A + B + C + D)^5$ each of the five factors contributes one of four letters. A term such as $A^2BCD$ has a polynomial coefficient, the factorial of the total over the factorial of every category: $\frac{5!}{2!\,1!\,1!\,1!}$, a mapping of five factors onto letters with those degrees. A polynomial coefficient is also a product of binomial coefficients, one for each split of a nested two-way tree. Open the one in the figure. The distinct terms are all the ways to share 5 among four exponents, which are the lattice points of a tetrahedron: $\frac{8!}{5!\,3!} = 56$ of them.
+  figure: coef 2 1 1 1
   links: @m3.count.slot.map @m3.simplex.lattice.shape
   ? numeric: How many distinct terms does $(A + B + C + D)^5$ have after like terms are collected?
     = 56
