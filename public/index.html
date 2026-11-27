@@ -143,7 +143,7 @@ main { max-width: 900px; margin: 0 auto; padding: 16px 16px 40px; }
 .slots { display: flex; flex-direction: column; min-width: 0; }
 .slotrow { display: flex; align-items: center; gap: 10px; }
 .slotlab { min-width: 3.4em; font-weight: 650; font-variant-numeric: tabular-nums; }
-.slot { min-width: 190px; min-height: 42px; border: 2px dashed var(--line); border-radius: 999px; display: flex; align-items: center; padding: 3px; }
+.slot { min-width: 190px; min-height: 42px; border: 2px dashed var(--line); border-radius: 11px; display: flex; align-items: center; padding: 3px; }
 .slot.ok { border: 2px solid var(--good); } .slot.no { border: 2px solid var(--notyet); }
 .slotrow .ans { font-size: var(--fs-s); font-weight: 600; color: var(--good); }
 .tray { display: flex; flex-wrap: wrap; gap: 8px; min-height: 48px; padding: 7px; border-radius: 12px; background: var(--track); }
@@ -211,7 +211,12 @@ body.hints .t-extensive { background: hsl(268 85% 60% / .2); box-shadow: inset 0
 .figwrap.tablefig { display: grid; gap: 8px; justify-items: start; } .figbar { display: flex; flex-wrap: wrap; gap: 8px; } .figbar .seg { flex-wrap: wrap; }
 .figsvg { width: 100%; max-width: 470px; } .fig.fig.table { width: 100%; max-width: none; height: auto; display: block; }
 .fig.wide.grab { max-width: 520px; }
-.taxis { stroke: var(--muted); stroke-width: 1.4; } .thandle { fill: var(--paper); stroke: var(--ink); stroke-width: 1.6; cursor: grab; touch-action: none; } .thandle:hover { fill: hsl(45 95% 70%); } .taxn { font: 600 9.5px var(--font); fill: var(--muted); } .figsvg svg.table { overflow: visible; touch-action: none; }
+.taxis { stroke: var(--muted); stroke-width: 2; } .tlab.dim { font: 800 14.5px Georgia, 'Times New Roman', serif; letter-spacing: .01em; } .tsh { cursor: ns-resize; }
+.dealgrid { display: grid; grid-template-columns: auto auto; gap: 4px 10px; align-items: center; justify-content: start; font-size: var(--fs-s); }
+.ring { display: inline-flex; flex-direction: column; align-items: center; vertical-align: baseline; padding: 0 7px 1px; margin: 0 1px; border-radius: 7px; border: 1.5px solid hsl(var(--h, 230) 45% 50% / .55); background: hsl(var(--h, 230) 60% 50% / .07); cursor: ns-resize; overflow: hidden; line-height: 1.25; } .ring .rg { display: inline-block; font-weight: 700; } .ring .rl { font-size: .62em; color: var(--muted); line-height: 1.1; letter-spacing: .02em; } .ring:hover, .ring:focus-visible { border-color: hsl(var(--h, 230) 60% 45%); outline: none; box-shadow: 0 0 0 3px hsl(var(--h, 230) 60% 50% / .15); }
+.hexlead { stroke: hsl(262 70% 72%); stroke-width: 9; stroke-linecap: round; opacity: .42; filter: blur(3.5px); pointer-events: none; }
+.arcring { fill: none; stroke: var(--line); stroke-width: 1.2; } .arcpath { fill: none; stroke-width: 5; stroke-linecap: round; } .arcspoke { stroke-width: 1.3; opacity: .7; } .arcth { font: 650 13px var(--font); fill: var(--muted); text-anchor: middle; } .arctd { font: 600 14px var(--font); text-anchor: middle; font-variant-numeric: tabular-nums; } .arctd.held { font-weight: 800; text-decoration: underline; } .figwrap.arcsfig { display: grid; gap: 8px; justify-items: start; } .figwrap.arcsfig > div:nth-child(2) { width: min(100%, 520px); } .figwrap.arcsfig svg.fig { width: 100%; max-width: none; height: auto; display: block; }
+.taxis { stroke: var(--muted); stroke-width: 2; } .thandle { fill: var(--paper); stroke: var(--ink); stroke-width: 1.6; cursor: grab; touch-action: none; } .thandle:hover { fill: hsl(45 95% 70%); } .taxn { font: 650 12px var(--font); fill: var(--muted); } .figsvg svg.table { overflow: visible; touch-action: none; }
 .tedge { stroke: var(--line); stroke-width: 1.2; } .tplane { fill-opacity: .07; stroke-width: 2.2; stroke-linejoin: round; }
 .tlab { font: 600 19px var(--math); } .tlab.sym { font-style: italic; font-size: 22px; } .tlab.unit { font: 600 12.5px var(--font); } .tlab.word { font: 650 12.5px var(--font); } .tlab.word.small { font-size: 10.5px; }
 .figkey2 { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: var(--fs-s); font-weight: 600; } .figkey2 i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; }
@@ -312,7 +317,7 @@ button.st-leaf { cursor: pointer; } .st-leaf.st-A { background: hsl(212 85% 60% 
 .math { font-family: var(--math); font-size: 1.08em; white-space: nowrap; } .math i { font-style: italic; }
 .frac sup, .frac sub { font-size: .72em; }
 
-.chip { border: 1px solid hsl(var(--h, 230) 30% 50% / .4); background: hsl(var(--h, 230) 50% 50% / .08); border-radius: 999px; padding: 5px 12px; font-size: var(--fs-s); min-height: 32px; }
+.chip { border: 1px solid hsl(var(--h, 230) 30% 50% / .4); background: hsl(var(--h, 230) 50% 50% / .08); border-radius: 8px; padding: 5px 12px; font-size: var(--fs-s); min-height: 32px; }
 .chip:hover:not(:disabled) { background: hsl(var(--h, 230) 50% 50% / .18); }
 .chip.on { background: hsl(var(--h, 230) 55% var(--lr)); color: var(--paper); border-color: transparent; }
 .chip.link { border-radius: 8px; } .chip.flag { border-radius: 6px; border-style: dashed; background: transparent; color: var(--muted); } .chip.flag.on { background: var(--notyet); border-style: solid; color: var(--ink); }
@@ -2706,7 +2711,7 @@ if (typeof document !== 'undefined') (() => {
   const WORD = { ok: 'Mastered', no: 'Not yet mastered' };
   // Development aid: nodes whose features are new or changed in the current pass. Each gets a small arrow off the left end of its
   // title card, and so does every node on the way down to it. Reset this list at the start of each pass.
-  const FRESH = ['@m3.simplex.lattice.tab3', '@vec.comp.trig', '@frame.radius.count', '@table.rel.locate', '@fr.words.q', '@fr.words.mind', '@fr.sent.pron', '@fr.sent.read'];
+  const FRESH = ['@frame.radius.count', '@table.rel.locate', '@frame.concentric.rigid', '@frame.concentric.path', '@m3.trig.pairs.two', '@fr.sent.pron.je', '@fr.sent.pron.il', '@fr.words.mind.learn'];
   const prefs = { auto: false, save: () => {} };   // set from saved state when a course starts
 
   // ---------- rich text: [boxed givens], {term :: note}, $maths$ ----------
@@ -2768,6 +2773,8 @@ if (typeof document !== 'undefined') (() => {
     const held = [];
     let s = String(text || '').replace(/`([^`]+)`/g, (_, m) => { held.push('<code>' + esc(m) + '</code>'); return '\u0000' + (held.length - 1) + '\u0000'; })
       .replace(/\$([^$]+)\$/g, (_, m) => { held.push(tex(m)); return '\u0000' + (held.length - 1) + '\u0000'; });
+    // ((je | me)) or ((subject: je | object: me)): one form shown at a time; the wheel walks the ring. Equal forms still turn.
+    s = s.replace(/\(\(([^()]*\|[^()]*)\)\)/g, (_, body) => { const alts = body.split('|').map(a => { const m = a.match(/^\s*([^:|]+?)\s*:\s*(.+?)\s*$/); return m ? [m[2], m[1]] : [a.trim(), '']; }); held.push('<span class="ring" tabindex="0" data-k="0" data-w="' + esc(alts.map(a => a[0]).join('|')) + '" data-l="' + esc(alts.map(a => a[1]).join('|')) + '"><span class="rg">' + esc(alts[0][0]) + '</span>' + (alts[0][1] ? '<span class="rl">' + esc(alts[0][1]) + '</span>' : '') + '</span>'); return '\u0000' + (held.length - 1) + '\u0000'; });
     s = withTerms(esc(s));
     const box = t => t.replace(/\[([^\[\]]+)\]/g, (_, x, off, all) => { const plain = x.replace(/&[a-z]+;/g, ''), h = dimHue(plain), attr = /(^|[^A-Za-z])(a|an|A|An)\s+$/.test(all.slice(Math.max(0, off - 6), off)) && /^\s+(?:<[^>]+>|[\u0000-\u001f{])*[a-z]/.test(all.slice(off + _.length, off + _.length + 120)); return '<span class="given' + (h == null ? '' : ' dq" style="--q:' + h) + '">' + withUnitWords(x, plain, attr) + '</span>'; });
     s = s.replace(/\{([^{}]*?)\s*::\s*([^{}]*?)\}/g, (_, a, b) => '<span class="ruby"><span class="rb">' + box(a) + '</span><span class="rt">' + box(b) + '</span></span>');
@@ -2800,6 +2807,21 @@ if (typeof document !== 'undefined') (() => {
     return { add: f => { f.gone = 0; f.t0 = performance.now() / 1000; if (still) { f.draw(f.rest || 0); return; } set.add(f); if (!on) { on = true; requestAnimationFrame(tick); } } };
   })();
   const SVGNS = 'http://www.w3.org/2000/svg';
+  // Sprout I, hold one and vary the rest, on s = r\u03b8: three concentric circles, with either the angle or the arc length held the same on all of them.
+  const arcsFigure = spec => {
+    const el = $('div', 'figwrap arcsfig'), bar = $('div', 'seg'), box = $('div'), note = $('div', 'quiet'), R = [34, 68, 102], COL = ['hsl(212 70% 46%)', 'hsl(28 85% 44%)', 'hsl(268 60% 52%)'], cx = 130, cy = 122;
+    let held = /length/.test(spec) ? 's' : 'theta';
+    const arc = (r, th) => { const big = th > Math.PI ? 1 : 0, x = cx + r * Math.cos(th), y = cy - r * Math.sin(th); return th >= 2 * Math.PI - 0.001 ? 'M' + (cx + r) + ' ' + cy + 'A' + r + ' ' + r + ' 0 1 0 ' + (cx - r) + ' ' + cy + 'A' + r + ' ' + r + ' 0 1 0 ' + (cx + r) + ' ' + cy : 'M' + (cx + r) + ' ' + cy + 'A' + r + ' ' + r + ' 0 ' + big + ' 0 ' + x.toFixed(2) + ' ' + y.toFixed(2); };
+    const draw = t => { const u = (t % 6) / 5, p = Math.min(1, u) , e = p * p * (3 - 2 * p);
+      let s = '<svg class="fig" viewBox="0 0 400 244" role="img" aria-label="Arcs on three concentric circles">' + R.map(r => '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" class="arcring"/>').join('');
+      const rows = R.map((r, i) => { const th = held === 'theta' ? e * 2.2 : Math.min(2 * Math.PI, e * 150 / r), len = r * th / 34; s += '<path d="' + arc(r, Math.max(th, 0.001)) + '" stroke="' + COL[i] + '" class="arcpath"/><line x1="' + cx + '" y1="' + cy + '" x2="' + (cx + r * Math.cos(th)).toFixed(1) + '" y2="' + (cy - r * Math.sin(th)).toFixed(1) + '" stroke="' + COL[i] + '" class="arcspoke"/>'; return [i + 1, th, len]; });
+      s += '<line x1="' + cx + '" y1="' + cy + '" x2="' + (cx + 110) + '" y2="' + cy + '" class="arcspoke" stroke="var(--muted)"/>';
+      s += '<text x="262" y="40" class="arcth">r</text><text x="300" y="40" class="arcth">\u03b8</text><text x="350" y="40" class="arcth">s = r\u03b8</text>' + rows.map(([r, th, len], i) => '<text x="262" y="' + (66 + 26 * i) + '" class="arctd" fill="' + COL[i] + '">' + r + '</text><text x="300" y="' + (66 + 26 * i) + '" class="arctd' + (held === 'theta' ? ' held' : '') + '" fill="' + COL[i] + '">' + th.toFixed(2) + '</text><text x="350" y="' + (66 + 26 * i) + '" class="arctd' + (held === 's' ? ' held' : '') + '" fill="' + COL[i] + '">' + len.toFixed(2) + '</text>').join('');
+      box.innerHTML = s + '</svg>'; };
+    const paint = () => { bar.replaceChildren(...[['theta', 'Same angle'], ['s', 'Same arc length']].map(([k, t]) => { const b = btn('segb', t); b.setAttribute('aria-checked', String(held === k)); b.onclick = () => { held = k; paint(); }; return b; })); note.innerHTML = held === 'theta' ? 'Angle held the same on every circle: the arc grows in proportion to the radius, s \u221d r.' : 'Arc length held the same on every circle: the angle shrinks as the radius grows, r\u03b8 stays fixed.'; };
+    el.addEventListener('wheel', ev => { if (Math.abs(ev.deltaY) < 4) return; const to = ev.deltaY > 0 ? 's' : 'theta'; if (to === held) return; ev.preventDefault(); held = to; paint(); }, { passive: false });
+    el.append(bar, box, note); paint(); clock.add({ el, rest: 5, draw }); return { el };
+  };
   const fx = n => (Math.abs(n) >= 100 ? n.toFixed(0) : Math.abs(n) >= 10 ? n.toFixed(1) : n.toFixed(2)).replace('-', '−');
 
   // Concentric rings with rope forces. play({ alpha, cw }) spins it up from rest, again and again.
@@ -2907,7 +2929,10 @@ if (typeof document !== 'undefined') (() => {
   // Buttons switch the labels (symbols, words, shared words, units, dimensions) and the planes that are highlighted.
   const tableFigure = spec => {
     // The three table axes as drawn on the page. Each can be turned and stretched by dragging its handle on the small triad.
-    const AX = { A: [0.866, 0.615], B: [0.05, 1.35], C: [-1.089, 0.429] }, A = AX.A, B = AX.B, C = AX.C, S = 96, ox = 262, oy = 318, TO = [78, 46], TS = 26, AXN = { A: 'frame', B: 'kind', C: 'order' };
+    const AX = { A: [0.866, 0.615], B: [0.05, 1.35], C: [-1.089, 0.429] }, A = AX.A, B = AX.B, C = AX.C, S = 96, TO = [215, 400], TS = 52, AXN = { A: 'frame', B: 'extensivity', C: 'order' }; let ox = 262, oy = 318;
+    // The lattice stays centered in its frame however the axes are turned; the triad that turns them sits just under it, with a fixed origin.
+    const center = () => { let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9; for (let k = 0; k < 3; k++) for (let j = 0; j < 2; j++) for (let i = 0; i < 2; i++) { const x = S * (i * A[0] + j * B[0] + k * C[0]), y = -S * (i * A[1] + j * B[1] + k * C[1]); x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); } ox = 215 - (x0 + x1) / 2; oy = 170 - (y0 + y1) / 2; };
+    const open = {};   // shared words opened into their two frame-specific words
     const pt = (i, j, k) => [ox + S * (i * A[0] + j * B[0] + k * C[0]), oy - S * (i * A[1] + j * B[1] + k * C[1])];
     // [order][kind][frame]: symbol, word, unit, dimension, power of length
     const T = [
@@ -2918,7 +2943,7 @@ if (typeof document !== 'undefined') (() => {
     const SHARED = [['position', 'moment of inertia'], ['velocity', 'momentum'], ['acceleration', 'impetus']];
     const HL = {
       order: { name: 'temporal order', keys: ['order 0', 'order 1', 'order 2'], col: ['var(--ink)', 'hsl(175 55% 36%)', 'hsl(135 45% 38%)'], of: (i, j, k) => k, planes: [0, 1, 2].map(k => [[0, 0, k], [1, 0, k], [1, 1, k], [0, 1, k]]) },
-      kind: { name: 'kind', keys: ['intensive', 'extensive'], col: ['var(--ink)', 'hsl(268 65% 52%)'], of: (i, j) => j, planes: [0, 1].map(j => [[0, j, 0], [1, j, 0], [1, j, 2], [0, j, 2]]) },
+      kind: { name: 'extensivity', keys: ['intensive', 'extensive'], col: ['var(--ink)', 'hsl(268 65% 52%)'], of: (i, j) => j, planes: [0, 1].map(j => [[0, j, 0], [1, j, 0], [1, j, 2], [0, j, 2]]) },
       frame: { name: 'frame', keys: ['path frame', 'angular frame'], col: ['hsl(212 70% 46%)', 'hsl(300 45% 46%)'], of: i => i, planes: [0, 1].map(i => [[i, 0, 0], [i, 1, 0], [i, 1, 2], [i, 0, 2]]) },
       length: { name: 'power of length', keys: ['length⁰', 'length¹', 'length²'], col: ['hsl(300 45% 46%)', 'hsl(212 70% 46%)', 'hsl(28 85% 44%)'], of: (i, j, k) => T[k][j][i][4], planes: [] },
     };
@@ -2927,19 +2952,20 @@ if (typeof document !== 'undefined') (() => {
     const el = $('div', 'figwrap tablefig'), bar = $('div', 'figbar'), svgBox = $('div', 'figsvg'), key = $('div', 'figkey2');
     const seg = (items, cur, pick) => { const g = $('div', 'seg'); items.forEach((x, i) => { const b = btn('segb', esc(x)); b.setAttribute('aria-checked', String(i === cur)); b.onclick = () => pick(i); g.append(b); }); return g; };
     const render = () => {
-      const H = HL[hl]; let s = '<svg class="fig table" viewBox="0 0 430 350" role="img" aria-label="The variable table as a lattice">';
+      center(); const H = HL[hl]; let s = '<svg class="fig table" viewBox="0 0 430 478" role="img" aria-label="The variable table as a lattice">';
       const P = c => pt(...c).map(v => v.toFixed(1)).join(',');
       for (let k = 0; k < 3; k++) for (let j = 0; j < 2; j++) for (let i = 0; i < 2; i++) { if (i === 0) s += '<line class="tedge" x1="' + pt(0, j, k)[0] + '" y1="' + pt(0, j, k)[1] + '" x2="' + pt(1, j, k)[0] + '" y2="' + pt(1, j, k)[1] + '"/>'; if (j === 0) s += '<line class="tedge" x1="' + pt(i, 0, k)[0] + '" y1="' + pt(i, 0, k)[1] + '" x2="' + pt(i, 1, k)[0] + '" y2="' + pt(i, 1, k)[1] + '"/>'; if (k < 2) s += '<line class="tedge" x1="' + pt(i, j, k)[0] + '" y1="' + pt(i, j, k)[1] + '" x2="' + pt(i, j, k + 1)[0] + '" y2="' + pt(i, j, k + 1)[1] + '"/>'; }
       H.planes.forEach((pl, n) => { s += '<polygon points="' + pl.map(P).join(' ') + '" style="stroke:' + H.col[n] + ';fill:' + H.col[n] + '" class="tplane"/>'; });
       for (let k = 0; k < 3; k++) for (let j = 0; j < 2; j++) {
-        if (lab === 2) { const a = pt(0.14, j === 0 ? 0.2 : 0.8, k), b = pt(0.86, j === 0 ? 0.2 : 0.8, k), ang = -Math.atan2(A[1], A[0]) * 180 / Math.PI, mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2; s += '<text x="' + mx + '" y="' + my + '" transform="rotate(' + ang + ' ' + mx + ' ' + my + ')" text-anchor="middle" class="tlab word" style="fill:' + (hl === 'frame' || hl === 'length' ? 'var(--ink)' : H.col[H.of(0, j, k)]) + '">' + SHARED[k][j] + '</text>'; continue; }
-        for (let i = 0; i < 2; i++) { const c = T[k][j][i], p = pt(0.2 + 0.6 * i, 0.2 + 0.6 * j, k), txt = lab === 0 ? c[0] : lab === 1 ? c[1] : lab === 3 ? c[2] : '[' + c[3] + ']', turn = lab === 1 ? ' transform="rotate(' + (-Math.atan2(A[1], A[0]) * 180 / Math.PI).toFixed(1) + ' ' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + ')"' : ''; s += '<text x="' + p[0] + '" y="' + (p[1] + 5) + '"' + turn + ' text-anchor="middle" class="tlab ' + (lab === 0 ? 'sym' : lab === 1 ? 'word small' : 'unit') + '" style="fill:' + H.col[H.of(i, j, k)] + '">' + txt + '</text>'; }
+        if (lab === 2 && !open[k + ',' + j]) { const a = pt(0.14, j === 0 ? 0.2 : 0.8, k), b = pt(0.86, j === 0 ? 0.2 : 0.8, k), ang = -Math.atan2(A[1], A[0]) * 180 / Math.PI, mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2; s += '<text x="' + mx + '" y="' + my + '" transform="rotate(' + ang + ' ' + mx + ' ' + my + ')" text-anchor="middle" class="tlab word tsh" data-sh="' + k + ',' + j + '" style="fill:' + (hl === 'frame' || hl === 'length' ? 'var(--ink)' : H.col[H.of(0, j, k)]) + '">' + SHARED[k][j] + '</text>'; continue; }
+        for (let i = 0; i < 2; i++) { const c = T[k][j][i], p = pt(0.2 + 0.6 * i, 0.2 + 0.6 * j, k), txt = lab === 0 ? c[0] : lab === 1 || lab === 2 ? c[1] : lab === 3 ? c[2] : '[' + c[3].replace(/ /g, '') + ']', turn = lab === 1 || lab === 2 ? ' data-sh="' + k + ',' + j + '" transform="rotate(' + (-Math.atan2(A[1], A[0]) * 180 / Math.PI).toFixed(1) + ' ' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + ')"' : ''; s += '<text x="' + p[0] + '" y="' + (p[1] + 5) + '"' + turn + ' text-anchor="middle" class="tlab ' + (lab === 0 ? 'sym' : lab === 1 ? 'word small' : lab === 2 ? 'word small tsh' : lab === 4 ? 'dim' : 'unit') + '" style="fill:' + H.col[H.of(i, j, k)] + '">' + txt + '</text>'; }
       }
-      Object.keys(AX).forEach(a => { const x = TO[0] + TS * AX[a][0], y = TO[1] - TS * AX[a][1]; s += '<line class="taxis" x1="' + TO[0] + '" y1="' + TO[1] + '" x2="' + x.toFixed(1) + '" y2="' + y.toFixed(1) + '"/><circle class="thandle" data-ax="' + a + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="6.5"><title>Drag to turn the ' + AXN[a] + ' axis</title></circle><text class="taxn" x="' + (x + 9 * Math.sign(AX[a][0] || 1)).toFixed(1) + '" y="' + (y + 3).toFixed(1) + '" text-anchor="' + (AX[a][0] < 0 ? 'end' : 'start') + '">' + AXN[a] + '</text>'; });
+      Object.keys(AX).forEach(a => { const x = TO[0] + TS * AX[a][0], y = TO[1] - TS * AX[a][1]; s += '<line class="taxis" x1="' + TO[0] + '" y1="' + TO[1] + '" x2="' + x.toFixed(1) + '" y2="' + y.toFixed(1) + '"/><circle class="thandle" data-ax="' + a + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="9"><title>Drag to turn the ' + AXN[a] + ' axis</title></circle><text class="taxn" x="' + (x + 13 * Math.sign(AX[a][0] || 1)).toFixed(1) + '" y="' + (y + 4).toFixed(1) + '" text-anchor="' + (AX[a][0] < 0 ? 'end' : 'start') + '">' + AXN[a] + '</text>'; });
       svgBox.innerHTML = s + '</svg>';
-      key.innerHTML = '<span class="quiet">' + H.name + ':</span> ' + H.keys.map((x, n) => '<span style="color:' + H.col[n] + '"><i style="background:' + H.col[n] + '"></i>' + x + '</span>').join(' ');
+      key.innerHTML = '<span class="quiet">' + H.name + ':</span> ' + H.keys.map((x, n) => '<span style="color:' + H.col[n] + '"><i style="background:' + H.col[n] + '"></i>' + x + '</span>').join(' ') + (lab === 2 ? '<div class="quiet">Scroll on a shared word to open it into its two frame-specific words, and back.</div>' : '');
       bar.replaceChildren(seg(LAB, lab, i => { lab = i; render(); }), seg(Object.keys(HL).map(x => HL[x].name), Object.keys(HL).indexOf(hl), i => { hl = Object.keys(HL)[i]; render(); }));
     };
+    svgBox.addEventListener('wheel', ev => { const t = ev.target.closest && ev.target.closest('[data-sh]'); if (!t || lab !== 2 || Math.abs(ev.deltaY) < 4) return; ev.preventDefault(); const want = ev.deltaY > 0; if (!!open[t.dataset.sh] !== want) { open[t.dataset.sh] = want; render(); } }, { passive: false });
     let grab = null;
     const toSvg = ev => { const g = svgBox.querySelector('svg'), m = g.getScreenCTM(); return [(ev.clientX - m.e) / m.a, (ev.clientY - m.f) / m.d]; };
     svgBox.addEventListener('pointerdown', ev => { const h = ev.target.closest && ev.target.closest('.thandle'); if (!h) return; grab = h.dataset.ax; svgBox.setPointerCapture(ev.pointerId); ev.preventDefault(); });
@@ -3116,7 +3142,7 @@ if (typeof document !== 'undefined') (() => {
     const thick = (a, b, k) => { const l = document.createElementNS(ns, 'line'), p = pt(a), q = pt(b); l.setAttribute('x1', p[0]); l.setAttribute('y1', p[1]); l.setAttribute('x2', q[0]); l.setAttribute('y2', q[1]); l.setAttribute('stroke', 'hsl(' + KIND[k][2] + ' 70% 78%)'); l.setAttribute('stroke-width', 40); l.setAttribute('stroke-linecap', 'round'); l.setAttribute('class', 'hexline'); lines.append(l); };
     const one = i => { lines.replaceChildren(); idt = null; identity(); const ps = partners(i), [x, y] = pt(i);
       ps.forEach((j, k) => { const l = document.createElementNS(ns, 'line'), q = pt(j), off = (k - 1) * 7, dx = q[0] - x, dy = q[1] - y, len = Math.hypot(dx, dy) || 1; l.setAttribute('x1', x - dy / len * off); l.setAttribute('y1', y + dx / len * off); l.setAttribute('x2', q[0] - dy / len * off); l.setAttribute('y2', q[1] + dx / len * off); l.setAttribute('stroke', 'hsl(' + KIND[k][2] + ' 65% 62%)'); l.setAttribute('stroke-width', 6); l.setAttribute('stroke-linecap', 'round'); lines.append(l); });
-      cap.innerHTML = '<b>' + F[i][0] + '</b> (' + F[i][1] + '): ' + ps.map((j, k) => '<span style="border-bottom:3px solid hsl(' + KIND[k][2] + ' 65% 62%)">' + ['reciprocal', 'Pythagorean', 'complementary'][k] + ' ' + F[j][0] + '</span>').join(', ') + '. Click it, then a second function, to see how the two are related.'; };
+      cap.innerHTML = '<b>' + F[i][0] + '</b> (' + F[i][1] + '): ' + ps.map((j, k) => '<span style="border-bottom:3px solid hsl(' + KIND[k][2] + ' 65% 62%)">' + ['reciprocal', 'Pythagorean', 'complementary'][k] + ' ' + F[j][0] + '</span>').join(', ') + '. Point at a second function to see how the two are related; click one to start from it instead.'; };
     // Two functions chosen: the same function, direct reciprocals, or a Pythagorean pair after zero, one or two reciprocal steps.
     const flip = i => (i + 3) % 6, pyth = (x, y) => x !== y && KIND[1][1].some(p => p.includes(x) && p.includes(y));
     const two = (a, b) => { lines.replaceChildren(); idt = null; idn = 0; identity(); const A = F[a][0], B = F[b][0];
@@ -3147,9 +3173,17 @@ if (typeof document !== 'undefined') (() => {
     idbox.addEventListener('wheel', ev => { ev.preventDefault(); if (!idt || Math.abs(ev.deltaY) < 4 || idbox._lock) return; idbox._lock = true; setTimeout(() => { idbox._lock = false; }, 180); const lim = t => (t.rec ? 3 : 2); idn = Math.max(-lim(idt.b), Math.min(lim(idt.a), idn + (ev.deltaY > 0 ? 1 : -1))); identity(); }, { passive: false });
     let sel = [];
     const mark = () => labs.forEach((g, i) => g.setAttribute('class', 'hexlab' + (sel.includes(i) ? ' sel' : '')));
+    // Pair pick, variation G.b: with nothing chosen, pointing at a function chooses it; with one chosen, pointing at another shows the pair,
+    // and a click makes that one the new first choice. While one is chosen, a soft line follows the pointer from it. A finger has no hover, so taps choose first and second in turn.
+    const lead = document.createElementNS(ns, 'line'); lead.setAttribute('class', 'hexlead'); lead.style.display = 'none'; svg.insertBefore(lead, lines);
+    let over = null, byTouch = false;
+    svg.addEventListener('pointerdown', ev => { byTouch = ev.pointerType === 'touch'; });
+    svg.addEventListener('pointermove', ev => { if (ev.pointerType === 'touch' || sel.length !== 1 || over != null) { lead.style.display = 'none'; return; } const m = svg.getScreenCTM(), p = pt(sel[0]); lead.setAttribute('x1', p[0]); lead.setAttribute('y1', p[1]); lead.setAttribute('x2', (ev.clientX - m.e) / m.a); lead.setAttribute('y2', (ev.clientY - m.f) / m.d); lead.style.display = ''; });
+    svg.addEventListener('pointerleave', () => { lead.style.display = 'none'; });
     labs.forEach((g, i) => { g.style.cursor = 'pointer';
-      g.addEventListener('pointerenter', () => { if (sel.length === 0) one(i); else if (sel.length === 1) two(sel[0], i); });
-      g.addEventListener('click', () => { if (sel.length === 1) { sel.push(i); two(sel[0], i); } else { sel = [i]; one(i); } mark(); }); });
+      g.addEventListener('pointerenter', ev => { if (ev.pointerType === 'touch') return; over = i; lead.style.display = 'none'; if (sel.length === 0) { sel = [i]; one(i); mark(); } else if (i !== sel[0]) two(sel[0], i); else one(i); });
+      g.addEventListener('pointerleave', () => { over = null; });
+      g.addEventListener('click', () => { if (byTouch) { if (sel.length === 1 && i !== sel[0]) { two(sel[0], i); sel = []; } else { sel = [i]; one(i); } } else { sel = [i]; one(i); } mark(); }); });
     KIND.forEach((kd, k) => { const b = btn('btn', kd[0]); b.onclick = () => draw(k); bar.append(b); });
     const clear = btn('btn', 'Clear'); clear.onclick = () => { sel = []; mark(); idt = null; identity(); draw(null); }; const sw = btn('btn', 'Show shape names'); sw.onclick = () => { names = 1 - names; sw.textContent = names ? 'Show function names' : 'Show shape names'; label(); };
     bar.append(clear, sw); label(); const row = $('div', 'hexrow'); row.append(svg, idbox); el.append(bar, row, cap);
@@ -3354,7 +3388,7 @@ if (typeof document !== 'undefined') (() => {
     line.lang = 'fr'; draw(); el.append(line, note, bar);
     return { el };
   };
-  const makeFigure = spec => { const s = String(spec || '').trim(); return /^tabulate/.test(s) ? tabulateFigure(s) : /^hexagon/.test(s) ? hexagonFigure() : /^structure/.test(s) ? structureFigure(s) : /^coef/.test(s) ? coefFigure(s) : /^wrap/.test(s) ? wrapFigure() : /^french/.test(s) ? frenchFigure(s) : /^vowels/.test(s) ? vowelFigure() : /^table/.test(s) ? tableFigure(s) : /^rings/.test(s) ? pulleyFigure(s) : /^roll/.test(s) ? rollFigure(s) : /^spin/.test(s) ? spinFigure(s) : /^components/.test(s) ? componentsFigure(s) : null; };
+  const makeFigure = spec => { const s = String(spec || '').trim(); return /^arcs/.test(s) ? arcsFigure(s) : /^tabulate/.test(s) ? tabulateFigure(s) : /^hexagon/.test(s) ? hexagonFigure() : /^structure/.test(s) ? structureFigure(s) : /^coef/.test(s) ? coefFigure(s) : /^wrap/.test(s) ? wrapFigure() : /^french/.test(s) ? frenchFigure(s) : /^vowels/.test(s) ? vowelFigure() : /^table/.test(s) ? tableFigure(s) : /^rings/.test(s) ? pulleyFigure(s) : /^roll/.test(s) ? rollFigure(s) : /^spin/.test(s) ? spinFigure(s) : /^components/.test(s) ? componentsFigure(s) : null; };
 
   // ---------- answer fields ----------
   // units: a list of answer units to offer as buttons. The first is preselected and marked recommended.
@@ -3738,10 +3772,11 @@ if (typeof document !== 'undefined') (() => {
     });
 
     const biteHtml = n => '<p class="bite">' + rich(n.bite) + '</p>';
+    // Core or extra: a node's own scope line, else its parent's. A tag is shown where the scope is set, so an exception inside a branch says so.
+    const scopeOf = a => { for (; a; a = a.parent) if (a.scope) return /^extra/i.test(a.scope) ? 'extra' : 'core'; return 'core'; };
     const build = n => {
       if (els[n.id]) return els[n.id];
-      // Core or extra: a node's own scope line, else its parent's. A tag is shown where the scope is set, so an exception inside a branch says so.
-      const scopeOf = a => { for (; a; a = a.parent) if (a.scope) return /^extra/i.test(a.scope) ? 'extra' : 'core'; return 'core'; }, scope = scopeOf(n);
+      const scope = scopeOf(n);
       const root = $('section', 'node d' + n.level + (isLeaf(n) ? ' leaf' : '') + (scope === 'extra' ? ' extra' : '') + (FRESH.includes(n.id) ? ' fresh' : FRESH.some(f => f.startsWith(n.id + '.')) || (n.level <= 0 && FRESH.some(f => course.nodes[f] && (function up(a) { return a && (a === n || up(a.parent)); })(course.nodes[f]))) ? ' freshin' : '')); root.dataset.id = n.id; root.style.setProperty('--h', n.hue);
       const card = $('div', 'card'); card.tabIndex = 0; card.setAttribute('role', 'button'); card.setAttribute('aria-expanded', 'false');
       const mark = markEl();
@@ -3857,6 +3892,10 @@ if (typeof document !== 'undefined') (() => {
       const fresh = btn('linkbtn', 'New set');
       // How many problems at a time: one for a quick check of this bite or one drawn from anywhere in the branch, up to all of them.
       const lenOf = () => ui.len[n.id] || (isLeaf(n) ? 1 : BATCH), howMany = $('div', 'seg howmany'); howMany.setAttribute('aria-label', 'How many problems at a time');
+      // Depth: core problems only, or the extra ones as well. Shown where the branch holds both kinds; an extra node always deals its own.
+      const extraNode = a => scopeOf(a) === 'extra', hasExtra = (function any(a) { return extraNode(a) || a.children.some(any); })(n) && !extraNode(n), depthOf = () => (ui.depth && ui.depth[n.id]) || 'core', depthSeg = $('div', 'seg howmany');
+      const paintDepth = () => depthSeg.replaceChildren(...[['core', 'Core'], ['all', 'Core + extra']].map(([k, t]) => { const b = btn('segb', t); b.setAttribute('aria-checked', String(depthOf() === k)); b.onclick = () => { ui.depth = ui.depth || {}; ui.depth[n.id] = k; save(); paintDepth(); deal(); }; return b; }));
+      const controls = $('div', 'dealgrid'); controls.append($('span', 'quiet', 'Number of question items'), howMany); if (hasExtra) { controls.append($('span', 'quiet', 'Question depth'), depthSeg); paintDepth(); }
       const paintLen = () => howMany.replaceChildren(...[1, 3, 5, 10, 'all'].map(k => { const b = btn('segb', k === 'all' ? 'All' : String(k)); b.setAttribute('aria-checked', String(lenOf() === k)); b.onclick = () => { ui.len[n.id] = k; save(); paintLen(); deal(); }; return b; }));
       const rusty = $('details', 'rusty', '<summary>I’m rusty with this</summary>'), rbox = $('div', 'rustbox');
       rbox.append($('span', 'quiet', 'Ask for more practice ' + (isLeaf(n) ? 'here' : 'across this whole branch') + ' before it counts as mastered again:'));
@@ -3866,7 +3905,7 @@ if (typeof document !== 'undefined') (() => {
         rbox.append(b);
       });
       rusty.append(rbox);
-      head.append(dots, count, howMany, rusty, fresh); e.face.replaceChildren(head, list, foot); paintLen();
+      head.append(dots, count, controls, rusty, fresh); e.face.replaceChildren(head, list, foot); paintLen();
       const paintTally = () => {
         dots.innerHTML = tally.map(t => '<i class="d ' + (t.ok == null ? '' : t.ok ? 'ok' : 'no') + '"></i>').join('');
         const ok = tally.filter(t => t.ok).length, no = tally.filter(t => t.ok === false).length;
@@ -3906,7 +3945,8 @@ if (typeof document !== 'undefined') (() => {
         return r;
       };
       // The length is a floor as well as a ceiling: with fewer problems than asked for, the pool goes round again, and a problem met a second time gets fresh numbers.
-      const deal = () => { queue = Core.pool(n, progress); tally.length = 0; list.replaceChildren(); foot.replaceChildren(); const k = lenOf() === 'all' ? queue.length : lenOf(); for (let i = 0; queue.length && i < k; i++) addBlock(queue[i % queue.length], null, i >= queue.length); paintTally(); };
+      // On a second lap only problems that can vary come back; a problem with nothing to vary is asked once, so a short leaf may deal fewer than asked.
+      const deal = () => { queue = Core.pool(n, progress); if (hasExtra && depthOf() === 'core') queue = queue.filter(it => !extraNode(it.node)); tally.length = 0; list.replaceChildren(); foot.replaceChildren(); const k = lenOf() === 'all' ? queue.length : lenOf(), again = queue.filter(it => Core.rerollable(it)); let dealt = 0; for (let i = 0; i < Math.min(k, queue.length); i++, dealt++) addBlock(queue[i]); for (let i = 0; again.length && dealt < k; i++, dealt++) addBlock(again[i % again.length], null, true); if (dealt < k && lenOf() !== 'all') foot.append($('span', 'quiet', 'Only ' + dealt + ' here: the rest of these problems have nothing to vary yet.')); paintTally(); };
       fresh.onclick = deal;
       deal();
     };
@@ -3953,6 +3993,12 @@ if (typeof document !== 'undefined') (() => {
       if (x !== openU) { x.dataset.k = 0; return openUnit(x); }
       const n = wordsOf(x).length, k = (+x.dataset.k || 0) + 1; if (k >= n) { x.dataset.k = 0; closeUnit(); } else swap(x, k, 1);
     };
+    // An inline ring turns under the wheel (or a tap, or the arrow keys when focused).
+    const turnRing = (x, dir) => { const w = x.dataset.w.split('|'), l = x.dataset.l.split('|'), k = ((+x.dataset.k || 0) + dir + w.length) % w.length; x.dataset.k = k; const g = x.querySelector('.rg'), put2 = () => { g.textContent = w[k]; const rl = x.querySelector('.rl'); if (rl) rl.textContent = l[k] || ''; };
+      if (calm || !g.animate) return put2(); g.animate([{ transform: 'translateY(0)', opacity: 1 }, { transform: 'translateY(' + -dir * 80 + '%)', opacity: 0 }], { duration: 100, easing: 'ease-in' }).onfinish = () => { put2(); g.animate([{ transform: 'translateY(' + dir * 80 + '%)', opacity: 0 }, { transform: 'translateY(0)', opacity: 1 }], { duration: 140, easing: 'ease-out' }); }; };
+    treeEl.addEventListener('wheel', ev => { const x = ev.target.closest && ev.target.closest('.ring'); if (!x) return; ev.preventDefault(); x._acc = (x._acc || 0) + ev.deltaY; if (Math.abs(x._acc) < 24) return; const dir = x._acc > 0 ? 1 : -1; x._acc = 0; turnRing(x, dir); }, { passive: false });
+    treeEl.addEventListener('click', ev => { const x = ev.target.closest && ev.target.closest('.ring'); if (x && touch) turnRing(x, 1); });
+    treeEl.addEventListener('keydown', ev => { const x = ev.target.closest && ev.target.closest('.ring'); if (x && (ev.key === 'ArrowDown' || ev.key === 'ArrowUp')) { ev.preventDefault(); turnRing(x, ev.key === 'ArrowDown' ? 1 : -1); } });
     // The wheel rolls through the wordings while the pointer is on the unit.
     treeEl.addEventListener('wheel', ev => {
       const x = openU; if (!x || !onUnit(ev)) return; const n = wordsOf(x).length; if (n < 2) return;

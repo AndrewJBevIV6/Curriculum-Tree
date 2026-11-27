@@ -526,6 +526,7 @@ term: moment of inertia = I | extensive
   can: Find the path speeds of points that turn together at different radii.
   bite: Points on one rigid object, like the hand of a clock, stay lined up and finish a turn together. They share one angular speed. Their path speeds differ in proportion to their radii: a point twice as far out covers twice the arc in the same time.
   links: @sf.radius.vel @ext.angular
+  figure: arcs angle
   ? numeric: A rigid bar turns about one end. A point [r1 = 0.5 m | 0.2 m | 0.25 m] from that end moves at [v = 3 m/s | 2 m/s | 5 m/s]. How fast does a point [r2 = 2 m | 1 m | 1.5 m] from the end move?
     = v / r1 * r2
     why: Shared angular speed: {[v]} ÷ {[r1]} = [= v / r1]. At [r2] that is [= v / r1 * r2].
@@ -540,6 +541,7 @@ term: moment of inertia = I | extensive
 - Same path speed   @frame.concentric.path
   can: Compare the angular speeds of objects moving equally fast on circles of different size.
   bite: Two runners at the same path speed on different circles do not stay lined up. The larger circle has more circumference, so its runner takes longer to get round and has the smaller angular speed. This is why track lanes are staggered: the outer lanes are longer.
+  figure: arcs length
   ? numeric: Two runners each move at [v = 6 m/s | 4 m/s | 8 m/s | 12 m/s], one on a circle of radius [r1 = 2 m | 1 m] and one on a circle of radius [r2 = 6 m | 4 m | 8 m]. What is the angular speed of the runner on the larger circle?
     = v / r2
     why: {[v] :: path speed} ÷ {[r2] :: radius}. The inner runner has [= v / r1].
