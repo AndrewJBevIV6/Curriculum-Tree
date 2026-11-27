@@ -445,12 +445,41 @@
     ( ) during the session
     ( ) after some sessions
 
-### Verbs with and without a doer   @fr.sent.valency
-    can: Say that something happened, with or without naming who did it.
+### Verbs with and without an agent   @fr.sent.valency
+    can: Say that something happened, with or without naming the agent, the one who does it.
+
+- The empty subject: il pleut   @fr.sent.valency.il
+  can: Recognize an "il" that stands for nobody.
+  bite: Some verbs have no agent at all, and no patient either. English fills the subject seat with an empty "it": it is raining. French does the same with il: Il pleut. Il neige. Il est trois heures. The same empty il opens two very common frames: il y a (there is, there are) and il faut (it is necessary to).
+  ? choice: In "Il pleut", who is "il"?
+    (x) Nobody; it only fills the subject seat, like English "it"
+    ( ) The sky
+    ( ) A man mentioned earlier
+    ( ) The rain
+  ? choice: "Il y a un problème." means:
+    (x) There is a problem.
+    ( ) He has a problem.
+    ( ) He goes to a problem.
+    ( ) It is a problem there.
+  ? choice: "Il faut partir." means:
+    (x) It is necessary to leave.
+    ( ) He fails to leave.
+    ( ) He must have left.
+    ( ) It is leaving.
+  ? pick: French for "%%":
+    | It is raining.          = Il pleut. / il pleut
+    | It is snowing.          = Il neige. / il neige
+    | There is a problem.     = Il y a un problème. / il y a un problème
+    | It is three o'clock.    = Il est trois heures. / il est trois heures
+  ? choice: Which sentence has a real "he" as its subject?
+    (x) Il ouvre la fenêtre.
+    ( ) Il pleut.
+    ( ) Il faut partir.
+    ( ) Il y a du pain.
 
 - Verbs that stay the same: fondre, bouillir   @fr.sent.valency.same
-  can: Use fondre and bouillir with and without a doer.
-  bite: Some verbs work like English "melt": the same form whether or not a doer is named. La glace fond. Le soleil fond la glace. French increasingly brings in faire when there is a doer: Le soleil fait fondre la glace. With bouillir that is the only way: J'ai fait bouillir l'eau.
+  can: Use fondre and bouillir with and without an agent.
+  bite: Some verbs work like English "melt": the same form whether or not an agent is named. La glace fond. Le soleil fond la glace. French increasingly brings in faire when there is an agent: Le soleil fait fondre la glace. With bouillir that is the only way: J'ai fait bouillir l'eau.
   figure: french {melt the.sun the.ice}
   ? choice: "The ice melts."
     (x) La glace fond.
@@ -464,7 +493,7 @@
     ( ) Je me suis bouilli l'eau.
     why: Bouillir on its own is what the water does. To say who made it happen, French adds faire.
   ? choice: In "Le soleil fait fondre la glace", what does "fait" add?
-    (x) a doer who causes the melting
+    (x) an agent who causes the melting
     ( ) the past tense
     ( ) a negative
     ( ) nothing; it is optional decoration
@@ -475,8 +504,8 @@
     ( ) part of the verb aller
 
 - Verbs that take se: casser, ouvrir, fermer   @fr.sent.valency.se
-  can: Add se when no doer is named, and switch to être in the past.
-  bite: Other verbs need help when no doer is named: they take se. Le verre se casse. La fenêtre s'ouvre. In the past, se brings être with it, and the participle agrees with the subject: La fenêtre s'est ouverte. Name a doer and se disappears, with avoir back in place: Il l'a ouverte.
+  can: Add se when no agent is named, and switch to être in the past.
+  bite: Other verbs need help when no agent is named: they take se. Le verre se casse. La fenêtre s'ouvre. In the past, se brings être with it, and the participle agrees with the subject: La fenêtre s'est ouverte. Name an agent and se disappears, with avoir back in place: Il l'a ouverte.
   figure: french {open.perf the.window}
   links: @fr.sent.small.clitic
   ? choice: "The glass breaks."
@@ -507,7 +536,7 @@
 
 - Verbs that always wear se: se souvenir   @fr.sent.valency.always
   can: Recognize a verb that never appears without se.
-  bite: A few verbs carry se all the time, with no doer to drop: se souvenir, to remember. Je me souviens. Tu te souviens ? The se changes with the person, like any object pronoun: me, te, se, nous, vous, se.
+  bite: A few verbs carry se all the time, with no agent to drop: se souvenir, to remember. Je me souviens. Tu te souviens ? The se changes with the person, like any object pronoun: me, te, se, nous, vous, se.
   links: @fr.words.mind.verbs @fr.sent.pron.je
   ? choice: "I remember."
     (x) Je me souviens.

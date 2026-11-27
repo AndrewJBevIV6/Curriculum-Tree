@@ -91,6 +91,8 @@ main { max-width: 900px; margin: 0 auto; padding: 16px 16px 40px; }
 .lcdout { text-align: right; min-height: 1.25em; } .lcdcur { display: inline-block; width: .6em; height: 1em; background: #1b241c; vertical-align: -2px; margin-left: 1px; animation: lcdblink 1.1s steps(1) infinite; } @keyframes lcdblink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .lcdcur { animation: none; } }
 .ckeys { display: flex; flex-wrap: wrap; gap: 6px; align-items: stretch; max-width: 480px; }
+.cbox { display: inline-flex; align-items: center; gap: 5px; padding: 4px 7px; border-radius: 10px; border: 1.5px solid hsl(210 30% 55% / .7); background: hsl(210 60% 50% / .07); position: relative; cursor: pointer; min-height: 34px; } .cbox.prod { border-style: dotted; background: hsl(40 80% 50% / .08); border-color: hsl(40 60% 45% / .7); padding: 2px 5px; } .cbox.aim { box-shadow: 0 0 0 3px hsl(210 80% 55% / .25); } .cbox.over, .ctile.over, .cslot2.over { outline: 2px dashed hsl(140 60% 40%); outline-offset: 1px; } .cbox > .cx { margin-left: 4px; opacity: .6; cursor: pointer; } .cop { font-style: normal; font-weight: 700; color: var(--muted); }
+.cslot2 { display: inline-block; min-width: 54px; padding: 5px 8px; border: 1.5px dashed var(--line); border-radius: 8px; font-size: .8em; color: var(--muted); text-align: center; } .ctile.cmake { border: 1.5px dashed var(--muted); background: transparent; color: var(--muted); font-family: 'Lucida Console', 'DejaVu Sans Mono', monospace; }
 .cslot { display: inline-flex; align-items: center; gap: 4px; padding: 5px 6px 6px; border-radius: 8px; background: rgb(0 0 0 / .22); box-shadow: inset 0 1px 3px rgb(0 0 0 / .55), 0 1px 0 rgb(255 255 255 / .05); }
 .ctyped { font: 700 17px/1 'Lucida Console', 'DejaVu Sans Mono', Menlo, Consolas, monospace; letter-spacing: .06em; color: #dfe8d2; padding: 0 2px; }
 .cchord { position: relative; margin-bottom: 15px; } .cchord i { position: absolute; left: 0; right: 0; top: calc(100% + 3px); text-align: center; font: 700 11px/1 'Lucida Console', 'DejaVu Sans Mono', monospace; font-style: normal; color: #9fc3ee; }
@@ -215,7 +217,7 @@ body.hints .t-extensive { background: hsl(268 85% 60% / .2); box-shadow: inset 0
 .dealgrid { display: grid; grid-template-columns: auto auto; gap: 4px 10px; align-items: center; justify-content: start; font-size: var(--fs-s); }
 .ring { display: inline-flex; flex-direction: column; align-items: center; vertical-align: baseline; padding: 0 7px 1px; margin: 0 1px; border-radius: 7px; border: 1.5px solid hsl(var(--h, 230) 45% 50% / .55); background: hsl(var(--h, 230) 60% 50% / .07); cursor: ns-resize; overflow: hidden; line-height: 1.25; } .ring .rg { display: inline-block; font-weight: 700; } .ring .rl { font-size: .62em; color: var(--muted); line-height: 1.1; letter-spacing: .02em; } .ring:hover, .ring:focus-visible { border-color: hsl(var(--h, 230) 60% 45%); outline: none; box-shadow: 0 0 0 3px hsl(var(--h, 230) 60% 50% / .15); }
 .hexlead { fill: none; stroke: hsl(262 60% 70%); stroke-width: 26; stroke-linecap: round; opacity: .3; filter: blur(9px); pointer-events: none; }
-.tfield { fill: transparent; stroke: transparent; stroke-width: 1.5; stroke-linejoin: round; cursor: ns-resize; } .tfield:hover, .tfield.on { fill: hsl(45 90% 60% / .12); stroke: hsl(40 80% 45% / .7); } .tsh { pointer-events: none; }
+.tfield { fill: transparent; stroke: transparent; stroke-width: 1.5; stroke-linejoin: round; cursor: ns-resize; } .tfield:hover { fill: hsl(45 90% 60% / .12); stroke: hsl(40 80% 45% / .7); } .tfield.on { fill: color-mix(in srgb, hsl(45 90% 70%) 22%, var(--paper)); stroke: hsl(40 80% 45% / .8); } .tsh { pointer-events: none; }
 .arcstmt { display: flex; align-items: center; gap: 12px; font-size: 1.15rem; padding: 2px 0 4px; }
 .arcring { fill: none; stroke: var(--line); stroke-width: 1.2; } .arcpath { fill: none; stroke-width: 5; stroke-linecap: round; } .arcspoke { stroke-width: 1.3; opacity: .7; } .arcth { font: 650 13px var(--font); fill: var(--muted); text-anchor: middle; } .arctd { font: 600 14px var(--font); text-anchor: middle; font-variant-numeric: tabular-nums; } .arctd.held { font-weight: 800; text-decoration: underline; } .figwrap.arcsfig { display: grid; gap: 8px; justify-items: start; } .figwrap.arcsfig > div:nth-child(3) { width: min(100%, 520px); } .hexid.recip { background: #a9ecb9; } .figwrap.arcsfig svg.fig { width: 100%; max-width: none; height: auto; display: block; }
 .taxis { stroke: var(--muted); stroke-width: 2; } .thandle { fill: var(--paper); stroke: var(--ink); stroke-width: 1.6; cursor: grab; touch-action: none; } .thandle:hover { fill: hsl(45 95% 70%); } .taxn { font: 650 12px var(--font); fill: var(--muted); } .figsvg svg.table { overflow: visible; touch-action: none; }
@@ -265,7 +267,9 @@ button.st-leaf { cursor: pointer; } .st-leaf.st-A { background: hsl(212 85% 60% 
 .coefsvg { display: block; margin-left: 10px; max-width: 100%; height: auto; } .coefnode { fill: var(--paper); stroke: var(--ink); stroke-width: 2; } .coefnode.leaf { stroke: hsl(212 60% 50%); fill: hsl(212 85% 60% / .15); } .coefnode.inner { stroke-dasharray: 4 3; } .coeflab { font: 600 14px ui-sans-serif, system-ui, sans-serif; fill: var(--ink); } .coefedge { fill: none; stroke: var(--line); stroke-width: 2; }
 .coefruby { font: 500 10.5px ui-sans-serif, system-ui, sans-serif; fill: var(--muted); letter-spacing: .02em; } .coefdot { font: 700 22px ui-sans-serif, system-ui, sans-serif; fill: var(--ink); }
 .vcell.focus { box-shadow: 0 0 0 3px var(--ink); } .vcell.hit b::after { content: " ✓"; font-size: .7em; }
-.hexrow { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; } .hexid { padding: 12px 16px; border-radius: 13px; background: hsl(235 70% 90%); color: hsl(235 45% 22%); font-size: 1.25rem; cursor: ns-resize; min-width: 210px; text-align: center; }
+.hexrow { display: flex; flex-wrap: nowrap; gap: 10px 22px; align-items: center; } .hexrow > .hexsvg { flex: 0 1 300px; min-width: 200px; } .hexrow > .hexid { flex: 0 1 auto; }
+.hexreach { fill: none; stroke-width: 24; stroke-linecap: round; filter: blur(5px); transition: stroke-dashoffset .45s ease-out; pointer-events: none; } .hexg { background: #a9ecb9; border-radius: 9px; padding: 3px 6px; display: inline-block; } .hexid.comp { background: hsl(15 80% 90%); color: hsl(15 50% 22%); }
+.frsib { font-size: 1.05rem; color: var(--ink); padding: 2px 8px; border-left: 3px solid var(--line); } .hexid { padding: 12px 16px; border-radius: 13px; background: hsl(235 70% 90%); color: hsl(235 45% 22%); font-size: 1.25rem; cursor: ns-resize; min-width: 210px; text-align: center; }
 .hexidnote { margin-top: 8px; font-size: .74rem; color: hsl(235 30% 35%); }
 .wrapsvg { width: min(100%, 340px); height: auto; cursor: crosshair; } .wrapspiral { fill: none; stroke-width: 5; stroke-linecap: butt; } .wrapbase { fill: none; stroke: var(--line); stroke-width: 2; }
 .wraprange { fill: none; stroke: hsl(44 95% 56% / .8); stroke-width: 9; stroke-linecap: round; } .wrapzero { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 3; } .wrapzdot { fill: var(--muted); }
@@ -2717,7 +2721,7 @@ if (typeof document !== 'undefined') (() => {
   const WORD = { ok: 'Mastered', no: 'Not yet mastered' };
   // Development aid: nodes whose features are new or changed in the current pass. Each gets a small arrow off the left end of its
   // title card, and so does every node on the way down to it. Reset this list at the start of each pass.
-  const FRESH = ['@frame.radius.count', '@table.rel.locate', '@frame.concentric.rigid', '@frame.concentric.path', '@m3.trig.pairs.two', '@fr.sent.valency', '@fr.words.q', '@fr.words.mind', '@fr.sent.pron.il'];
+  const FRESH = ['@frame.radius.count', '@table.rel.locate', '@table.path.one', '@m3.trig.pairs.two', '@fr.sent.valency'];
   const prefs = { auto: false, save: () => {} };   // set from saved state when a course starts
 
   // ---------- rich text: [boxed givens], {term :: note}, $maths$ ----------
@@ -2945,7 +2949,9 @@ if (typeof document !== 'undefined') (() => {
     const AX = { A: [0.866, 0.615], B: [0.05, 1.35], C: [-1.089, 0.429] }, A = AX.A, B = AX.B, C = AX.C, S = 96, TO = [215, 400], TS = 52, AXN = { A: 'frame', B: 'extensivity', C: 'order' }; let ox = 262, oy = 318;
     // The lattice stays centered in its frame however the axes are turned; the triad that turns them sits just under it, with a fixed origin.
     const center = () => { let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9; for (let k = 0; k < 3; k++) for (let j = 0; j < 2; j++) for (let i = 0; i < 2; i++) { const x = S * (i * A[0] + j * B[0] + k * C[0]), y = -S * (i * A[1] + j * B[1] + k * C[1]); x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); } ox = 215 - (x0 + x1) / 2; oy = 170 - (y0 + y1) / 2; };
-    const open = {};   // shared words opened into their two frame-specific words
+    let open = {}, hov = null;   // the shared word under the pointer, opened into its two frame-specific words
+    // An opened field grows along the frame axis until both words fit side by side, each on its own frame layer.
+    const half = (k, j) => { const w = T[k][j][0][1].length + T[k][j][1][1].length; return Math.max(0.47, (w * 5.9 + 26) / (2 * S * Math.hypot(A[0], A[1]))); };
     const pt = (i, j, k) => [ox + S * (i * A[0] + j * B[0] + k * C[0]), oy - S * (i * A[1] + j * B[1] + k * C[1])];
     // [order][kind][frame]: symbol, word, unit, dimension, power of length
     const T = [
@@ -2971,16 +2977,17 @@ if (typeof document !== 'undefined') (() => {
       H.planes.forEach((pl, n) => { s += '<polygon points="' + pl.map(P).join(' ') + '" style="stroke:' + H.col[n] + ';fill:' + H.col[n] + '" class="tplane"/>'; });
       for (let k = 0; k < 3; k++) for (let j = 0; j < 2; j++) {
         // In "shared words" each word sits in a field, a strip along the frame axis. The field, not the text, takes the pointer and the wheel, so nothing slips out from under the cursor when the word opens.
-        if (lab === 2) { const b0 = (j === 0 ? 0.2 : 0.8), q = [pt(0.03, b0 - 0.17, k), pt(0.97, b0 - 0.17, k), pt(0.97, b0 + 0.17, k), pt(0.03, b0 + 0.17, k)]; s += '<polygon class="tfield' + (open[k + ',' + j] ? ' on' : '') + '" data-sh="' + k + ',' + j + '" points="' + q.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ') + '"><title>Scroll to open or close</title></polygon>'; }
+        if (lab === 2) { const b0 = (j === 0 ? 0.2 : 0.8), isOpen = !!open[k + ',' + j], hh = isOpen ? half(k, j) : 0.47, q = [pt(0.5 - hh, b0 - 0.17, k), pt(0.5 + hh, b0 - 0.17, k), pt(0.5 + hh, b0 + 0.17, k), pt(0.5 - hh, b0 + 0.17, k)]; s += '<polygon class="tfield' + (isOpen ? ' on' : '') + '" data-sh="' + k + ',' + j + '" points="' + q.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ') + '"/>'; }
         if (lab === 2 && !open[k + ',' + j]) { const a = pt(0.14, j === 0 ? 0.2 : 0.8, k), b = pt(0.86, j === 0 ? 0.2 : 0.8, k), ang = -Math.atan2(A[1], A[0]) * 180 / Math.PI, mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2; s += '<text x="' + mx + '" y="' + my + '" transform="rotate(' + ang + ' ' + mx + ' ' + my + ')" text-anchor="middle" class="tlab word tsh" data-sh="' + k + ',' + j + '" style="fill:' + (hl === 'frame' || hl === 'length' ? 'var(--ink)' : H.col[H.of(0, j, k)]) + '">' + SHARED[k][j] + '</text>'; continue; }
-        for (let i = 0; i < 2; i++) { const c = T[k][j][i], p = lab === 2 ? pt(0.5, 0.2 + 0.6 * j + (i ? -0.085 : 0.085), k) : pt(0.2 + 0.6 * i, 0.2 + 0.6 * j, k), txt = lab === 0 ? c[0] : lab === 1 || lab === 2 ? c[1] : lab === 3 ? c[2] : '[' + c[3].replace(/ /g, '') + ']', turn = lab === 1 || lab === 2 ? ' data-sh="' + k + ',' + j + '" transform="rotate(' + (-Math.atan2(A[1], A[0]) * 180 / Math.PI).toFixed(1) + ' ' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + ')"' : ''; s += '<text x="' + p[0] + '" y="' + (p[1] + 5) + '"' + turn + ' text-anchor="middle" class="tlab ' + (lab === 0 ? 'sym' : lab === 1 ? 'word small' : lab === 2 ? 'word small tsh' : lab === 4 ? 'dim' : 'unit') + '" style="fill:' + H.col[H.of(i, j, k)] + '">' + txt + '</text>'; }
+        for (let i = 0; i < 2; i++) { const c = T[k][j][i], p = lab === 2 ? pt(0.5 + (i ? 1 : -1) * (half(k, j) - 0.05), 0.2 + 0.6 * j, k) : pt(0.2 + 0.6 * i, 0.2 + 0.6 * j, k), anchor = lab === 2 ? (i ? 'end' : 'start') : 'middle', txt = lab === 0 ? c[0] : lab === 1 || lab === 2 ? c[1] : lab === 3 ? c[2] : '[' + c[3].replace(/ /g, '') + ']', turn = lab === 1 || lab === 2 ? ' data-sh="' + k + ',' + j + '" transform="rotate(' + (-Math.atan2(A[1], A[0]) * 180 / Math.PI).toFixed(1) + ' ' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + ')"' : ''; s += '<text x="' + p[0] + '" y="' + (p[1] + 5) + '"' + turn + ' text-anchor="' + anchor + '" class="tlab ' + (lab === 0 ? 'sym' : lab === 1 ? 'word small' : lab === 2 ? 'word small tsh' : lab === 4 ? 'dim' : 'unit') + '" style="fill:' + H.col[H.of(i, j, k)] + '">' + txt + '</text>'; }
       }
       Object.keys(AX).forEach(a => { const x = TO[0] + TS * AX[a][0], y = TO[1] - TS * AX[a][1]; s += '<line class="taxis" x1="' + TO[0] + '" y1="' + TO[1] + '" x2="' + x.toFixed(1) + '" y2="' + y.toFixed(1) + '"/><circle class="thandle" data-ax="' + a + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="9"><title>Drag to turn the ' + AXN[a] + ' axis</title></circle><text class="taxn" x="' + (x + 13 * Math.sign(AX[a][0] || 1)).toFixed(1) + '" y="' + (y + 4).toFixed(1) + '" text-anchor="' + (AX[a][0] < 0 ? 'end' : 'start') + '">' + AXN[a] + '</text>'; });
       svgBox.innerHTML = s + '</svg>';
-      key.innerHTML = '<span class="quiet">' + H.name + ':</span> ' + H.keys.map((x, n) => '<span style="color:' + H.col[n] + '"><i style="background:' + H.col[n] + '"></i>' + x + '</span>').join(' ') + (lab === 2 ? '<div class="quiet">Scroll on a shared word to open it into its two frame-specific words, and back.</div>' : '');
+      key.innerHTML = '<span class="quiet">' + H.name + ':</span> ' + H.keys.map((x, n) => '<span style="color:' + H.col[n] + '"><i style="background:' + H.col[n] + '"></i>' + x + '</span>').join(' ') + (lab === 2 ? '<div class="quiet">Point at a shared word to open it into its two frame-specific words.</div>' : '');
       bar.replaceChildren(seg(LAB, lab, i => { lab = i; render(); }), seg(Object.keys(HL).map(x => HL[x].name), Object.keys(HL).indexOf(hl), i => { hl = Object.keys(HL)[i]; render(); }));
     };
-    svgBox.addEventListener('wheel', ev => { const t = ev.target.closest && ev.target.closest('[data-sh]'); if (!t || lab !== 2) return; eat(ev); if (Math.abs(ev.deltaY) < 4) return; const want = ev.deltaY > 0; if (!!open[t.dataset.sh] !== want) { open[t.dataset.sh] = want; render(); } }, { passive: false });
+    const hoverSh = ev => { const t = lab === 2 && ev.target.closest ? ev.target.closest('[data-sh]') : null, key = t ? t.dataset.sh : null; if (key === hov) return; hov = key; open = key ? { [key]: true } : {}; render(); };
+    svgBox.addEventListener('pointermove', hoverSh); svgBox.addEventListener('pointerleave', () => { if (hov !== null) { hov = null; open = {}; render(); } });
     let grab = null;
     const toSvg = ev => { const g = svgBox.querySelector('svg'), m = g.getScreenCTM(); return [(ev.clientX - m.e) / m.a, (ev.clientY - m.f) / m.d]; };
     svgBox.addEventListener('pointerdown', ev => { const h = ev.target.closest && ev.target.closest('.thandle'); if (!h) return; grab = h.dataset.ax; svgBox.setPointerCapture(ev.pointerId); ev.preventDefault(); });
@@ -3143,6 +3150,7 @@ if (typeof document !== 'undefined') (() => {
     return { el };
   };
   // The six functions at the corners of a hexagon, with the three kinds of pair drawn on request.
+  let hexUid = 0;
   const hexagonFigure = () => {
     const el = $('div', 'figwrap hexfig'), bar = $('div', 'figbar'), cap = $('div', 'quiet', 'Choose a kind of pair.');
     const F = [['cot', 'elbow'], ['cos', 'fan'], ['sin', 'ramp'], ['tan', 'elbow'], ['sec', 'fan'], ['csc', 'ramp']], pt = i => [150 + 105 * Math.cos(i * Math.PI / 3), 135 - 105 * Math.sin(i * Math.PI / 3)];
@@ -3156,12 +3164,16 @@ if (typeof document !== 'undefined') (() => {
     const partners = i => KIND.map(kd => { const pr = kd[1].find(p => p.includes(i)); return pr[0] === i ? pr[1] : pr[0]; });
     const thick = (a, b, k) => { const l = document.createElementNS(ns, 'line'), p = pt(a), q = pt(b); l.setAttribute('x1', p[0]); l.setAttribute('y1', p[1]); l.setAttribute('x2', q[0]); l.setAttribute('y2', q[1]); l.setAttribute('stroke', 'hsl(' + KIND[k][2] + ' 70% 78%)'); l.setAttribute('stroke-width', 40); l.setAttribute('stroke-linecap', 'round'); l.setAttribute('class', 'hexline'); lines.append(l); };
     const one = i => { lines.replaceChildren(); idt = null; identity(); const ps = partners(i), [x, y] = pt(i);
-      ps.forEach((j, k) => { const l = document.createElementNS(ns, 'line'), q = pt(j), off = (k - 1) * 7, dx = q[0] - x, dy = q[1] - y, len = Math.hypot(dx, dy) || 1; l.setAttribute('x1', x - dy / len * off); l.setAttribute('y1', y + dx / len * off); l.setAttribute('x2', q[0] - dy / len * off); l.setAttribute('y2', q[1] + dx / len * off); l.setAttribute('stroke', 'hsl(' + KIND[k][2] + ' 65% 62%)'); l.setAttribute('stroke-width', 6); l.setAttribute('stroke-linecap', 'round'); lines.append(l); });
+      // Each partner is reached for, not reached: a broad feathered stroke grows out of the function toward it and fades before it arrives.
+      ps.forEach((j, k) => { const q = pt(j), off = (k - 1) * 9, dx = q[0] - x, dy = q[1] - y, len = Math.hypot(dx, dy) || 1, ox2 = -dy / len * off, oy2 = dx / len * off, x1 = x + ox2, y1 = y + oy2, x2 = x + dx * 0.86 + ox2, y2 = y + dy * 0.86 + oy2, id = 'hxg' + (hexUid++);
+        const gr = document.createElementNS(ns, 'linearGradient'); gr.setAttribute('id', id); gr.setAttribute('gradientUnits', 'userSpaceOnUse'); gr.setAttribute('x1', x1); gr.setAttribute('y1', y1); gr.setAttribute('x2', x2); gr.setAttribute('y2', y2); gr.innerHTML = '<stop offset="0" stop-color="hsl(' + KIND[k][2] + ' 70% 62%)" stop-opacity=".85"/><stop offset=".55" stop-color="hsl(' + KIND[k][2] + ' 70% 66%)" stop-opacity=".4"/><stop offset="1" stop-color="hsl(' + KIND[k][2] + ' 70% 70%)" stop-opacity="0"/>';
+        const l = document.createElementNS(ns, 'path'), L = Math.hypot(x2 - x1, y2 - y1); l.setAttribute('d', 'M' + x1.toFixed(1) + ' ' + y1.toFixed(1) + 'L' + x2.toFixed(1) + ' ' + (y2 + 0.01).toFixed(2)); l.setAttribute('stroke', 'url(#' + id + ')'); l.setAttribute('class', 'hexreach'); l.style.strokeDasharray = L; const still = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches; l.style.strokeDashoffset = still ? 0 : L; lines.append(gr, l); if (!still) requestAnimationFrame(() => requestAnimationFrame(() => { l.style.strokeDashoffset = 0; })); });
       cap.innerHTML = '<b>' + F[i][0] + '</b> (' + F[i][1] + '): ' + ps.map((j, k) => '<span style="border-bottom:3px solid hsl(' + KIND[k][2] + ' 65% 62%)">' + ['reciprocal', 'Pythagorean', 'complementary'][k] + ' ' + F[j][0] + '</span>').join(', ') + '. Point at a second function to see how the two are related; click one to start from it instead.'; };
     // Two functions chosen: the same function, direct reciprocals, or a Pythagorean pair after zero, one or two reciprocal steps.
     const flip = i => (i + 3) % 6, pyth = (x, y) => x !== y && KIND[1][1].some(p => p.includes(x) && p.includes(y));
     const two = (a, b) => { lines.replaceChildren(); idt = null; idn = 0; identity(); const A = F[a][0], B = F[b][0];
       if (a === b) { cap.innerHTML = '<b>' + A + '</b> twice: the same function.'; return; }
+      if (comp && KIND[2][1].some(p => p.includes(a) && p.includes(b))) { thick(a, b, 2); idt = { comp: [a, b] }; identity(); cap.innerHTML = '<b>' + A + '</b> and <b>' + B + '</b> are complements: one “co-” prefix apart.'; return; }
       if (b === flip(a)) { thick(a, b, 0); idt = { recip: [a, b] }; identity(); cap.innerHTML = '<b>' + A + '</b> and <b>' + B + '</b> are direct reciprocals. They live on the same shape, the ' + F[a][1] + '.'; return; }
       const [x, y] = [[a, b], [flip(a), b], [a, flip(b)], [flip(a), flip(b)]].find(([p, q]) => pyth(p, q)), steps = (x !== a) + (y !== b);
       if (x !== a) thick(a, x, 0); if (y !== b) thick(b, y, 0); thick(x, y, 1);
@@ -3173,22 +3185,25 @@ if (typeof document !== 'undefined') (() => {
     // of equivalent forms: the origin has all three terms on one side; each scroll notch one way is a step toward
     // isolating the first function chosen, and the other way toward the second (square moved across, root taken, reciprocal undone).
     const idbox = $('div', 'hexid'); idbox.hidden = true; let idt = null, idn = 0;
-    const FN = F.map(f => '\\' + f[0]);
+    const FN = F.map(f => '\\' + f[0]), V = i => '(' + FN[i] + '\\,\\theta)', KX = t => (typeof katex !== 'undefined' ? katex.renderToString(t, { throwOnError: false, strict: false, trust: true }) : tex(t)); let comp = false;
     const identity = () => {
-      if (!idt) { idbox.hidden = true; return; } idbox.hidden = false; idbox.classList.toggle('recip', !!idt.recip);
+      if (!idt) { idbox.hidden = true; return; } idbox.hidden = false; idbox.classList.toggle('recip', !!idt.recip); idbox.classList.toggle('comp', !!idt.comp);
       // Direct reciprocals have no Pythagorean layer: only the green one, holding the reciprocal relation. Scrolling isolates one or the other.
-      if (idt.recip) { const [ra, rb] = idt.recip, Gr = '\\colorbox{#a9ecb9}{$', En = '$}', k = Math.max(-1, Math.min(1, idn)); const t = !k ? Gr + FN[ra] + '\\cdot' + FN[rb] + '=1' + En : k > 0 ? FN[ra] + '=' + Gr + '\\dfrac{1}{' + FN[rb] + '}' + En : FN[rb] + '=' + Gr + '\\dfrac{1}{' + FN[ra] + '}' + En;
-        idbox.innerHTML = (typeof katex !== 'undefined' ? katex.renderToString(t, { throwOnError: false, strict: false }) : tex(t)) + '<div class="hexidnote">' + (k ? 'Isolated ' + F[k > 0 ? ra : rb][0] + '.' : 'Scroll on this box: one way isolates ' + F[ra][0] + ', the other ' + F[rb][0] + '.') + '</div>'; return; }
-      const G = '\\colorbox{#a9ecb9}{$', E = '$}', sq = t => (t.one ? '1' : t.rec ? G + '\\dfrac{1}{' + FN[t.f] + '^2}' + E : FN[t.f] + '^2'), plain = t => (t.rec ? G + '\\dfrac{1}{' + FN[t.f] + '}' + E : FN[t.f]);
+      if (idt.recip) { const [ra, rb] = idt.recip, k = Math.max(-1, Math.min(1, idn)), t = !k ? V(ra) + V(rb) + '=1' : V(k > 0 ? ra : rb) + '=\\dfrac{1}{' + V(k > 0 ? rb : ra) + '}';
+        idbox.innerHTML = KX(t) + '<div class="hexidnote">' + (k ? 'Isolated ' + F[k > 0 ? ra : rb][0] + '.' : 'Scroll on this box: one way isolates ' + F[ra][0] + ', the other ' + F[rb][0] + '.') + '</div>'; return; }
+      // Complementary mode: the co-function of an angle is the function of its complement. Scrolling swaps which one is written plainly.
+      if (idt.comp) { const [ca, cb] = idt.comp, k = idn > 0 ? 1 : 0, p = k ? cb : ca, q = k ? ca : cb, t = V(p) + '=(' + FN[q] + '\\,(90^\\circ-\\theta))';
+        idbox.innerHTML = KX(t) + '<div class="hexidnote">Each is the other at the complementary angle. Scroll to write it the other way round.</div>'; return; }
+      const G = '\\htmlClass{hexg}{', E = '}', sq = t => (t.one ? '1' : t.rec ? G + '\\dfrac{1}{' + V(t.f) + '^2}' + E : V(t.f) + '^2'), plain = t => (t.rec ? G + '\\dfrac{1}{' + V(t.f) + '}' + E : V(t.f));
       // p^2 + q^2 = r^2: terms carries the three in that order
       const [p, q, r] = idt.terms, signed = [[p, 1], [q, 1], [r, -1]], side = n => (n > 0 ? idt.a : idt.b), steps = Math.abs(idn);
       let t;
       if (!steps) t = sq(p) + '+' + sq(q) + '-' + sq(r) + '=0';
       else { const T = side(idn), me = signed.find(s => s[0] === T), others = signed.filter(s => s[0] !== T).map(s => [s[0], -s[1] * me[1]]).sort((x, y) => y[1] - x[1]), rhs = others.map((s, i) => (s[1] < 0 ? '-' : i ? '+' : '') + sq(s[0])).join('');
-        t = steps === 1 ? sq(T) + '=' + rhs : steps === 2 ? plain(T) + '=\\sqrt{' + rhs + '}' : FN[T.f] + '=\\dfrac{1}{\\sqrt{' + rhs + '}}'; }
-      idbox.innerHTML = (typeof katex !== 'undefined' ? katex.renderToString(t, { throwOnError: false, strict: false, displayMode: false }) : tex(t)) + '<div class="hexidnote">' + (steps ? 'Step ' + steps + ' toward ' + F[side(idn).f][0] + '.' : 'Scroll on this box: one way isolates ' + F[idt.a.f][0] + ', the other ' + F[idt.b.f][0] + '.') + '</div>';
+        t = steps === 1 ? sq(T) + '=' + rhs : steps === 2 ? plain(T) + '=\\sqrt{' + rhs + '}' : V(T.f) + '=\\dfrac{1}{\\sqrt{' + rhs + '}}'; }
+      idbox.innerHTML = KX(t) + '<div class="hexidnote">' + (steps ? 'Step ' + steps + ' toward ' + F[side(idn).f][0] + '.' : 'Scroll on this box: one way isolates ' + F[idt.a.f][0] + ', the other ' + F[idt.b.f][0] + '.') + '</div>';
     };
-    idbox.addEventListener('wheel', ev => { eat(ev); if (!idt || Math.abs(ev.deltaY) < 4 || idbox._lock) return; idbox._lock = true; setTimeout(() => { idbox._lock = false; }, 180); const lim = t => (t.rec ? 3 : 2); idn = idt.recip ? Math.max(-1, Math.min(1, idn + (ev.deltaY > 0 ? 1 : -1))) : Math.max(-lim(idt.b), Math.min(lim(idt.a), idn + (ev.deltaY > 0 ? 1 : -1))); identity(); }, { passive: false });
+    idbox.addEventListener('wheel', ev => { eat(ev); if (!idt || Math.abs(ev.deltaY) < 4 || idbox._lock) return; idbox._lock = true; setTimeout(() => { idbox._lock = false; }, 180); const lim = t => (t.rec ? 3 : 2); idn = idt.comp ? (ev.deltaY > 0 ? 1 : 0) : idt.recip ? Math.max(-1, Math.min(1, idn + (ev.deltaY > 0 ? 1 : -1))) : Math.max(-lim(idt.b), Math.min(lim(idt.a), idn + (ev.deltaY > 0 ? 1 : -1))); identity(); }, { passive: false });
     let sel = [];
     const mark = () => labs.forEach((g, i) => g.setAttribute('class', 'hexlab' + (sel.includes(i) ? ' sel' : '')));
     // Pair pick, variation G.b: with nothing chosen, pointing at a function chooses it; with one chosen, pointing at another shows the pair,
@@ -3198,7 +3213,7 @@ if (typeof document !== 'undefined') (() => {
     svg.addEventListener('pointerdown', ev => { byTouch = ev.pointerType === 'touch'; });
     // The lead is a strand dragged through water: its far end is on the pointer, and its middle lags behind and catches up.
     let tip = null, lag = null, leadOn = false;
-    const strand = () => { if (!leadOn || !tip) { lead.style.display = 'none'; return; } const p = pt(sel[0]); lag = lag || tip.slice(); lag[0] += (tip[0] - lag[0]) * 0.09; lag[1] += (tip[1] - lag[1]) * 0.09; const cxp = (p[0] + tip[0]) / 2 + (lag[0] - tip[0]) * 1.1, cyp = (p[1] + tip[1]) / 2 + (lag[1] - tip[1]) * 1.1; lead.setAttribute('d', 'M' + p[0] + ' ' + p[1] + 'Q' + cxp.toFixed(1) + ' ' + cyp.toFixed(1) + ' ' + tip[0].toFixed(1) + ' ' + tip[1].toFixed(1)); lead.style.display = ''; if (Math.hypot(lag[0] - tip[0], lag[1] - tip[1]) > 0.3) requestAnimationFrame(strand); else leadRun = false; };
+    const strand = () => { if (!leadOn || !tip || sel.length !== 1) { lead.style.display = 'none'; leadRun = false; return; } const p = pt(sel[0]); lag = lag || tip.slice(); lag[0] += (tip[0] - lag[0]) * 0.09; lag[1] += (tip[1] - lag[1]) * 0.09; const cxp = (p[0] + tip[0]) / 2 + (lag[0] - tip[0]) * 1.1, cyp = (p[1] + tip[1]) / 2 + (lag[1] - tip[1]) * 1.1; lead.setAttribute('d', 'M' + p[0] + ' ' + p[1] + 'Q' + cxp.toFixed(1) + ' ' + cyp.toFixed(1) + ' ' + tip[0].toFixed(1) + ' ' + tip[1].toFixed(1)); lead.style.display = ''; if (Math.hypot(lag[0] - tip[0], lag[1] - tip[1]) > 0.3) requestAnimationFrame(strand); else leadRun = false; };
     let leadRun = false;
     svg.addEventListener('pointermove', ev => { if (ev.pointerType === 'touch' || sel.length !== 1 || over != null) { leadOn = false; lead.style.display = 'none'; return; } const m = svg.getScreenCTM(); tip = [(ev.clientX - m.e) / m.a, (ev.clientY - m.f) / m.d]; leadOn = true; if (!leadRun) { leadRun = true; requestAnimationFrame(strand); } });
     svg.addEventListener('pointerleave', () => { leadOn = false; lag = null; lead.style.display = 'none'; });
@@ -3208,7 +3223,8 @@ if (typeof document !== 'undefined') (() => {
       g.addEventListener('click', () => { if (byTouch) { if (sel.length === 1 && i !== sel[0]) { two(sel[0], i); sel = []; } else { sel = [i]; one(i); } } else { sel = [i]; one(i); } mark(); }); });
     KIND.forEach((kd, k) => { const b = btn('btn', kd[0]); b.onclick = () => draw(k); bar.append(b); });
     const clear = btn('btn', 'Clear'); clear.onclick = () => { sel = []; mark(); idt = null; identity(); draw(null); }; const sw = btn('btn', 'Show shape names'); sw.onclick = () => { names = 1 - names; sw.textContent = names ? 'Show function names' : 'Show shape names'; label(); };
-    bar.append(clear, sw); label(); const row = $('div', 'hexrow'); row.append(svg, idbox); el.append(bar, row, cap);
+    const cm = btn('btn', 'Complements: off'); cm.title = 'In this mode a complementary pair shows its co-function identity'; cm.onclick = () => { comp = !comp; cm.textContent = 'Complements: ' + (comp ? 'on' : 'off'); cm.setAttribute('aria-pressed', String(comp)); };
+    bar.append(clear, sw, cm); label(); const row = $('div', 'hexrow'); row.append(svg, idbox); el.append(bar, row, cap);
     return { el };
   };
   // ---------- structure trees: an expression drawn as a tree whose shape can be changed by the properties ----------
@@ -3403,11 +3419,14 @@ if (typeof document !== 'undefined') (() => {
         line.append(piece(r, i === 0));
       });
       line.append(end); note.textContent = idle;
+      // A sibling presentation of the same tree: its English, standing beside the French and following it.
+      let en = ''; try { en = Core.syn.realize(tree); } catch (e) { /* no English for this tree */ } sib.hidden = !en; sib.innerHTML = en ? '<span class="quiet">English</span> ' + esc(en) + (all.length > 1 ? ' <span class="quiet">(way ' + (n + 1) + ' of ' + all.length + ' in French; scroll to change)</span>' : '') : '';
     };
+    const sib = $('div', 'frsib'); if (all.length > 1) el.addEventListener('wheel', ev => { eat(ev); if (Math.abs(ev.deltaY) < 4 || el._lock) return; el._lock = true; setTimeout(() => { el._lock = false; }, 220); n = (n + (ev.deltaY > 0 ? 1 : all.length - 1)) % all.length; draw(); }, { passive: false });
     if (all.length > 1) { const other = btn('btn', 'Say it another way'); other.onclick = () => { n = (n + 1) % all.length; draw(); }; bar.append(other); }
     let inf = ''; try { inf = Core.fr.infinitive(tree); } catch (e) { /* no infinitive for this tree */ }
     if (inf) bar.append($('span', 'quiet', 'Infinitive: <i lang="fr">' + esc(inf) + '</i>'));
-    line.lang = 'fr'; draw(); el.append(line, note, bar);
+    line.lang = 'fr'; draw(); el.append(line, sib, note, bar);
     return { el };
   };
   const makeFigure = spec => { const s = String(spec || '').trim(); return /^arcs/.test(s) ? arcsFigure(s) : /^tabulate/.test(s) ? tabulateFigure(s) : /^hexagon/.test(s) ? hexagonFigure() : /^structure/.test(s) ? structureFigure(s) : /^coef/.test(s) ? coefFigure(s) : /^wrap/.test(s) ? wrapFigure() : /^french/.test(s) ? frenchFigure(s) : /^vowels/.test(s) ? vowelFigure() : /^table/.test(s) ? tableFigure(s) : /^rings/.test(s) ? pulleyFigure(s) : /^roll/.test(s) ? rollFigure(s) : /^spin/.test(s) ? spinFigure(s) : /^components/.test(s) ? componentsFigure(s) : null; };
@@ -3497,38 +3516,65 @@ if (typeof document !== 'undefined') (() => {
     if (tiles.length < 2) return null;
     const el = $('details', 'calc', '<summary>Work it out with tiles</summary>'), body = $('div', 'calcbody'), tray = $('div', 'ctray'), frac = $('div', 'cfrac'), top = $('div', 'czone'), bot = $('div', 'czone'), lcd = $('div', 'lcd'), keys = $('div', 'ckeys'), unitLine = $('div', 'quiet');
     top.dataset.z = 'num'; bot.dataset.z = 'den'; frac.append(top, $('div', 'cbar'), bot); const scr = $('div', 'calcscreen'); scr.append(lcd, keys);
-    body.append($('div', 'quiet', 'Click a given to place it above the bar. Drag it below the bar to divide by it. Click a placed tile to change its power.'), tray, frac, scr, unitLine); el.append(body);
-    const placed = []; let drag = null;   // { t: tile, z: 'num' | 'den', p: 1 | 2 | 3 | 0.5 }
+    body.append($('div', 'quiet', 'Click a given to place it above the bar; drag it below the bar to divide by it. Click a placed tile to change its power. Drag a sum or a difference in, then drop givens into it. Drop a given onto a term to multiply that term.'), tray, frac, scr, unitLine); el.append(body);
+    // The work is a tree. Each side of the bar is a product of nodes. A node is a tile, a sum (any number of terms) or a difference (two slots).
+    // A term is a bare tile until something is dropped onto it; only then does it become a product, and it goes back to a bare tile when one factor is left.
+    const Z = { num: [], den: [] }; let drag = null, aim = null;   // aim: the container that clicked givens go into
     const POW = [1, 2, 3, 0.5], sup = p => (p === 2 ? '²' : p === 3 ? '³' : ''), numText = v => String(v);
     const tiNum = v => { if (!isFinite(v)) return 'ERROR'; const a = Math.abs(v); if (a !== 0 && (a >= 1e10 || a < 1e-3)) { const [m, e] = v.toExponential(9).split('e'); return String(parseFloat(m)) + 'ᴇ' + (+e); } return String(parseFloat(v.toPrecision(10))); };
-    const tileEl = (t, where, i) => { const b = $('button', 'ctile given', rich(where && where.p === 0.5 ? '√' : '').replace(/<[^>]*>/g, '') + esc(t.text) + (where ? '<sup>' + sup(where.p) + '</sup>' : '')); b.type = 'button'; b.draggable = true;
-      b.ondragstart = ev => { drag = where ? { from: i } : { tile: t }; ev.dataTransfer.setData('text/plain', t.text); ev.dataTransfer.effectAllowed = 'move'; };
-      b.onclick = () => { if (!where) placed.push({ t, z: 'num', p: 1 }); else where.p = POW[(POW.indexOf(where.p) + 1) % POW.length]; draw(); };
-      if (where) { const x = $('span', 'cx', '×'); x.title = 'Take this tile away'; x.onclick = ev => { ev.stopPropagation(); placed.splice(i, 1); draw(); }; b.append(x); }
+    const mk = t => ({ k: 'tile', t, p: 1 });
+    const tidy = () => { const term = t => (t && t.k === 'prod' ? (t.f.length === 1 ? t.f[0] : t.f.length ? t : null) : t); [Z.num, Z.den].forEach(arr => arr.forEach(x => { if (x.k === 'sum') x.terms = x.terms.map(term).filter(Boolean); if (x.k === 'diff') { x.a = term(x.a); x.b = term(x.b); } })); if (aim && !Z.num.includes(aim) && !Z.den.includes(aim)) aim = null; };
+    const detach = node => { const rm = arr => { const i = arr.indexOf(node); if (i >= 0) { arr.splice(i, 1); return true; } return arr.some(x => (x.k === 'sum' && rm(x.terms)) || (x.k === 'prod' && rm(x.f)) || (x.k === 'diff' && ['a', 'b'].some(s => { if (x[s] === node) { x[s] = null; return true; } return !!x[s] && x[s].k === 'prod' && rm(x[s].f); }))); }; rm(Z.num) || rm(Z.den); tidy(); };
+    const into = (box, node) => { if (box.k === 'sum') box.terms.push(node); else if (!box.a) box.a = node; else if (!box.b) box.b = node; else return false; return true; };
+    const fresh = () => (drag && drag.tile ? mk(drag.tile) : null);
+    const dropOn = (elx, fn) => { elx.ondragover = ev => { ev.preventDefault(); ev.stopPropagation(); elx.classList.add('over'); }; elx.ondragleave = () => elx.classList.remove('over'); elx.ondrop = ev => { ev.preventDefault(); ev.stopPropagation(); elx.classList.remove('over'); if (drag) fn(); drag = null; tidy(); draw(); }; };
+    const trayTile = t => { const b = $('button', 'ctile given', esc(t.text)); b.type = 'button'; b.draggable = true; b.ondragstart = ev => { drag = { tile: t }; ev.dataTransfer.setData('text/plain', t.text); ev.dataTransfer.effectAllowed = 'move'; }; b.onclick = () => { if (!(aim && into(aim, mk(t)))) Z.num.push(mk(t)); draw(); }; return b; };
+    const trayBox = (k, label, title) => { const b = $('button', 'ctile cmake', label); b.type = 'button'; b.title = title; b.draggable = true; b.ondragstart = ev => { drag = { make: k }; ev.dataTransfer.setData('text/plain', k); ev.dataTransfer.effectAllowed = 'move'; }; b.onclick = () => { const n = k === 'sum' ? { k, terms: [] } : { k, a: null, b: null }; Z.num.push(n); aim = n; draw(); }; return b; };
+    // set: how to put a replacement where this node sits
+    const tileNode = (w, set, isTerm) => { const b = $('button', 'ctile given', (w.p === 0.5 ? '√' : '') + esc(w.t.text) + '<sup>' + sup(w.p) + '</sup>'); b.type = 'button';
+      b.onclick = ev => { ev.stopPropagation(); w.p = POW[(POW.indexOf(w.p) + 1) % POW.length]; draw(); };
+      const x = $('span', 'cx', '×'); x.title = 'Take this tile away'; x.onclick = ev => { ev.stopPropagation(); detach(w); draw(); }; b.append(x);
+      if (set) dropOn(b, () => { if (drag.make && !isTerm) set(drag.make === 'sum' ? { k: 'sum', terms: [w] } : { k: 'diff', a: w, b: null }); else if (drag.tile && isTerm) set({ k: 'prod', f: [w, fresh()] }); else if (drag.tile) Z[set.zone].push(fresh()); });
+      if (!isTerm && set) { b.draggable = true; b.ondragstart = ev => { drag = { node: w }; ev.dataTransfer.setData('text/plain', w.t.text); ev.dataTransfer.effectAllowed = 'move'; }; }
       return b; };
-    [top, bot, tray].forEach(z => { z.ondragover = ev => { ev.preventDefault(); z.classList.add('over'); }; z.ondragleave = () => z.classList.remove('over');
-      z.ondrop = ev => { ev.preventDefault(); z.classList.remove('over'); if (!drag) return; if (z === tray) { if (drag.from !== undefined) placed.splice(drag.from, 1); } else if (drag.from !== undefined) placed[drag.from].z = z.dataset.z; else placed.push({ t: drag.tile, z: z.dataset.z, p: 1 }); drag = null; draw(); }; });
+    const termEl = (t, set) => { if (t.k === 'tile') return tileNode(t, set, true); const g = $('span', 'cbox prod'); t.f.forEach((w, i) => { if (i) g.append($('i', 'cop', '·')); g.append(tileNode(w, null, true)); }); dropOn(g, () => { if (drag.tile) t.f.push(fresh()); }); return g; };
+    const nodeEl = (n, arr, i, zone) => { const put = r => { arr[i] = r; if (r.k !== 'tile') aim = r; }; put.zone = zone;
+      if (n.k === 'tile') return tileNode(n, put, false);
+      const g = $('span', 'cbox ' + n.k + (aim === n ? ' aim' : '')); g.title = 'Click to send clicked givens here'; g.onclick = () => { aim = aim === n ? null : n; draw(); };
+      const x = $('span', 'cx', '×'); x.title = 'Take this away'; x.onclick = ev => { ev.stopPropagation(); detach(n); draw(); };
+      if (n.k === 'sum') { n.terms.forEach((t, j) => { if (j) g.append($('i', 'cop', '+')); g.append(termEl(t, r => { n.terms[j] = r; })); }); if (!n.terms.length) g.append($('span', 'quiet', 'sum: drop givens here')); dropOn(g, () => { if (drag.tile) n.terms.push(fresh()); }); }
+      else { ['a', 'b'].forEach((s, j) => { if (j) g.append($('i', 'cop', '−')); if (n[s]) g.append(termEl(n[s], r => { n[s] = r; })); else { const slot = $('span', 'cslot2', j ? 'second' : 'first'); dropOn(slot, () => { if (drag.tile) n[s] = fresh(); }); g.append(slot); } }); }
+      g.append(x); g.draggable = true; g.ondragstart = ev => { if (ev.target !== g) return; drag = { node: n }; ev.dataTransfer.setData('text/plain', n.k); ev.dataTransfer.effectAllowed = 'move'; };
+      return g; };
+    [top, bot].forEach(z => dropOn(z, () => { const arr = Z[z.dataset.z]; if (drag.tile) arr.push(fresh()); else if (drag.make) { const n = drag.make === 'sum' ? { k: 'sum', terms: [] } : { k: 'diff', a: null, b: null }; arr.push(n); aim = n; } else if (drag.node) { detach(drag.node); arr.push(drag.node); } }));
+    dropOn(tray, () => { if (drag.node) detach(drag.node); });
     // The keystrokes as a row of shallow imprints, one per thing to do: plain typing is one run of calculator type,
     // a control key is one box, and a chord (2nd then another key) sits in a container named for what it makes.
     const K = (label, cls) => ({ k: label, cls: cls || '' }), T = s => ({ s }), CH = (name, ...ks) => ({ name, ks });
     const keyHtml = t => (t.s !== undefined ? '<span class="ctyped">' + esc(t.s) + '</span>' : t.ks ? t.ks.map(keyHtml).join('') + '<i>' + esc(t.name) + '</i>' : '<kbd class="' + t.cls + '">' + t.k + '</kbd>');
     const keysHtml = list => list.reduce((a, t) => { const l = a[a.length - 1]; if (l && l.s !== undefined && t.s !== undefined) l.s += t.s; else a.push(Object.assign({}, t)); return a; }, []).map(t => '<span class="cslot' + (t.ks ? ' cchord" title="Two keys, one after the other, make ' + esc(t.name) : '') + '">' + keyHtml(t) + '</span>').join('');
     const draw = () => {
-      tray.replaceChildren(...tiles.map(t => tileEl(t))); top.replaceChildren(); bot.replaceChildren(); placed.forEach((w, i) => (w.z === 'num' ? top : bot).append(tileEl(w.t, w, i)));
-      if (!top.children.length) top.append($('span', 'quiet', placed.length ? '1' : 'above the bar')); if (!bot.children.length) bot.append($('span', 'quiet', 'below the bar'));
-      const part = z => placed.filter(w => w.z === z), N = part('num'), D = part('den');
+      tray.replaceChildren(...tiles.map(trayTile), trayBox('sum', '( + )', 'A sum: any number of terms'), trayBox('diff', '( − )', 'A difference: first minus second'));
+      const N = Z.num, D = Z.den, any = N.length + D.length > 0;
+      top.replaceChildren(...N.map((n, i) => nodeEl(n, N, i, 'num'))); bot.replaceChildren(...D.map((n, i) => nodeEl(n, D, i, 'den')));
+      if (!N.length) top.append($('span', 'quiet', any ? '1' : 'above the bar')); if (!D.length) bot.append($('span', 'quiet', 'below the bar'));
       // the typed line and the keys, built side by side
       let line = ''; const ks = [];
       const digits = s => { if (s[0] === '-') ks.push(K('(-)'), T(s.slice(1))); else ks.push(T(s)); };
       const factor = w => { const n = numText(w.t.num); if (w.p === 0.5) { line += '√(' + n + ')'; ks.push(CH('√(', K('2nd', 'second'), K('x²'))); digits(n); ks.push(K(')')); } else { line += n + sup(w.p); digits(n); if (w.p === 2) ks.push(K('x²')); else if (w.p === 3) ks.push(K('^'), T('3')); } };
-      const group = (list, wrap) => { if (wrap) { line += '('; ks.push(K('(')); } list.forEach((w, i) => { if (i) { line += '*'; ks.push(K('×', 'op')); } factor(w); }); if (wrap) { line += ')'; ks.push(K(')')); } };
-      if (N.length) group(N, D.length > 0 && N.length > 1); else if (D.length) { line += '1'; ks.push(T('1')); }
-      if (D.length) { line += '/'; ks.push(K('÷', 'op')); group(D, D.length > 1); }
-      const val = list => list.reduce((p, w) => p * Math.pow(w.t.num, w.p), 1), result = placed.length ? val(N) / val(D) : null;
-      lcd.innerHTML = '<div class="lcdin">' + (line ? esc(line) : '') + '<i class="lcdcur"></i></div><div class="lcdout">' + (result === null ? '' : esc(tiNum(result))) + '</div>';
-      keys.innerHTML = placed.length ? keysHtml(ks.concat(K('ENTER', 'enter'))) : '<span class="quiet">The keys to press appear here.</span>';
-      const us = list => list.filter(w => w.t.unit).map(w => (w.p === 0.5 ? '√' : '') + (/\//.test(w.t.unit) ? '(' + w.t.unit + ')' : w.t.unit) + sup(w.p)).join('·');
-      unitLine.textContent = placed.length ? 'The calculator sees only the numbers. The units are yours to carry: ' + ((us(N) || '1') + (us(D) ? ' / ' + (D.filter(w => w.t.unit).length > 1 ? '(' + us(D) + ')' : us(D)) : '')) + '. Convert first if the units do not match.' : '';
+      const term = t => { if (!t) { line += '?'; ks.push(T('?')); } else if (t.k === 'tile') factor(t); else t.f.forEach((w, i) => { if (i) { line += '*'; ks.push(K('×', 'op')); } factor(w); }); };
+      const node = (n, bare) => { if (n.k === 'tile') return factor(n); if (!bare) { line += '('; ks.push(K('(')); } const ts = n.k === 'sum' ? n.terms : [n.a, n.b]; if (!ts.length) { line += '?'; ks.push(T('?')); } ts.forEach((t, i) => { if (i) { line += n.k === 'sum' ? '+' : '-'; ks.push(K(n.k === 'sum' ? '+' : '−', 'op')); } term(t); }); if (!bare) { line += ')'; ks.push(K(')')); } };
+      const group = (list, wrap, alone) => { if (wrap) { line += '('; ks.push(K('(')); } list.forEach((w, i) => { if (i) { line += '*'; ks.push(K('×', 'op')); } node(w, alone && list.length === 1); }); if (wrap) { line += ')'; ks.push(K(')')); } };
+      if (N.length) group(N, D.length > 0 && N.length > 1, !D.length); else if (D.length) { line += '1'; ks.push(T('1')); }
+      if (D.length) { line += '/'; ks.push(K('÷', 'op')); group(D, D.length > 1, false); }
+      const tv = w => Math.pow(w.t.num, w.p), termV = t => (!t ? NaN : t.k === 'tile' ? tv(t) : t.f.reduce((p, w) => p * tv(w), 1)), nv = n => (n.k === 'tile' ? tv(n) : n.k === 'sum' ? (n.terms.length ? n.terms.reduce((p, t) => p + termV(t), 0) : NaN) : termV(n.a) - termV(n.b));
+      const val = list => list.reduce((p, n) => p * nv(n), 1), result = any ? val(N) / val(D) : null, whole = result !== null && !isNaN(result);
+      lcd.innerHTML = '<div class="lcdin">' + (line ? esc(line) : '') + '<i class="lcdcur"></i></div><div class="lcdout">' + (whole ? esc(tiNum(result)) : '') + '</div>';
+      keys.innerHTML = any ? keysHtml(whole ? ks.concat(K('ENTER', 'enter')) : ks) : '<span class="quiet">The keys to press appear here.</span>';
+      const u1 = w => (w.t.unit ? (w.p === 0.5 ? '√' : '') + (/\//.test(w.t.unit) ? '(' + w.t.unit + ')' : w.t.unit) + sup(w.p) : ''), ut = t => (!t ? '' : t.k === 'tile' ? u1(t) : t.f.map(u1).filter(Boolean).join('·'));
+      let clash = false; const un = n => { if (n.k === 'tile') return u1(n); const ts = (n.k === 'sum' ? n.terms : [n.a, n.b]).filter(Boolean).map(ut); if (new Set(ts).size > 1) clash = true; return ts[0] || ''; };
+      const us = list => list.map(un).filter(Boolean).join('·'), dn = us(D);
+      unitLine.textContent = any ? 'The calculator sees only the numbers. The units are yours to carry: ' + ((us(N) || '1') + (dn ? ' / ' + (/·/.test(dn) ? '(' + dn + ')' : dn) : '')) + '. ' + (clash ? 'The terms of a sum or difference must share one unit; these do not yet.' : 'Convert first if the units do not match.') : '';
     };
     draw(); return el;
   };
