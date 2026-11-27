@@ -214,8 +214,10 @@ body.hints .t-extensive { background: hsl(268 85% 60% / .2); box-shadow: inset 0
 .taxis { stroke: var(--muted); stroke-width: 2; } .tlab.dim { font: 800 14.5px Georgia, 'Times New Roman', serif; letter-spacing: .01em; } .tsh { cursor: ns-resize; }
 .dealgrid { display: grid; grid-template-columns: auto auto; gap: 4px 10px; align-items: center; justify-content: start; font-size: var(--fs-s); }
 .ring { display: inline-flex; flex-direction: column; align-items: center; vertical-align: baseline; padding: 0 7px 1px; margin: 0 1px; border-radius: 7px; border: 1.5px solid hsl(var(--h, 230) 45% 50% / .55); background: hsl(var(--h, 230) 60% 50% / .07); cursor: ns-resize; overflow: hidden; line-height: 1.25; } .ring .rg { display: inline-block; font-weight: 700; } .ring .rl { font-size: .62em; color: var(--muted); line-height: 1.1; letter-spacing: .02em; } .ring:hover, .ring:focus-visible { border-color: hsl(var(--h, 230) 60% 45%); outline: none; box-shadow: 0 0 0 3px hsl(var(--h, 230) 60% 50% / .15); }
-.hexlead { stroke: hsl(262 70% 72%); stroke-width: 9; stroke-linecap: round; opacity: .42; filter: blur(3.5px); pointer-events: none; }
-.arcring { fill: none; stroke: var(--line); stroke-width: 1.2; } .arcpath { fill: none; stroke-width: 5; stroke-linecap: round; } .arcspoke { stroke-width: 1.3; opacity: .7; } .arcth { font: 650 13px var(--font); fill: var(--muted); text-anchor: middle; } .arctd { font: 600 14px var(--font); text-anchor: middle; font-variant-numeric: tabular-nums; } .arctd.held { font-weight: 800; text-decoration: underline; } .figwrap.arcsfig { display: grid; gap: 8px; justify-items: start; } .figwrap.arcsfig > div:nth-child(2) { width: min(100%, 520px); } .figwrap.arcsfig svg.fig { width: 100%; max-width: none; height: auto; display: block; }
+.hexlead { fill: none; stroke: hsl(262 60% 70%); stroke-width: 26; stroke-linecap: round; opacity: .3; filter: blur(9px); pointer-events: none; }
+.tfield { fill: transparent; stroke: transparent; stroke-width: 1.5; stroke-linejoin: round; cursor: ns-resize; } .tfield:hover, .tfield.on { fill: hsl(45 90% 60% / .12); stroke: hsl(40 80% 45% / .7); } .tsh { pointer-events: none; }
+.arcstmt { display: flex; align-items: center; gap: 12px; font-size: 1.15rem; padding: 2px 0 4px; }
+.arcring { fill: none; stroke: var(--line); stroke-width: 1.2; } .arcpath { fill: none; stroke-width: 5; stroke-linecap: round; } .arcspoke { stroke-width: 1.3; opacity: .7; } .arcth { font: 650 13px var(--font); fill: var(--muted); text-anchor: middle; } .arctd { font: 600 14px var(--font); text-anchor: middle; font-variant-numeric: tabular-nums; } .arctd.held { font-weight: 800; text-decoration: underline; } .figwrap.arcsfig { display: grid; gap: 8px; justify-items: start; } .figwrap.arcsfig > div:nth-child(3) { width: min(100%, 520px); } .hexid.recip { background: #a9ecb9; } .figwrap.arcsfig svg.fig { width: 100%; max-width: none; height: auto; display: block; }
 .taxis { stroke: var(--muted); stroke-width: 2; } .thandle { fill: var(--paper); stroke: var(--ink); stroke-width: 1.6; cursor: grab; touch-action: none; } .thandle:hover { fill: hsl(45 95% 70%); } .taxn { font: 650 12px var(--font); fill: var(--muted); } .figsvg svg.table { overflow: visible; touch-action: none; }
 .tedge { stroke: var(--line); stroke-width: 1.2; } .tplane { fill-opacity: .07; stroke-width: 2.2; stroke-linejoin: round; }
 .tlab { font: 600 19px var(--math); } .tlab.sym { font-style: italic; font-size: 22px; } .tlab.unit { font: 600 12.5px var(--font); } .tlab.word { font: 650 12.5px var(--font); } .tlab.word.small { font-size: 10.5px; }
@@ -365,7 +367,7 @@ button.st-leaf { cursor: pointer; } .st-leaf.st-A { background: hsl(212 85% 60% 
 .after { margin-top: 14px; display: grid; gap: 8px; justify-items: start; } .after:empty { display: none; }
 .verdictrow { display: flex; align-items: stretch; } .verdictrow .verdict { border-radius: 999px 0 0 999px; }
 .resetpill { font: inherit; font-size: .88em; font-weight: 600; color: var(--muted); background: hsl(230 12% 50% / .14); border: 0; border-radius: 0 999px 999px 0; padding: 3px 12px 3px 9px; cursor: pointer; } .resetpill:hover { color: var(--ink); background: hsl(230 12% 50% / .24); }
-.node.fresh > .card, .node.freshin > .card { position: relative; } .node.fresh > .card::before, .node.freshin > .card::before { content: "\2192"; position: absolute; left: -7px; top: -5px; font: 700 13px/1 ui-sans-serif, system-ui, sans-serif; color: #c2410c; } .node.freshin > .card::before { opacity: .45; }
+.node.fresh > .card, .node.freshin > .card { position: relative; } .node.fresh > .card::before, .node.freshin > .card::before { content: "\2192"; position: absolute; left: -7px; top: -5px; font: 900 18px/1 ui-sans-serif, system-ui, sans-serif; color: #c2410c; -webkit-text-stroke: .9px #c2410c; } .node.freshin > .card::before { opacity: .45; }
 .verdict { font-weight: 700; padding: 3px 12px; border-radius: 999px; }
 .verdict.ok { color: var(--good); background: hsl(162 60% 45% / .14); } .verdict.no { color: var(--notyet); background: hsl(40 90% 50% / .15); }
 .why { margin: 0; max-width: 70ch; line-height: 1.8; }
@@ -2437,6 +2439,7 @@ const Core = (() => {
       if (/^\d/.test(t)) return num(parseFloat(t));
       if (t === 'pi' || t === 'π') return num(Math.PI);
       if (t === 'sqrt') { if (toks[i++] !== '(') throw 0; const r = sum(); if (toks[i++] !== ')') throw 0; return pow(r, num(0.5)); }
+      if (t === 'fact') { if (toks[i++] !== '(') throw 0; const r = sum(); if (toks[i++] !== ')') throw 0; let f = 1; for (let m = 2; m <= Math.round(r.v); m++) f *= m; return num(f); }
       if (t && /^[A-Za-z_]/.test(t) && scope[t]) return scope[t];
       throw 0;
     };
@@ -2564,7 +2567,7 @@ const Core = (() => {
     return out + s.slice(at);
   };
   const variesRe = /\[[A-Za-z_]\w*\s*=[^\]]*(\||\.\.)[^\]]*\]/;
-  const rerollable = item => item.kind === 'ladder' ? !!parseQ(item.factor) :
+  const rerollable = item => item.kind === 'ladder' ? !!parseQ(item.factor) : item.kind === 'pick' ? item.rows.length > 1 :
     item.ors.length > 0 || treeSpans(item.prompt + ' ' + item.rows.map(r => r.variant || '').join(' ') + ' ' + item.steps.map(st => st.prompt).join(' ')).length > 0 || sayHits(item, item.lex) || /<</.test(item.prompt + item.rows.map(r => r.variant).join('') + item.opts.map(o => o.text).join('')) || item.seedLines.some(l => /\||\.\./.test(l)) || variesRe.test(item.prompt) || item.rows.some(r => variesRe.test(r.variant || '')) || item.steps.some(s => variesRe.test(s.prompt));
 
   // One concrete instance of an item. fresh = false gives the authored first values.
@@ -2592,6 +2595,9 @@ const Core = (() => {
     inst.why = R(item.why);
     inst.units = item.unit ? item.unit.split('|').map(x => x.trim()).filter(Boolean) : null;
     inst.figure = item.figure ? R(item.figure).replace(/[\[\]]/g, '') : '';
+    // pick: one row of a list is asked at a time, so the same question runs over the whole list. %% in the prompt takes the row's left side;
+    // the right side is the answer, with alternates after slashes.
+    if (item.kind === 'pick' && inst.rows.length) { const r = inst.rows[fresh ? Math.floor(rnd() * inst.rows.length) : 0], as = String(r.answer).split(/\s+\/\s+/); inst.kind = 'typed'; inst.prompt = inst.prompt.replace('%%', r.variant); inst.answer = as[0]; inst.alts = as.slice(1); inst.near = r.near || []; inst.rows = []; }
     return inst;
   };
   // Ladders reroll by structure: a new factor from the seed line, new friendly values on each rung, same units.
@@ -2711,7 +2717,7 @@ if (typeof document !== 'undefined') (() => {
   const WORD = { ok: 'Mastered', no: 'Not yet mastered' };
   // Development aid: nodes whose features are new or changed in the current pass. Each gets a small arrow off the left end of its
   // title card, and so does every node on the way down to it. Reset this list at the start of each pass.
-  const FRESH = ['@frame.radius.count', '@table.rel.locate', '@frame.concentric.rigid', '@frame.concentric.path', '@m3.trig.pairs.two', '@fr.sent.pron.je', '@fr.sent.pron.il', '@fr.words.mind.learn'];
+  const FRESH = ['@frame.radius.count', '@table.rel.locate', '@frame.concentric.rigid', '@frame.concentric.path', '@m3.trig.pairs.two', '@fr.sent.valency', '@fr.words.q', '@fr.words.mind', '@fr.sent.pron.il'];
   const prefs = { auto: false, save: () => {} };   // set from saved state when a course starts
 
   // ---------- rich text: [boxed givens], {term :: note}, $maths$ ----------
@@ -2807,6 +2813,12 @@ if (typeof document !== 'undefined') (() => {
     return { add: f => { f.gone = 0; f.t0 = performance.now() / 1000; if (still) { f.draw(f.rest || 0); return; } set.add(f); if (!on) { on = true; requestAnimationFrame(tick); } } };
   })();
   const SVGNS = 'http://www.w3.org/2000/svg';
+  // Wheel and trackpad. A component that uses the wheel takes every wheel event over it, small ones and ones past its ends included,
+  // so the page never moves under it. A trackpad swipe keeps sending events as it coasts; if the pointer leaves the component
+  // meanwhile, the rest of that coast is braked here instead of scrolling the page. A pause, or 1.4 s, ends the brake.
+  const WHEEL = { last: 0, since: 0 };
+  const eat = ev => { ev.preventDefault(); WHEEL.last = performance.now(); WHEEL.since = 0; };
+  if (typeof document !== 'undefined') document.addEventListener('wheel', ev => { if (ev.defaultPrevented) return; const t = performance.now(); if (t - WHEEL.last < 170 && (!WHEEL.since || t - WHEEL.since < 1400)) { if (!WHEEL.since) WHEEL.since = t; WHEEL.last = t; ev.preventDefault(); } }, { passive: false });
   // Sprout I, hold one and vary the rest, on s = r\u03b8: three concentric circles, with either the angle or the arc length held the same on all of them.
   const arcsFigure = spec => {
     const el = $('div', 'figwrap arcsfig'), bar = $('div', 'seg'), box = $('div'), note = $('div', 'quiet'), R = [34, 68, 102], COL = ['hsl(212 70% 46%)', 'hsl(28 85% 44%)', 'hsl(268 60% 52%)'], cx = 130, cy = 122;
@@ -2818,9 +2830,10 @@ if (typeof document !== 'undefined') (() => {
       s += '<line x1="' + cx + '" y1="' + cy + '" x2="' + (cx + 110) + '" y2="' + cy + '" class="arcspoke" stroke="var(--muted)"/>';
       s += '<text x="262" y="40" class="arcth">r</text><text x="300" y="40" class="arcth">\u03b8</text><text x="350" y="40" class="arcth">s = r\u03b8</text>' + rows.map(([r, th, len], i) => '<text x="262" y="' + (66 + 26 * i) + '" class="arctd" fill="' + COL[i] + '">' + r + '</text><text x="300" y="' + (66 + 26 * i) + '" class="arctd' + (held === 'theta' ? ' held' : '') + '" fill="' + COL[i] + '">' + th.toFixed(2) + '</text><text x="350" y="' + (66 + 26 * i) + '" class="arctd' + (held === 's' ? ' held' : '') + '" fill="' + COL[i] + '">' + len.toFixed(2) + '</text>').join('');
       box.innerHTML = s + '</svg>'; };
-    const paint = () => { bar.replaceChildren(...[['theta', 'Same angle'], ['s', 'Same arc length']].map(([k, t]) => { const b = btn('segb', t); b.setAttribute('aria-checked', String(held === k)); b.onclick = () => { held = k; paint(); }; return b; })); note.innerHTML = held === 'theta' ? 'Angle held the same on every circle: the arc grows in proportion to the radius, s \u221d r.' : 'Arc length held the same on every circle: the angle shrinks as the radius grows, r\u03b8 stays fixed.'; };
-    el.addEventListener('wheel', ev => { if (Math.abs(ev.deltaY) < 4) return; const to = ev.deltaY > 0 ? 's' : 'theta'; if (to === held) return; ev.preventDefault(); held = to; paint(); }, { passive: false });
-    el.append(bar, box, note); paint(); clock.add({ el, rest: 5, draw }); return { el };
+    const stmt = $('div', 'arcstmt'), K = t => (typeof katex !== 'undefined' ? katex.renderToString(t, { throwOnError: false, strict: false }) : tex(t));
+    const paint = () => { stmt.innerHTML = K('s = r\\theta') + '<span class="quiet">with one held becomes</span>' + K(held === 'theta' ? '\\underset{\\theta\\text{ held}}{s \\propto r}' : '\\underset{s\\text{ held}}{1 \\propto r\\theta}'); bar.replaceChildren(...[['theta', 'Same angle'], ['s', 'Same arc length']].map(([k, t]) => { const b = btn('segb', t); b.setAttribute('aria-checked', String(held === k)); b.onclick = () => { held = k; paint(); }; return b; })); note.innerHTML = held === 'theta' ? 'Angle held the same on every circle: the arc grows in proportion to the radius, s \u221d r.' : 'Arc length held the same on every circle: the angle shrinks as the radius grows, r\u03b8 stays fixed.'; };
+    el.addEventListener('wheel', ev => { eat(ev); if (Math.abs(ev.deltaY) < 4) return; const to = ev.deltaY > 0 ? 's' : 'theta'; if (to === held) return; held = to; paint(); }, { passive: false });
+    el.append(bar, stmt, box, note); paint(); clock.add({ el, rest: 5, draw }); return { el };
   };
   const fx = n => (Math.abs(n) >= 100 ? n.toFixed(0) : Math.abs(n) >= 10 ? n.toFixed(1) : n.toFixed(2)).replace('-', '−');
 
@@ -2957,15 +2970,17 @@ if (typeof document !== 'undefined') (() => {
       for (let k = 0; k < 3; k++) for (let j = 0; j < 2; j++) for (let i = 0; i < 2; i++) { if (i === 0) s += '<line class="tedge" x1="' + pt(0, j, k)[0] + '" y1="' + pt(0, j, k)[1] + '" x2="' + pt(1, j, k)[0] + '" y2="' + pt(1, j, k)[1] + '"/>'; if (j === 0) s += '<line class="tedge" x1="' + pt(i, 0, k)[0] + '" y1="' + pt(i, 0, k)[1] + '" x2="' + pt(i, 1, k)[0] + '" y2="' + pt(i, 1, k)[1] + '"/>'; if (k < 2) s += '<line class="tedge" x1="' + pt(i, j, k)[0] + '" y1="' + pt(i, j, k)[1] + '" x2="' + pt(i, j, k + 1)[0] + '" y2="' + pt(i, j, k + 1)[1] + '"/>'; }
       H.planes.forEach((pl, n) => { s += '<polygon points="' + pl.map(P).join(' ') + '" style="stroke:' + H.col[n] + ';fill:' + H.col[n] + '" class="tplane"/>'; });
       for (let k = 0; k < 3; k++) for (let j = 0; j < 2; j++) {
+        // In "shared words" each word sits in a field, a strip along the frame axis. The field, not the text, takes the pointer and the wheel, so nothing slips out from under the cursor when the word opens.
+        if (lab === 2) { const b0 = (j === 0 ? 0.2 : 0.8), q = [pt(0.03, b0 - 0.17, k), pt(0.97, b0 - 0.17, k), pt(0.97, b0 + 0.17, k), pt(0.03, b0 + 0.17, k)]; s += '<polygon class="tfield' + (open[k + ',' + j] ? ' on' : '') + '" data-sh="' + k + ',' + j + '" points="' + q.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ') + '"><title>Scroll to open or close</title></polygon>'; }
         if (lab === 2 && !open[k + ',' + j]) { const a = pt(0.14, j === 0 ? 0.2 : 0.8, k), b = pt(0.86, j === 0 ? 0.2 : 0.8, k), ang = -Math.atan2(A[1], A[0]) * 180 / Math.PI, mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2; s += '<text x="' + mx + '" y="' + my + '" transform="rotate(' + ang + ' ' + mx + ' ' + my + ')" text-anchor="middle" class="tlab word tsh" data-sh="' + k + ',' + j + '" style="fill:' + (hl === 'frame' || hl === 'length' ? 'var(--ink)' : H.col[H.of(0, j, k)]) + '">' + SHARED[k][j] + '</text>'; continue; }
-        for (let i = 0; i < 2; i++) { const c = T[k][j][i], p = pt(0.2 + 0.6 * i, 0.2 + 0.6 * j, k), txt = lab === 0 ? c[0] : lab === 1 || lab === 2 ? c[1] : lab === 3 ? c[2] : '[' + c[3].replace(/ /g, '') + ']', turn = lab === 1 || lab === 2 ? ' data-sh="' + k + ',' + j + '" transform="rotate(' + (-Math.atan2(A[1], A[0]) * 180 / Math.PI).toFixed(1) + ' ' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + ')"' : ''; s += '<text x="' + p[0] + '" y="' + (p[1] + 5) + '"' + turn + ' text-anchor="middle" class="tlab ' + (lab === 0 ? 'sym' : lab === 1 ? 'word small' : lab === 2 ? 'word small tsh' : lab === 4 ? 'dim' : 'unit') + '" style="fill:' + H.col[H.of(i, j, k)] + '">' + txt + '</text>'; }
+        for (let i = 0; i < 2; i++) { const c = T[k][j][i], p = lab === 2 ? pt(0.5, 0.2 + 0.6 * j + (i ? -0.085 : 0.085), k) : pt(0.2 + 0.6 * i, 0.2 + 0.6 * j, k), txt = lab === 0 ? c[0] : lab === 1 || lab === 2 ? c[1] : lab === 3 ? c[2] : '[' + c[3].replace(/ /g, '') + ']', turn = lab === 1 || lab === 2 ? ' data-sh="' + k + ',' + j + '" transform="rotate(' + (-Math.atan2(A[1], A[0]) * 180 / Math.PI).toFixed(1) + ' ' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + ')"' : ''; s += '<text x="' + p[0] + '" y="' + (p[1] + 5) + '"' + turn + ' text-anchor="middle" class="tlab ' + (lab === 0 ? 'sym' : lab === 1 ? 'word small' : lab === 2 ? 'word small tsh' : lab === 4 ? 'dim' : 'unit') + '" style="fill:' + H.col[H.of(i, j, k)] + '">' + txt + '</text>'; }
       }
       Object.keys(AX).forEach(a => { const x = TO[0] + TS * AX[a][0], y = TO[1] - TS * AX[a][1]; s += '<line class="taxis" x1="' + TO[0] + '" y1="' + TO[1] + '" x2="' + x.toFixed(1) + '" y2="' + y.toFixed(1) + '"/><circle class="thandle" data-ax="' + a + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="9"><title>Drag to turn the ' + AXN[a] + ' axis</title></circle><text class="taxn" x="' + (x + 13 * Math.sign(AX[a][0] || 1)).toFixed(1) + '" y="' + (y + 4).toFixed(1) + '" text-anchor="' + (AX[a][0] < 0 ? 'end' : 'start') + '">' + AXN[a] + '</text>'; });
       svgBox.innerHTML = s + '</svg>';
       key.innerHTML = '<span class="quiet">' + H.name + ':</span> ' + H.keys.map((x, n) => '<span style="color:' + H.col[n] + '"><i style="background:' + H.col[n] + '"></i>' + x + '</span>').join(' ') + (lab === 2 ? '<div class="quiet">Scroll on a shared word to open it into its two frame-specific words, and back.</div>' : '');
       bar.replaceChildren(seg(LAB, lab, i => { lab = i; render(); }), seg(Object.keys(HL).map(x => HL[x].name), Object.keys(HL).indexOf(hl), i => { hl = Object.keys(HL)[i]; render(); }));
     };
-    svgBox.addEventListener('wheel', ev => { const t = ev.target.closest && ev.target.closest('[data-sh]'); if (!t || lab !== 2 || Math.abs(ev.deltaY) < 4) return; ev.preventDefault(); const want = ev.deltaY > 0; if (!!open[t.dataset.sh] !== want) { open[t.dataset.sh] = want; render(); } }, { passive: false });
+    svgBox.addEventListener('wheel', ev => { const t = ev.target.closest && ev.target.closest('[data-sh]'); if (!t || lab !== 2) return; eat(ev); if (Math.abs(ev.deltaY) < 4) return; const want = ev.deltaY > 0; if (!!open[t.dataset.sh] !== want) { open[t.dataset.sh] = want; render(); } }, { passive: false });
     let grab = null;
     const toSvg = ev => { const g = svgBox.querySelector('svg'), m = g.getScreenCTM(); return [(ev.clientX - m.e) / m.a, (ev.clientY - m.f) / m.d]; };
     svgBox.addEventListener('pointerdown', ev => { const h = ev.target.closest && ev.target.closest('.thandle'); if (!h) return; grab = h.dataset.ax; svgBox.setPointerCapture(ev.pointerId); ev.preventDefault(); });
@@ -3147,7 +3162,7 @@ if (typeof document !== 'undefined') (() => {
     const flip = i => (i + 3) % 6, pyth = (x, y) => x !== y && KIND[1][1].some(p => p.includes(x) && p.includes(y));
     const two = (a, b) => { lines.replaceChildren(); idt = null; idn = 0; identity(); const A = F[a][0], B = F[b][0];
       if (a === b) { cap.innerHTML = '<b>' + A + '</b> twice: the same function.'; return; }
-      if (b === flip(a)) { thick(a, b, 0); cap.innerHTML = '<b>' + A + '</b> and <b>' + B + '</b> are direct reciprocals. They live on the same shape, the ' + F[a][1] + '.'; return; }
+      if (b === flip(a)) { thick(a, b, 0); idt = { recip: [a, b] }; identity(); cap.innerHTML = '<b>' + A + '</b> and <b>' + B + '</b> are direct reciprocals. They live on the same shape, the ' + F[a][1] + '.'; return; }
       const [x, y] = [[a, b], [flip(a), b], [a, flip(b)], [flip(a), flip(b)]].find(([p, q]) => pyth(p, q)), steps = (x !== a) + (y !== b);
       if (x !== a) thick(a, x, 0); if (y !== b) thick(b, y, 0); thick(x, y, 1);
       // which of p^2 + q^2 = r^2 each one is: sin, cos are the legs with r = 1; tan (or cot) is a leg beside 1 with sec (or csc) as r
@@ -3160,7 +3175,10 @@ if (typeof document !== 'undefined') (() => {
     const idbox = $('div', 'hexid'); idbox.hidden = true; let idt = null, idn = 0;
     const FN = F.map(f => '\\' + f[0]);
     const identity = () => {
-      if (!idt) { idbox.hidden = true; return; } idbox.hidden = false;
+      if (!idt) { idbox.hidden = true; return; } idbox.hidden = false; idbox.classList.toggle('recip', !!idt.recip);
+      // Direct reciprocals have no Pythagorean layer: only the green one, holding the reciprocal relation. Scrolling isolates one or the other.
+      if (idt.recip) { const [ra, rb] = idt.recip, Gr = '\\colorbox{#a9ecb9}{$', En = '$}', k = Math.max(-1, Math.min(1, idn)); const t = !k ? Gr + FN[ra] + '\\cdot' + FN[rb] + '=1' + En : k > 0 ? FN[ra] + '=' + Gr + '\\dfrac{1}{' + FN[rb] + '}' + En : FN[rb] + '=' + Gr + '\\dfrac{1}{' + FN[ra] + '}' + En;
+        idbox.innerHTML = (typeof katex !== 'undefined' ? katex.renderToString(t, { throwOnError: false, strict: false }) : tex(t)) + '<div class="hexidnote">' + (k ? 'Isolated ' + F[k > 0 ? ra : rb][0] + '.' : 'Scroll on this box: one way isolates ' + F[ra][0] + ', the other ' + F[rb][0] + '.') + '</div>'; return; }
       const G = '\\colorbox{#a9ecb9}{$', E = '$}', sq = t => (t.one ? '1' : t.rec ? G + '\\dfrac{1}{' + FN[t.f] + '^2}' + E : FN[t.f] + '^2'), plain = t => (t.rec ? G + '\\dfrac{1}{' + FN[t.f] + '}' + E : FN[t.f]);
       // p^2 + q^2 = r^2: terms carries the three in that order
       const [p, q, r] = idt.terms, signed = [[p, 1], [q, 1], [r, -1]], side = n => (n > 0 ? idt.a : idt.b), steps = Math.abs(idn);
@@ -3170,16 +3188,20 @@ if (typeof document !== 'undefined') (() => {
         t = steps === 1 ? sq(T) + '=' + rhs : steps === 2 ? plain(T) + '=\\sqrt{' + rhs + '}' : FN[T.f] + '=\\dfrac{1}{\\sqrt{' + rhs + '}}'; }
       idbox.innerHTML = (typeof katex !== 'undefined' ? katex.renderToString(t, { throwOnError: false, strict: false, displayMode: false }) : tex(t)) + '<div class="hexidnote">' + (steps ? 'Step ' + steps + ' toward ' + F[side(idn).f][0] + '.' : 'Scroll on this box: one way isolates ' + F[idt.a.f][0] + ', the other ' + F[idt.b.f][0] + '.') + '</div>';
     };
-    idbox.addEventListener('wheel', ev => { ev.preventDefault(); if (!idt || Math.abs(ev.deltaY) < 4 || idbox._lock) return; idbox._lock = true; setTimeout(() => { idbox._lock = false; }, 180); const lim = t => (t.rec ? 3 : 2); idn = Math.max(-lim(idt.b), Math.min(lim(idt.a), idn + (ev.deltaY > 0 ? 1 : -1))); identity(); }, { passive: false });
+    idbox.addEventListener('wheel', ev => { eat(ev); if (!idt || Math.abs(ev.deltaY) < 4 || idbox._lock) return; idbox._lock = true; setTimeout(() => { idbox._lock = false; }, 180); const lim = t => (t.rec ? 3 : 2); idn = idt.recip ? Math.max(-1, Math.min(1, idn + (ev.deltaY > 0 ? 1 : -1))) : Math.max(-lim(idt.b), Math.min(lim(idt.a), idn + (ev.deltaY > 0 ? 1 : -1))); identity(); }, { passive: false });
     let sel = [];
     const mark = () => labs.forEach((g, i) => g.setAttribute('class', 'hexlab' + (sel.includes(i) ? ' sel' : '')));
     // Pair pick, variation G.b: with nothing chosen, pointing at a function chooses it; with one chosen, pointing at another shows the pair,
     // and a click makes that one the new first choice. While one is chosen, a soft line follows the pointer from it. A finger has no hover, so taps choose first and second in turn.
-    const lead = document.createElementNS(ns, 'line'); lead.setAttribute('class', 'hexlead'); lead.style.display = 'none'; svg.insertBefore(lead, lines);
+    const lead = document.createElementNS(ns, 'path'); lead.setAttribute('class', 'hexlead'); lead.style.display = 'none'; svg.insertBefore(lead, lines);
     let over = null, byTouch = false;
     svg.addEventListener('pointerdown', ev => { byTouch = ev.pointerType === 'touch'; });
-    svg.addEventListener('pointermove', ev => { if (ev.pointerType === 'touch' || sel.length !== 1 || over != null) { lead.style.display = 'none'; return; } const m = svg.getScreenCTM(), p = pt(sel[0]); lead.setAttribute('x1', p[0]); lead.setAttribute('y1', p[1]); lead.setAttribute('x2', (ev.clientX - m.e) / m.a); lead.setAttribute('y2', (ev.clientY - m.f) / m.d); lead.style.display = ''; });
-    svg.addEventListener('pointerleave', () => { lead.style.display = 'none'; });
+    // The lead is a strand dragged through water: its far end is on the pointer, and its middle lags behind and catches up.
+    let tip = null, lag = null, leadOn = false;
+    const strand = () => { if (!leadOn || !tip) { lead.style.display = 'none'; return; } const p = pt(sel[0]); lag = lag || tip.slice(); lag[0] += (tip[0] - lag[0]) * 0.09; lag[1] += (tip[1] - lag[1]) * 0.09; const cxp = (p[0] + tip[0]) / 2 + (lag[0] - tip[0]) * 1.1, cyp = (p[1] + tip[1]) / 2 + (lag[1] - tip[1]) * 1.1; lead.setAttribute('d', 'M' + p[0] + ' ' + p[1] + 'Q' + cxp.toFixed(1) + ' ' + cyp.toFixed(1) + ' ' + tip[0].toFixed(1) + ' ' + tip[1].toFixed(1)); lead.style.display = ''; if (Math.hypot(lag[0] - tip[0], lag[1] - tip[1]) > 0.3) requestAnimationFrame(strand); else leadRun = false; };
+    let leadRun = false;
+    svg.addEventListener('pointermove', ev => { if (ev.pointerType === 'touch' || sel.length !== 1 || over != null) { leadOn = false; lead.style.display = 'none'; return; } const m = svg.getScreenCTM(); tip = [(ev.clientX - m.e) / m.a, (ev.clientY - m.f) / m.d]; leadOn = true; if (!leadRun) { leadRun = true; requestAnimationFrame(strand); } });
+    svg.addEventListener('pointerleave', () => { leadOn = false; lag = null; lead.style.display = 'none'; });
     labs.forEach((g, i) => { g.style.cursor = 'pointer';
       g.addEventListener('pointerenter', ev => { if (ev.pointerType === 'touch') return; over = i; lead.style.display = 'none'; if (sel.length === 0) { sel = [i]; one(i); mark(); } else if (i !== sel[0]) two(sel[0], i); else one(i); });
       g.addEventListener('pointerleave', () => { over = null; });
@@ -3305,7 +3327,7 @@ if (typeof document !== 'undefined') (() => {
       pips.replaceChildren(...Array.from({ length: LAST + 1 }, (_, i) => $('i', i === state ? 'on' : ''))); note.textContent = WORD(state) + ' Scroll on the figure to walk the path one step at a time; the number under each fraction is its value.'; };
     const step = d => { const to = Math.max(0, Math.min(LAST, state + d)); if (to === state) return false; state = to; show(); return true; };
     const draw = () => { const o = parts.map((_, i) => parts[(i + rot) % k]), rest = o.map((_, i) => o.slice(i + 1).reduce((p, c) => p + c, 0)); model = { o, rest }; show(true); };
-    const wheel = ev => { if (Math.abs(ev.deltaY) < 4) return; const d = ev.deltaY > 0 ? 1 : -1; if (state + d < 0 || state + d > LAST) return; ev.preventDefault(); if (el._lock) return; el._lock = true; setTimeout(() => { el._lock = false; }, 260); step(d); };
+    const wheel = ev => { eat(ev); if (Math.abs(ev.deltaY) < 4) return; const d = ev.deltaY > 0 ? 1 : -1; if (state + d < 0 || state + d > LAST) return; if (el._lock) return; el._lock = true; setTimeout(() => { el._lock = false; }, 260); step(d); };
     form.addEventListener('wheel', wheel, { passive: false }); tree.addEventListener('wheel', wheel, { passive: false });
     form.onclick = () => { if (!step(1)) { state = 0; show(); } };
     const back = btn('btn', '←'), fwd = btn('btn', '→'), other = btn('btn', 'Another order'); back.onclick = () => step(-1); fwd.onclick = () => step(1); other.onclick = () => { rot = (rot + 1) % k; draw(); }; bar.append(back, pips, fwd, other);
@@ -3347,7 +3369,7 @@ if (typeof document !== 'undefined') (() => {
     MODES.forEach((m, i) => { const b = btn('segb', m[0]); b.onclick = () => { mode = i; draw(); }; bar.append(b); });
     const pointAt = ev => { const r = svg.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width * 320 - C, y = C - (ev.clientY - r.top) / r.height * 320, phi = deg(Math.atan2(y, x)), rho = Math.hypot(x, y); let best = null; for (let n = -3; n <= 3; n++) { const d = phi + 360 * n; if (Math.abs(d) > MAX) continue; const e = Math.abs(R(d) - rho); if (best === null || e < best[0]) best = [e, d]; } if (best) { theta = best[1]; draw(); } };
     svg.addEventListener('pointermove', pointAt); svg.addEventListener('pointerdown', pointAt); svg.style.touchAction = 'none';
-    svg.addEventListener('wheel', ev => { ev.preventDefault(); if (Math.abs(ev.deltaY) < 4) return; mode = (mode + (ev.deltaY > 0 ? 1 : MODES.length - 1)) % MODES.length; draw(); }, { passive: false });
+    svg.addEventListener('wheel', ev => { eat(ev); if (Math.abs(ev.deltaY) < 4) return; mode = (mode + (ev.deltaY > 0 ? 1 : MODES.length - 1)) % MODES.length; draw(); }, { passive: false });
     draw(); el.append(bar, svg, read, note); return { el };
   };
   const frenchFigure = spec => {
@@ -3996,13 +4018,13 @@ if (typeof document !== 'undefined') (() => {
     // An inline ring turns under the wheel (or a tap, or the arrow keys when focused).
     const turnRing = (x, dir) => { const w = x.dataset.w.split('|'), l = x.dataset.l.split('|'), k = ((+x.dataset.k || 0) + dir + w.length) % w.length; x.dataset.k = k; const g = x.querySelector('.rg'), put2 = () => { g.textContent = w[k]; const rl = x.querySelector('.rl'); if (rl) rl.textContent = l[k] || ''; };
       if (calm || !g.animate) return put2(); g.animate([{ transform: 'translateY(0)', opacity: 1 }, { transform: 'translateY(' + -dir * 80 + '%)', opacity: 0 }], { duration: 100, easing: 'ease-in' }).onfinish = () => { put2(); g.animate([{ transform: 'translateY(' + dir * 80 + '%)', opacity: 0 }, { transform: 'translateY(0)', opacity: 1 }], { duration: 140, easing: 'ease-out' }); }; };
-    treeEl.addEventListener('wheel', ev => { const x = ev.target.closest && ev.target.closest('.ring'); if (!x) return; ev.preventDefault(); x._acc = (x._acc || 0) + ev.deltaY; if (Math.abs(x._acc) < 24) return; const dir = x._acc > 0 ? 1 : -1; x._acc = 0; turnRing(x, dir); }, { passive: false });
+    treeEl.addEventListener('wheel', ev => { const x = ev.target.closest && ev.target.closest('.ring'); if (!x) return; eat(ev); x._acc = (x._acc || 0) + ev.deltaY; if (Math.abs(x._acc) < 24) return; const dir = x._acc > 0 ? 1 : -1; x._acc = 0; turnRing(x, dir); }, { passive: false });
     treeEl.addEventListener('click', ev => { const x = ev.target.closest && ev.target.closest('.ring'); if (x && touch) turnRing(x, 1); });
     treeEl.addEventListener('keydown', ev => { const x = ev.target.closest && ev.target.closest('.ring'); if (x && (ev.key === 'ArrowDown' || ev.key === 'ArrowUp')) { ev.preventDefault(); turnRing(x, ev.key === 'ArrowDown' ? 1 : -1); } });
     // The wheel rolls through the wordings while the pointer is on the unit.
     treeEl.addEventListener('wheel', ev => {
       const x = openU; if (!x || !onUnit(ev)) return; const n = wordsOf(x).length; if (n < 2) return;
-      ev.preventDefault(); x._acc = (x._acc || 0) + ev.deltaY; if (Math.abs(x._acc) < 24 || x._busy) return;
+      eat(ev); x._acc = (x._acc || 0) + ev.deltaY; if (Math.abs(x._acc) < 24 || x._busy) return;
       const dir = x._acc > 0 ? 1 : -1; x._acc = 0; swap(x, ((+x.dataset.k || 0) + dir + n) % n, dir);
     }, { passive: false });
 

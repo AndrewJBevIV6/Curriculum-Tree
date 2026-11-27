@@ -56,19 +56,9 @@
 - Question words   @fr.words.q.wh
   can: Give the French question word for each English one.
   bite: Most French question words begin with qu, the way English ones begin with wh: que and quoi (what), qui (who), quand (when). Three do not: où (where), comment (how), combien (how much). Pourquoi (why) is pour + quoi, "for what". Où carries the only ù in the language, which keeps it apart from ou, "or".
-  ? typed: French for "who":
-    = qui
   ? typed: French for "where" (mind the accent):
     = où
     ~ ou :: Without its accent, ou means "or". "Where" is où.
-  ? typed: French for "when":
-    = quand
-  ? typed: French for "why":
-    = pourquoi
-  ? typed: French for "how":
-    = comment
-  ? typed: French for "how much" or "how many":
-    = combien
   ? choice: "Pourquoi" is built from two smaller words. Which?
     (x) pour + quoi, "for what"
     ( ) pour + qui, "for whom"
@@ -78,23 +68,28 @@
     (x) que
     ( ) quoi
     why: Que stands before the verb; quoi stands after it or after a preposition: "Tu fais quoi ?", "pour quoi".
+  ? pick: French for "%%":
+    | who       = qui
+    | when      = quand
+    | why       = pourquoi
+    | how       = comment
+    | how much  = combien
+    | where     = où
+  ? pick: English for « %% »:
+    | qui       = who
+    | quand     = when
+    | pourquoi  = why
+    | comment   = how
+    | combien   = how much / how many
+    | où        = where
+    | quoi      = what
 
 - Here, there, now, then   @fr.words.q.point
   can: Point at a place or a time in French.
   bite: The answers to où and quand start with a handful of pointing words. Place: ici (here), là (there). Time: maintenant (now), alors (then), hier (yesterday), aujourd'hui (today), demain (tomorrow). For a thing, ça covers both "this" and "that".
-  ? typed: French for "here":
-    = ici
   ? typed: French for "there" (mind the accent):
     = là
     ~ la :: Without its accent, la is "the" or "her". "There" is là.
-  ? typed: French for "now":
-    = maintenant
-  ? typed: French for "yesterday":
-    = hier
-  ? typed: French for "tomorrow":
-    = demain
-  ? typed: French for "today":
-    = aujourd'hui
   ? choice: Put in order from past to future:
     (x) hier, aujourd'hui, demain
     ( ) demain, aujourd'hui, hier
@@ -105,6 +100,23 @@
     ( ) here
     ( ) who
     ( ) then
+  ? pick: French for "%%":
+    | here       = ici
+    | now        = maintenant
+    | then       = alors
+    | yesterday  = hier
+    | today      = aujourd'hui
+    | tomorrow   = demain
+    | there      = là
+  ? pick: English for « %% »:
+    | ici          = here
+    | maintenant   = now
+    | alors        = then
+    | hier         = yesterday
+    | aujourd'hui  = today
+    | demain       = tomorrow
+    | là           = there
+    | ça           = this / that
 
 ### Words for the mind   @fr.words.mind
     can: Talk about thinking, knowing, remembering and forgetting.
@@ -112,12 +124,6 @@
 - Thinking and knowing   @fr.words.mind.verbs
   can: Tell croire, penser, savoir, oublier and imaginer apart.
   bite: Croire is to think in the sense of believing something is so; penser is to think about something, and a thought is une pensée (the flower called a pansy is the same word). Savoir is to know a fact. Oublier is to forget: something sent to oblivion. Imaginer is to imagine. Se souvenir is to remember, and a souvenir is what you bring back in order to.
-  ? typed: French for "to know" (a fact):
-    = savoir
-  ? typed: French for "to forget":
-    = oublier
-  ? typed: French for "to imagine":
-    = imaginer
   ? choice: Which English word is a relative of "oublier"?
     (x) oblivion
     ( ) oblige
@@ -138,16 +144,23 @@
     ( ) to buy
     ( ) to travel
     ( ) to give
+  ? pick: French for "%%":
+    | to know (a fact)          = savoir
+    | to forget                 = oublier
+    | to imagine                = imaginer
+    | to think (to believe)     = croire
+    | to think about            = penser
+    | a thought                 = une pensée / pensée / la pensée
+  ? pick: English for « %% » (start a verb with "to"):
+    | savoir     = to know
+    | oublier    = to forget
+    | imaginer   = to imagine
+    | croire     = to believe / to think
+    | penser     = to think / to think about
 
 - Learning and finding out   @fr.words.mind.learn
   can: Name learning, teaching, and the ways a thought arrives.
   bite: Apprendre is to learn (an apprentice is one who learns); enseigner is to teach, and l'enseignement is teaching. What you know is la connaissance; what holds it is la mémoire. Découvrir is to find out, to dis-cover. Se rendre compte is to realize: literally, to give oneself the account. Rappeler is to remind, to call back. Une erreur is a mistake, une intention an intention, and something done on purpose is done exprès.
-  ? typed: French for "to learn":
-    = apprendre
-  ? typed: French for "to teach":
-    = enseigner
-  ? typed: French for "to find out" (think "discover"):
-    = découvrir
   ? choice: "La connaissance" is:
     (x) knowledge
     ( ) a mistake
@@ -173,6 +186,22 @@
     ( ) to forget
     ( ) to name
     ( ) to answer
+  ? pick: French for "%%":
+    | to learn      = apprendre
+    | to teach      = enseigner
+    | to find out   = découvrir
+    | to remind     = rappeler
+    | on purpose    = exprès
+    | a mistake     = une erreur / erreur
+    | memory        = la mémoire / mémoire / une mémoire
+    | knowledge     = la connaissance / connaissance
+  ? pick: English for « %% » (start a verb with "to"):
+    | apprendre   = to learn
+    | enseigner   = to teach
+    | découvrir   = to find out / to discover
+    | rappeler    = to remind / to call back
+    | exprès      = on purpose
+    | une erreur  = a mistake / mistake / an error
 
 ## Sentences   @fr.sent
    can: Build short French sentences and say why each word stands where it does.
@@ -251,11 +280,11 @@
     = fr{say.perf 2s recipient=3p}
 
 ### Pronouns   @fr.sent.pron
-    can: Choose the right pronoun form for its job in the sentence.
+    can: Choose the right pronoun form for its verb role in the sentence.
 
 - I and you: subject and object   @fr.sent.pron.je
   can: Switch je and tu to their object forms.
-  bite: First and second person pronouns have no gender. In the singular the form changes with the job: je becomes me as an object, tu becomes te. In the plural, nous and vous serve as both subject and object. Scroll on each to change its job: ((subject: je | object: me)), ((subject: tu | object: te)), ((subject: nous | object: nous)), ((subject: vous | object: vous)). Each has its possessives: mon, ma, mes; ton, ta, tes; notre, nos; votre, vos.
+  bite: First and second person pronouns have no gender. In the singular the form changes with the verb role: je becomes me as an object, tu becomes te. In the plural, nous and vous serve as both subject and object. Scroll on each to change its verb role: ((subject: je | object: me)), ((subject: tu | object: te)), ((subject: nous | object: nous)), ((subject: vous | object: vous)). Each has its possessives: mon, ma, mes; ton, ta, tes; notre, nos; votre, vos.
   ? typed: The object form of "je":
     = me
   ? typed: The object form of "tu":
@@ -279,9 +308,9 @@
     = Tu me vois.
     = tu me vois
 
-- He, she, they: three jobs   @fr.sent.pron.il
+- He, she, they: three verb roles   @fr.sent.pron.il
   can: Pick subject, object and indirect object forms in the third person.
-  bite: Third person pronouns show gender as subject and as direct object: il and elle, le and la; in the plural ils and elles, but a single object form les. The indirect object, "to him" or "to her", has no gender at all: lui in the singular, leur in the plural. The possessives are son, sa, ses for one owner and leur, leurs for several. Scroll to walk the jobs: ((subject: il | direct object: le | indirect object: lui)), ((subject: elle | direct object: la | indirect object: lui)), ((subject: ils | direct object: les | indirect object: leur)), ((subject: elles | direct object: les | indirect object: leur)). Scroll to walk gender: ((masculine: il | feminine: elle)), ((masculine: le | feminine: la)), ((masculine: lui | feminine: lui)).
+  bite: Third person pronouns show gender as subject and as direct object: il and elle, le and la; in the plural ils and elles, but a single object form les. The indirect object, "to him" or "to her", has no gender at all: lui in the singular, leur in the plural. The possessives are son, sa, ses for one owner and leur, leurs for several. Scroll to walk the verb roles: ((subject: il | direct object: le | indirect object: lui)), ((subject: elle | direct object: la | indirect object: lui)), ((subject: ils | direct object: les | indirect object: leur)), ((subject: elles | direct object: les | indirect object: leur)). Scroll to walk gender: ((masculine: il | feminine: elle)), ((masculine: le | feminine: la)), ((masculine: lui | feminine: lui)).
   links: @fr.sent.small.clitic @fr.sent.small.film
   ? typed: Direct object, masculine singular ("him", "it"):
     = le
@@ -298,7 +327,7 @@
     ( ) lui
     ( ) leur
     ( ) les
-  ? choice: "Leur" has two jobs. Which pair?
+  ? choice: "Leur" does two things. Which pair?
     (x) "to them" and "their"
     ( ) "them" and "they"
     ( ) "to him" and "his"
@@ -309,6 +338,14 @@
     ( ) elle
     ( ) leur
     why: Parler à: the person is an indirect object, so lui, whatever the gender.
+  ? pick: Third person, %%:
+    | direct object, masculine singular   = le
+    | direct object, feminine singular    = la
+    | direct object, plural               = les
+    | indirect object, singular           = lui
+    | indirect object, plural             = leur
+    | subject, feminine plural            = elles
+    | subject, masculine plural           = ils
 
 ### Reading real sentences   @fr.sent.read
     can: Read short everyday French and say how it is built.
@@ -354,7 +391,7 @@
     ( ) de
 
 - The fork   @fr.sent.read.fourchette
-  can: Find the pronoun and its job in a plain statement.
+  can: Find the pronoun and its verb role in a plain statement.
   bite: La fourchette nous sert à prendre la nourriture dans l'assiette. Word for word: the fork serves us to take the food in the plate. English would say "We use a fork to pick up food from the plate." French makes the fork the subject, and "us" the ones it serves.
   links: @fr.sent.pron.je
   ? choice: In "La fourchette nous sert", what is "nous" doing?
@@ -407,6 +444,88 @@
     ( ) before each session
     ( ) during the session
     ( ) after some sessions
+
+### Verbs with and without a doer   @fr.sent.valency
+    can: Say that something happened, with or without naming who did it.
+
+- Verbs that stay the same: fondre, bouillir   @fr.sent.valency.same
+  can: Use fondre and bouillir with and without a doer.
+  bite: Some verbs work like English "melt": the same form whether or not a doer is named. La glace fond. Le soleil fond la glace. French increasingly brings in faire when there is a doer: Le soleil fait fondre la glace. With bouillir that is the only way: J'ai fait bouillir l'eau.
+  figure: french {melt the.sun the.ice}
+  ? choice: "The ice melts."
+    (x) La glace fond.
+    ( ) La glace se fond.
+    ( ) La glace fait fondre.
+    ( ) La glace est fondre.
+  ? choice: "I boiled the water."
+    (x) J'ai fait bouillir l'eau.
+    ( ) J'ai bouilli l'eau.
+    ( ) L'eau m'a bouilli.
+    ( ) Je me suis bouilli l'eau.
+    why: Bouillir on its own is what the water does. To say who made it happen, French adds faire.
+  ? choice: In "Le soleil fait fondre la glace", what does "fait" add?
+    (x) a doer who causes the melting
+    ( ) the past tense
+    ( ) a negative
+    ( ) nothing; it is optional decoration
+  ? choice: "Nous allons la faire bouillir." What is "la"?
+    (x) the thing to be boiled
+    ( ) the people doing it
+    ( ) the word "there"
+    ( ) part of the verb aller
+
+- Verbs that take se: casser, ouvrir, fermer   @fr.sent.valency.se
+  can: Add se when no doer is named, and switch to être in the past.
+  bite: Other verbs need help when no doer is named: they take se. Le verre se casse. La fenêtre s'ouvre. In the past, se brings être with it, and the participle agrees with the subject: La fenêtre s'est ouverte. Name a doer and se disappears, with avoir back in place: Il l'a ouverte.
+  figure: french {open.perf the.window}
+  links: @fr.sent.small.clitic
+  ? choice: "The glass breaks."
+    (x) Le verre se casse.
+    ( ) Le verre casse.
+    ( ) Le verre fait casser.
+    ( ) Le verre est casse.
+  ? choice: In "La fenêtre s'est ouverte", why does "ouverte" end in -e?
+    (x) It agrees with la fenêtre, the subject
+    ( ) It agrees with whoever opened it
+    ( ) Every participle after être ends in -e
+    ( ) It is the infinitive ending
+  ? choice: "Il l'a ouverte." Who or what opened?
+    (x) He did; "l'" is the thing that was opened
+    ( ) It opened by itself
+    ( ) She opened him
+    ( ) Nobody; it is negative
+  ? choice: Which helper verb goes with se in the past?
+    (x) être
+    ( ) avoir
+    ( ) faire
+    ( ) aller
+  ? choice: "Les portes ne se sont pas ouvertes." means:
+    (x) The doors have not opened.
+    ( ) The doors are not open to them.
+    ( ) They have not opened the doors.
+    ( ) The doors do not open themselves anymore.
+
+- Verbs that always wear se: se souvenir   @fr.sent.valency.always
+  can: Recognize a verb that never appears without se.
+  bite: A few verbs carry se all the time, with no doer to drop: se souvenir, to remember. Je me souviens. Tu te souviens ? The se changes with the person, like any object pronoun: me, te, se, nous, vous, se.
+  links: @fr.words.mind.verbs @fr.sent.pron.je
+  ? choice: "I remember."
+    (x) Je me souviens.
+    ( ) Je souviens.
+    ( ) Je se souviens.
+    ( ) Je suis souvenir.
+  ? choice: "Tu ____ souviens ?"
+    (x) te
+    ( ) se
+    ( ) me
+    ( ) tu
+  ? pick: The form of se that goes with %%:
+    | je    = me
+    | tu    = te
+    | nous  = nous
+    | vous  = vous
+    | il    = se
+    | elles = se
 
 ## Shared roots   @fr.roots
    standard: MOD.COD.NL.1.2 MOD.CLL.NH.2.3

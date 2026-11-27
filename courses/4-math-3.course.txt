@@ -206,9 +206,9 @@
   ? row: With the half-angle $180°/n$ at the center and $L/2$ across from it, which function of the half-angle gives each length when multiplied by $L/2$?
     | apothem          = cotangent
     | circumradius     = cosecant
-  ? numeric: A regular hexagon has edge length 2. How long is its apothem?
-    = 1.732
-    why: $\cot 30° = \sqrt3$.
+  ? numeric: A regular hexagon has edge length [L = 2 | 4 | 6 | 10]. How long is its apothem?
+    = L * sqrt(3) / 2
+    why: Half the edge times $\cot 30° = \sqrt3$.
   ? numeric: A regular pentagon has edge length $L$. Its area is what number times $L^2$?
     = 1.7205
     why: $\tfrac54\cot 36°$.
@@ -286,8 +286,9 @@
   ? match: Match each property to the change it allows.
     | associative      = moving the grouping
     | commutative      = swapping the order
-  ? numeric: What is $(2^3)^2$?
-    = 64
+  ? numeric: Raise [a = 2 | 3 | 5] to the power [b = 3 | 2]. Then raise the result to the power [c = 2 | 3]. What do you get?
+    = a^(b * c)
+    why: A power of a power multiplies the exponents: [a] to the power [= b * c].
   ? numeric: What is $2^{(3^2)}$?
     = 512
   ? choice: Why can $A + B + C$ be written with no parentheses at all?
@@ -316,9 +317,9 @@
   ? typed: Expand $(xy)^4$.
     = x^4 y^4
     = x^4y^4
-  ? numeric: What is $(2 \cdot 5)^3$?
-    = 1000
-    why: $2^3 \cdot 5^3 = 8 \cdot 125$, or directly $10^3$.
+  ? numeric: What is the cube of the product [a = 2 | 3 | 4] × [b = 5 | 10]?
+    = (a * b)^3
+    why: Cube each factor and multiply, or cube the product [= a * b] directly.
 
 - Adding and multiplying exponents   @m3.dogma.rules.exp
   can: Combine exponents on the same base.
@@ -413,9 +414,9 @@
   bite: Fill slots one at a time and multiply the number of choices at each. If items can be repeated, every slot has the same choices and the choices are independent: 5 items in 4 slots gives $5 \cdot 5 \cdot 5 \cdot 5 = 5^4$. If an item is used up when chosen, each slot has one choice fewer than the last and the choices depend on each other: 7 items in 5 slots gives $7 \cdot 6 \cdot 5 \cdot 4 \cdot 3$, a factorial cut short.
   ? numeric: Five items fill four slots, and items can be repeated. How many ways?
     = 625
-  ? numeric: Seven items fill five slots, and an item is used up once chosen. How many ways?
-    = 2520
-    why: $7 \cdot 6 \cdot 5 \cdot 4 \cdot 3$.
+  ? numeric: [n = 7 | 6 | 8] items fill [k = 5 | 3 | 4] slots, and an item is used up once chosen. How many ways?
+    = fact(n) / fact(n - k)
+    why: Start at [n] and count down, one factor per slot: $n!/(n-k)!$.
   ? row: Are the choices independent or dependent?
     | items can be repeated                    = independent
     | items are used up once chosen            = dependent
@@ -430,9 +431,9 @@
     | 5 above; below, Y of degree 3 and N of degree 2       = 10
     | 5 above; below, three labels of degree 1 and N of degree 2    = 60
     | 7 above; below, degrees 3, 2 and 2                    = 210
-  ? numeric: There are five distinguishable light switches on a panel. In how many ways can three be on and two off?
-    = 10
-    why: $\tfrac{5!}{3!\,2!}$.
+  ? numeric: There are [n = 5 | 6 | 7] distinguishable light switches on a panel. In how many ways can exactly [k = 3 | 2] be on and the rest off?
+    = fact(n) / (fact(k) * fact(n - k))
+    why: $\tfrac{n!}{k!\,(n-k)!}$ with $n$ = [n] and $k$ = [k].
   ? choice: Why divide by $3!$ when a label has degree 3?
     (x) the three things it takes can be reordered among themselves without changing the mapping
     ( ) three of the things are left out
@@ -469,9 +470,9 @@
     | $\binom{7}{1}$      = 7
     | $\binom{7}{6}$      = 7
     | $\binom{4}{0}$      = 1
-  ? numeric: What is $\binom{10}{8}$?
-    = 45
-    why: The same as $\binom{10}{2} = \tfrac{10 \cdot 9}{2}$.
+  ? numeric: What is $\binom{n}{k}$ when $n$ = [n = 10 | 9 | 12] and $k$ = [k = 8 | 7]?
+    = fact(n) / (fact(k) * fact(n - k))
+    why: The same as $\binom{n}{n-k}$, which has fewer factors to multiply: here $n - k$ = [= n - k].
 
 ### Pascal's triangle   @m3.binom.pascal
     can: Build Pascal's triangle and connect it to the coefficient formula.
@@ -482,8 +483,8 @@
   ? typed: Row 4 of Pascal's triangle is 1, 4, 6, 4, 1. Write row 5, with commas.
     = 1, 5, 10, 10, 5, 1
     = 1,5,10,10,5,1
-  ? numeric: What do the entries of row 5 add up to?
-    = 32
+  ? numeric: What do the entries of row [n = 5 | 4 | 6 | 7 | 8] add up to?
+    = 2^n
     why: Every row sums to $2^n$: all the ways to pick from $n$ factors.
   ? numeric: In row 6, what is the entry after 1 and 6?
     = 15
@@ -535,12 +536,12 @@
     = a^2 + 2ab + b^2
   ? numeric: What is the coefficient of $a^3 b^2$ in $(a + b)^5$?
     = 10
-  ? numeric: What is the coefficient of $x^2$ in $(x + 3)^4$?
-    = 54
-    why: $\binom{4}{2}\,x^2\,3^2 = 6 \cdot 9$.
-  ? numeric: What is the coefficient of $x$ in $(x + 2)^3$?
-    = 12
-    why: $\binom{3}{2}\,x\,2^2 = 3 \cdot 4$.
+  ? numeric: What is the coefficient of $x^2$ in $(x + c)^4$ when $c$ = [c = 3 | 2 | 5]?
+    = 6 * c^2
+    why: $\binom{4}{2}\,x^2\,c^2$, which is 6 × [= c^2].
+  ? numeric: What is the coefficient of $x$ in $(x + c)^3$ when $c$ = [c = 2 | 3 | 4]?
+    = 3 * c^2
+    why: $\binom{3}{2}\,x\,c^2$, which is 3 × [= c^2].
 
 - Polynomial coefficients   @m3.binom.pascal.multi
   can: Count and weigh the terms of a power of a sum of several terms.
@@ -604,8 +605,8 @@
     | triangular number      = 2
     | tetrahedral number     = 3
     | pentachoral number     = 4
-  ? numeric: A right triangle of dots has 1 dot in its first row, 2 in the next, and so on to 7 in its last. How many dots?
-    = 28
+  ? numeric: A right triangle of dots has 1 dot in its first row, 2 in the next, and so on to [n = 7 | 6 | 9 | 12] in its last. How many dots?
+    = n * (n + 1) / 2
 
 - A table split three ways   @m3.simplex.lattice.table
   can: Count the cells of a square table above, on and below its diagonal.
@@ -616,9 +617,9 @@
     | $i > j$      = 45
   ? numeric: In an $n$ by $n$ table with $n = [n = 6 | 5..12]$, how many cells have $i < j$?
     = n * (n - 1) / 2
-  ? numeric: Three indices each run from 1 to 6. How many triples have $i < j < k$?
-    = 20
-    why: $\binom{6}{3}$.
+  ? numeric: Three indices each run from 1 to [n = 6 | 5 | 7 | 8]. How many triples have $i < j < k$?
+    = n * (n - 1) * (n - 2) / 6
+    why: $\binom{n}{3}$.
 
 - Dice   @m3.simplex.lattice.dice
   can: Count the ways to roll a given total without listing them.
