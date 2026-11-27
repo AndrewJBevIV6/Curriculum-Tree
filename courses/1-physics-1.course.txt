@@ -449,6 +449,7 @@ term: moment of inertia = I | extensive
     = Exactly along the forward A direction, with no part along B.
 
 - When trigonometry is needed   @vec.comp.trig
+  scope: extra
   can: Say which vector problems need trigonometry and which do not.
   bite: Adding, subtracting and scaling vectors given by their parts needs no trigonometry at all. It is only called for when going between straight-line information (parts along axes) and angular information (a length with a tilt). Reaching for it elsewhere adds steps that cancel again, like bringing in a mass that the problem never needed.
   links: @table.path.need @frame.arcangle.kinds

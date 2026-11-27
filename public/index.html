@@ -211,6 +211,7 @@ body.hints .t-extensive { background: hsl(268 85% 60% / .2); box-shadow: inset 0
 .figwrap.tablefig { display: grid; gap: 8px; justify-items: start; } .figbar { display: flex; flex-wrap: wrap; gap: 8px; } .figbar .seg { flex-wrap: wrap; }
 .figsvg { width: 100%; max-width: 470px; } .fig.fig.table { width: 100%; max-width: none; height: auto; display: block; }
 .fig.wide.grab { max-width: 520px; }
+.taxis { stroke: var(--muted); stroke-width: 1.4; } .thandle { fill: var(--paper); stroke: var(--ink); stroke-width: 1.6; cursor: grab; touch-action: none; } .thandle:hover { fill: hsl(45 95% 70%); } .taxn { font: 600 9.5px var(--font); fill: var(--muted); } .figsvg svg.table { overflow: visible; touch-action: none; }
 .tedge { stroke: var(--line); stroke-width: 1.2; } .tplane { fill-opacity: .07; stroke-width: 2.2; stroke-linejoin: round; }
 .tlab { font: 600 19px var(--math); } .tlab.sym { font-style: italic; font-size: 22px; } .tlab.unit { font: 600 12.5px var(--font); } .tlab.word { font: 650 12.5px var(--font); } .tlab.word.small { font-size: 10.5px; }
 .figkey2 { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: var(--fs-s); font-weight: 600; } .figkey2 i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; }
@@ -314,7 +315,9 @@ button.st-leaf { cursor: pointer; } .st-leaf.st-A { background: hsl(212 85% 60% 
 .chip { border: 1px solid hsl(var(--h, 230) 30% 50% / .4); background: hsl(var(--h, 230) 50% 50% / .08); border-radius: 999px; padding: 5px 12px; font-size: var(--fs-s); min-height: 32px; }
 .chip:hover:not(:disabled) { background: hsl(var(--h, 230) 50% 50% / .18); }
 .chip.on { background: hsl(var(--h, 230) 55% var(--lr)); color: var(--paper); border-color: transparent; }
-.chip.flag.on { background: var(--notyet); }
+.chip.link { border-radius: 8px; } .chip.flag { border-radius: 6px; border-style: dashed; background: transparent; color: var(--muted); } .chip.flag.on { background: var(--notyet); border-style: solid; color: var(--ink); }
+.node.extra > .card { border-style: dashed; background-image: repeating-linear-gradient(135deg, transparent 0 9px, hsl(var(--h, 230) 20% 50% / .06) 9px 10px); } .node.extra > .card .title { font-weight: 550; }
+.scopetag { display: inline-block; margin-top: 4px; font-size: .74em; font-weight: 650; letter-spacing: .02em; padding: 1px 7px; border-radius: 5px; } .scopetag.extra { color: var(--muted); border: 1px dashed var(--muted); } .scopetag.core { color: var(--paper); background: hsl(var(--h, 230) 55% 40%); }
 .chip.right { outline: 2px solid var(--good); outline-offset: 1px; }
 .btn { border: 1px solid var(--line); background: var(--paper); border-radius: 10px; padding: 8px 16px; font-weight: 600; min-height: 42px; }
 .btn.primary { background: hsl(var(--h, 230) 55% var(--lr)); color: var(--paper); border-color: transparent; }
@@ -393,7 +396,7 @@ footer input[type=file] { position: absolute; opacity: 0; width: 1px; height: 1p
     <nav id="crumb" aria-label="Where you are"></nav>
     <span id="who" class="who" hidden></span>
     <button id="hints" class="chip" type="button" aria-pressed="false" hidden title="Tint each quantity name by its kind, and fold it to its symbol on hover">Kind hints<i class="ki"></i>intensive<i class="ke"></i>extensive</button>
-    <button id="flagged" class="chip" type="button" disabled>Flagged 0</button>
+    <button id="flagged" class="chip" type="button" disabled>Bookmarks 0</button>
   </div>
   <div id="flaglist" hidden></div>
 </header>
@@ -2321,7 +2324,7 @@ const Core = (() => {
         return;
       }
       item = null;
-      const p = s.match(/^(can|bite|links|figure|standard):\s*(.*)$/);
+      const p = s.match(/^(can|bite|links|figure|standard|scope):\s*(.*)$/);
       if (p && cur) {
         if (p[1] === 'links') cur.links = p[2].split(/\s+/).filter(Boolean); else if (p[1] === 'standard') cur.standards = p[2].split(/\s+/).filter(Boolean); else cur[p[1]] = p[2];
         key = null;
@@ -2703,7 +2706,7 @@ if (typeof document !== 'undefined') (() => {
   const WORD = { ok: 'Mastered', no: 'Not yet mastered' };
   // Development aid: nodes whose features are new or changed in the current pass. Each gets a small arrow off the left end of its
   // title card, and so does every node on the way down to it. Reset this list at the start of each pass.
-  const FRESH = ['@m3.simplex.lattice.tab3', '@fr.sounds.vowels.hold', '@m3.binom.pascal.thm'];
+  const FRESH = ['@m3.simplex.lattice.tab3', '@vec.comp.trig', '@frame.radius.count', '@table.rel.locate', '@fr.words.q', '@fr.words.mind', '@fr.sent.pron', '@fr.sent.read'];
   const prefs = { auto: false, save: () => {} };   // set from saved state when a course starts
 
   // ---------- rich text: [boxed givens], {term :: note}, $maths$ ----------
@@ -2903,7 +2906,8 @@ if (typeof document !== 'undefined') (() => {
   // The variable table as a lattice: frame along one edge, kind along another, temporal order along the third.
   // Buttons switch the labels (symbols, words, shared words, units, dimensions) and the planes that are highlighted.
   const tableFigure = spec => {
-    const A = [0.866, 0.615], B = [0.05, 1.35], C = [-1.089, 0.429], S = 96, ox = 262, oy = 318;
+    // The three table axes as drawn on the page. Each can be turned and stretched by dragging its handle on the small triad.
+    const AX = { A: [0.866, 0.615], B: [0.05, 1.35], C: [-1.089, 0.429] }, A = AX.A, B = AX.B, C = AX.C, S = 96, ox = 262, oy = 318, TO = [78, 46], TS = 26, AXN = { A: 'frame', B: 'kind', C: 'order' };
     const pt = (i, j, k) => [ox + S * (i * A[0] + j * B[0] + k * C[0]), oy - S * (i * A[1] + j * B[1] + k * C[1])];
     // [order][kind][frame]: symbol, word, unit, dimension, power of length
     const T = [
@@ -2929,12 +2933,18 @@ if (typeof document !== 'undefined') (() => {
       H.planes.forEach((pl, n) => { s += '<polygon points="' + pl.map(P).join(' ') + '" style="stroke:' + H.col[n] + ';fill:' + H.col[n] + '" class="tplane"/>'; });
       for (let k = 0; k < 3; k++) for (let j = 0; j < 2; j++) {
         if (lab === 2) { const a = pt(0.14, j === 0 ? 0.2 : 0.8, k), b = pt(0.86, j === 0 ? 0.2 : 0.8, k), ang = -Math.atan2(A[1], A[0]) * 180 / Math.PI, mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2; s += '<text x="' + mx + '" y="' + my + '" transform="rotate(' + ang + ' ' + mx + ' ' + my + ')" text-anchor="middle" class="tlab word" style="fill:' + (hl === 'frame' || hl === 'length' ? 'var(--ink)' : H.col[H.of(0, j, k)]) + '">' + SHARED[k][j] + '</text>'; continue; }
-        for (let i = 0; i < 2; i++) { const c = T[k][j][i], p = pt(0.2 + 0.6 * i, 0.2 + 0.6 * j, k), txt = lab === 0 ? c[0] : lab === 1 ? c[1] : lab === 3 ? c[2] : c[3]; s += '<text x="' + p[0] + '" y="' + (p[1] + 5) + '" text-anchor="middle" class="tlab ' + (lab === 0 ? 'sym' : lab === 1 ? 'word small' : 'unit') + '" style="fill:' + H.col[H.of(i, j, k)] + '">' + txt + '</text>'; }
+        for (let i = 0; i < 2; i++) { const c = T[k][j][i], p = pt(0.2 + 0.6 * i, 0.2 + 0.6 * j, k), txt = lab === 0 ? c[0] : lab === 1 ? c[1] : lab === 3 ? c[2] : '[' + c[3] + ']', turn = lab === 1 ? ' transform="rotate(' + (-Math.atan2(A[1], A[0]) * 180 / Math.PI).toFixed(1) + ' ' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + ')"' : ''; s += '<text x="' + p[0] + '" y="' + (p[1] + 5) + '"' + turn + ' text-anchor="middle" class="tlab ' + (lab === 0 ? 'sym' : lab === 1 ? 'word small' : 'unit') + '" style="fill:' + H.col[H.of(i, j, k)] + '">' + txt + '</text>'; }
       }
+      Object.keys(AX).forEach(a => { const x = TO[0] + TS * AX[a][0], y = TO[1] - TS * AX[a][1]; s += '<line class="taxis" x1="' + TO[0] + '" y1="' + TO[1] + '" x2="' + x.toFixed(1) + '" y2="' + y.toFixed(1) + '"/><circle class="thandle" data-ax="' + a + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="6.5"><title>Drag to turn the ' + AXN[a] + ' axis</title></circle><text class="taxn" x="' + (x + 9 * Math.sign(AX[a][0] || 1)).toFixed(1) + '" y="' + (y + 3).toFixed(1) + '" text-anchor="' + (AX[a][0] < 0 ? 'end' : 'start') + '">' + AXN[a] + '</text>'; });
       svgBox.innerHTML = s + '</svg>';
       key.innerHTML = '<span class="quiet">' + H.name + ':</span> ' + H.keys.map((x, n) => '<span style="color:' + H.col[n] + '"><i style="background:' + H.col[n] + '"></i>' + x + '</span>').join(' ');
       bar.replaceChildren(seg(LAB, lab, i => { lab = i; render(); }), seg(Object.keys(HL).map(x => HL[x].name), Object.keys(HL).indexOf(hl), i => { hl = Object.keys(HL)[i]; render(); }));
     };
+    let grab = null;
+    const toSvg = ev => { const g = svgBox.querySelector('svg'), m = g.getScreenCTM(); return [(ev.clientX - m.e) / m.a, (ev.clientY - m.f) / m.d]; };
+    svgBox.addEventListener('pointerdown', ev => { const h = ev.target.closest && ev.target.closest('.thandle'); if (!h) return; grab = h.dataset.ax; svgBox.setPointerCapture(ev.pointerId); ev.preventDefault(); });
+    svgBox.addEventListener('pointermove', ev => { if (!grab) return; const p = toSvg(ev), v = AX[grab]; v[0] = Math.max(-1.6, Math.min(1.6, (p[0] - TO[0]) / TS)); v[1] = Math.max(-1.6, Math.min(1.6, (TO[1] - p[1]) / TS)); render(); });
+    const drop = () => { grab = null; }; svgBox.addEventListener('pointerup', drop); svgBox.addEventListener('pointercancel', drop);
     el.append(bar, svgBox, key); render();
     return { el };
   };
@@ -3730,10 +3740,12 @@ if (typeof document !== 'undefined') (() => {
     const biteHtml = n => '<p class="bite">' + rich(n.bite) + '</p>';
     const build = n => {
       if (els[n.id]) return els[n.id];
-      const root = $('section', 'node d' + n.level + (isLeaf(n) ? ' leaf' : '') + (FRESH.includes(n.id) ? ' fresh' : FRESH.some(f => f.startsWith(n.id + '.')) || (n.level <= 0 && FRESH.some(f => course.nodes[f] && (function up(a) { return a && (a === n || up(a.parent)); })(course.nodes[f]))) ? ' freshin' : '')); root.dataset.id = n.id; root.style.setProperty('--h', n.hue);
+      // Core or extra: a node's own scope line, else its parent's. A tag is shown where the scope is set, so an exception inside a branch says so.
+      const scopeOf = a => { for (; a; a = a.parent) if (a.scope) return /^extra/i.test(a.scope) ? 'extra' : 'core'; return 'core'; }, scope = scopeOf(n);
+      const root = $('section', 'node d' + n.level + (isLeaf(n) ? ' leaf' : '') + (scope === 'extra' ? ' extra' : '') + (FRESH.includes(n.id) ? ' fresh' : FRESH.some(f => f.startsWith(n.id + '.')) || (n.level <= 0 && FRESH.some(f => course.nodes[f] && (function up(a) { return a && (a === n || up(a.parent)); })(course.nodes[f]))) ? ' freshin' : '')); root.dataset.id = n.id; root.style.setProperty('--h', n.hue);
       const card = $('div', 'card'); card.tabIndex = 0; card.setAttribute('role', 'button'); card.setAttribute('aria-expanded', 'false');
       const mark = markEl();
-      const txt = $('div', 'txt', '<div class="title">' + esc(n.title) + '</div>' + (n.can ? '<div class="can">' + (/[$`]/.test(n.can) ? rich(n.can) : esc(n.can)) + '</div>' : ''));
+      const txt = $('div', 'txt', '<div class="title">' + esc(n.title) + '</div>' + (n.can ? '<div class="can">' + (/[$`]/.test(n.can) ? rich(n.can) : esc(n.can)) + '</div>' : '') + (n.scope ? '<div class="scopetag ' + scope + '">' + (scope === 'extra' ? 'Extra depth; not needed for test' : 'Core skill to be tested') + '</div>' : ''));
       const acts = $('div', 'acts');
       const bf = btn('act focus', 'Focus'); bf.title = 'Make this the top of the screen (F)';
       const seg = $('div', 'seg'); seg.setAttribute('role', 'radiogroup'); seg.setAttribute('aria-label', 'Side of the card');
@@ -3774,7 +3786,7 @@ if (typeof document !== 'undefined') (() => {
         { const l = stdRow(); if (l) foot.append(l); }
         if (n.links.length) { const l = $('div', 'links', '<span class="quiet">Related</span>'); n.links.forEach(id => { const t = course.nodes[id]; if (!t) return; const c = btn('chip link', esc(t.title)); c.style.setProperty('--h', t.hue); c.onclick = () => focusOn(id); l.append(c); }); foot.append(l); }
         const fl = btn('chip flag', '');
-        const paint = () => { fl.textContent = progress.flags[n.id] ? 'Flagged: come back to this' : 'Come back to this'; fl.classList.toggle('on', !!progress.flags[n.id]); e.root.classList.toggle('flagged', !!progress.flags[n.id]); };
+        const paint = () => { fl.textContent = progress.flags[n.id] ? '\u2691 Bookmarked' : '\u2690 Bookmark this item'; fl.classList.toggle('on', !!progress.flags[n.id]); e.root.classList.toggle('flagged', !!progress.flags[n.id]); };
         fl.onclick = () => { progress.flag(n.id); paint(); paintFlags(); save(); }; paint();
         foot.append(fl); e.body.append(foot);
       } else { const l = stdRow(); if (l) { l.classList.add('stdrow'); e.kids.append(l); } n.children.forEach(c => e.kids.append(build(c).root)); }
@@ -3860,8 +3872,6 @@ if (typeof document !== 'undefined') (() => {
         const ok = tally.filter(t => t.ok).length, no = tally.filter(t => t.ok === false).length;
         count.textContent = ok + no ? ok + ' mastered' + (no ? ', ' + no + ' not yet' : '') : (isLeaf(n) ? '' : 'Problems drawn from across this branch');
       };
-      const more = btn('btn', 'More problems');
-      const paintFoot = () => { foot.replaceChildren(); if (shown < queue.length) { more.innerHTML = 'More problems <span class="quiet">' + (queue.length - shown) + ' left</span>'; foot.append(more); } };
       const addBlock = (item, slot, forceFresh) => {
         const t = slot ? slot.t : { ok: null }; if (!slot) tally.push(t); else t.ok = null;
         const block = slot ? slot.block : $('div', 'q'); block.replaceChildren(); block.className = 'q';
@@ -3895,9 +3905,8 @@ if (typeof document !== 'undefined') (() => {
         if (!slot) list.append(block);
         return r;
       };
-      const showMore = k => { const first = shown; for (; shown < Math.min(queue.length, first + k); shown++) addBlock(queue[shown]); paintFoot(); paintTally(); };
-      const deal = () => { queue = Core.pool(n, progress); shown = 0; tally.length = 0; list.replaceChildren(); showMore(lenOf() === 'all' ? queue.length : lenOf()); };
-      more.onclick = () => { const at = list.children.length; showMore(lenOf() === 'all' ? queue.length : lenOf()); const b = list.children[at]; if (b) b.scrollIntoView({ block: 'nearest' }); };
+      // The length is a floor as well as a ceiling: with fewer problems than asked for, the pool goes round again, and a problem met a second time gets fresh numbers.
+      const deal = () => { queue = Core.pool(n, progress); tally.length = 0; list.replaceChildren(); foot.replaceChildren(); const k = lenOf() === 'all' ? queue.length : lenOf(); for (let i = 0; queue.length && i < k; i++) addBlock(queue[i % queue.length], null, i >= queue.length); paintTally(); };
       fresh.onclick = deal;
       deal();
     };
@@ -3906,7 +3915,7 @@ if (typeof document !== 'undefined') (() => {
     const flagBtn = document.getElementById('flagged'), flagList = document.getElementById('flaglist');
     const paintFlags = () => {
       const ids = Object.keys(progress.flags).filter(id => course.nodes[id]);
-      flagBtn.textContent = 'Flagged ' + ids.length; flagBtn.disabled = !ids.length;
+      flagBtn.textContent = 'Bookmarks ' + ids.length; flagBtn.disabled = !ids.length;
       flagList.replaceChildren(...ids.map(id => { const b = btn('chip link', esc(course.nodes[id].title)); b.style.setProperty('--h', course.nodes[id].hue); b.onclick = () => { flagList.hidden = true; focusOn(id); }; return b; }));
       if (!ids.length) flagList.hidden = true;
     };
