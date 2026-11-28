@@ -506,7 +506,7 @@
 - Verbs that take se: casser, ouvrir, fermer   @fr.sent.valency.se
   can: Add se when no agent is named, and take être instead of avoir in the past.
   bite: Other verbs need help when no agent is named: they take se. Le verre se casse. La fenêtre s'ouvre. In the past, a verb with se is one of the verbs that take être (instead of avoir), and the participle agrees with the subject: La fenêtre s'est ouverte. Name an agent and se disappears, with avoir back in place: Il l'a ouverte.
-  figure: french {open.perf the.window}
+  figure: french {open.perf the.window} ;; french {open.perf 3m it.f}
   links: @fr.sent.small.clitic
   ? choice: "The glass breaks."
     (x) Le verre se casse.

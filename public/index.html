@@ -211,7 +211,7 @@ body.hints .t-extensive { background: hsl(268 85% 60% / .2); box-shadow: inset 0
 .fhandle { fill: var(--paper); stroke: var(--ink); stroke-width: 2.5; cursor: grab; } .fhandle.axis { stroke: var(--muted); stroke-dasharray: 3 2; }
 .fig.grab { touch-action: none; }
 .figwrap.tablefig { display: grid; gap: 8px; justify-items: start; } .figbar { display: flex; flex-wrap: wrap; gap: 8px; } .figbar .seg { flex-wrap: wrap; }
-.figsvg { width: 100%; max-width: 470px; } .fig.fig.table { width: 100%; max-width: none; height: auto; display: block; }
+.figsvg { width: 100%; max-width: 580px; margin: 0 auto; } .fig.fig.table { width: 100%; max-width: none; height: auto; display: block; }
 .fig.wide.grab { max-width: 520px; }
 .taxis { stroke: var(--muted); stroke-width: 2; } .tlab.dim { font: 800 14.5px Georgia, 'Times New Roman', serif; letter-spacing: .01em; } .tsh { cursor: ns-resize; }
 .dealgrid { display: grid; grid-template-columns: auto auto; gap: 4px 10px; align-items: center; justify-content: start; font-size: var(--fs-s); }
@@ -269,19 +269,22 @@ button.st-leaf { cursor: pointer; } .st-leaf.st-A { background: hsl(212 85% 60% 
 .vcell.focus { box-shadow: 0 0 0 3px var(--ink); } .vcell.hit b::after { content: " ✓"; font-size: .7em; }
 .hexrow { display: flex; flex-wrap: nowrap; gap: 10px 22px; align-items: center; } .hexrow > .hexsvg { flex: 0 1 300px; min-width: 200px; } .hexrow > .hexid { flex: 0 1 auto; }
 .hexreach { fill: none; stroke-width: 24; stroke-linecap: round; filter: blur(5px); transition: stroke-dashoffset .45s ease-out; pointer-events: none; } .hexg { background: #a9ecb9; border-radius: 9px; padding: 3px 6px; display: inline-block; } .hexid.comp { background: hsl(15 80% 90%); color: hsl(15 50% 22%); }
-.figwrap.polyfig { display: grid; gap: 8px; justify-items: start; outline: none; } .polybar { display: flex; align-items: center; gap: 14px; } .polyn { border: 1.5px dotted var(--muted); border-radius: 9px; background: transparent; padding: 3px 10px; cursor: ns-resize; font-size: 1.05rem; } .polyn:hover { background: hsl(212 70% 50% / .08); }
-.polysvg { width: 300px; max-width: 100%; height: auto; display: block; } .polyedge { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linejoin: round; } .polyspoke, .polyapo { stroke: var(--muted); stroke-width: 1.1; stroke-dasharray: 4 4; opacity: .75; } .polyapo { stroke-dasharray: 2 4; opacity: .55; } .polyapo.strong { stroke: hsl(150 50% 32%); stroke-width: 2.4; stroke-dasharray: none; opacity: 1; }
+.figwrap.polyfig { display: grid; gap: 8px; justify-items: center; text-align: center; outline: none; } .polyrow { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 26px; width: 100%; } .polymain { flex: 0 1 390px; } .polyzoom { flex: 0 1 300px; transition: opacity .35s ease; } .polyzoom.off { opacity: 0; pointer-events: none; } .polyzsvg { width: 100%; max-width: 300px; height: auto; display: block; } .polysq { fill: none; stroke: hsl(28 85% 42%); stroke-width: 1.3; } .polylab.big { font-size: 19px; } .polylab.it.big { font-size: 23px; } .polyzoom .polylab { font-size: 15px; } .polyzoom .polylab.big { font-size: 19px; } .polyfam { justify-content: center; } .polybar { display: flex; align-items: center; gap: 14px; } .polyn { border: 1.5px dotted var(--muted); border-radius: 9px; background: transparent; padding: 3px 10px; cursor: ns-resize; font-size: 1.05rem; } .polyn:hover { background: hsl(212 70% 50% / .08); }
+.polysvg { width: 390px; max-width: 100%; height: auto; display: block; } .polyedge { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linejoin: round; } .polyspoke, .polyapo { stroke: var(--muted); stroke-width: 1.1; stroke-dasharray: 4 4; opacity: .75; } .polyapo { stroke-dasharray: 2 4; opacity: .55; } .polyapo.strong { stroke: hsl(150 50% 32%); stroke-width: 2.4; stroke-dasharray: none; opacity: 1; }
 .polyiso { fill: hsl(212 80% 60% / .28); stroke: hsl(212 70% 46%); stroke-width: 1.6; stroke-linejoin: round; } .polyiso.back { fill: hsl(212 80% 60% / .12); stroke-opacity: .45; } .polyrt { fill: hsl(28 90% 58% / .38); stroke: hsl(28 85% 42%); stroke-width: 1.6; stroke-linejoin: round; } .polyrt.all { fill: hsl(28 90% 58% / .3); stroke-width: .8; } .polyrt.all.alt { fill: hsl(28 90% 58% / .16); }
 .polynew { animation: polyin .45s ease-out both; } @keyframes polyin { from { opacity: 0; } } @media (prefers-reduced-motion: reduce) { .polynew { animation: none; } }
 .polylab { font: 650 15px var(--font); } .polylab.it { font: italic 600 18px var(--math); } .polylab.small { font-size: 11.5px; } .polylab.iso, .polyfam .iso, .polystmt b.iso { fill: hsl(212 70% 40%); color: hsl(212 70% 40%); } .polylab.rt, .polyfam .rt, .polystmt b.rt { fill: hsl(28 85% 36%); color: hsl(28 85% 36%); } .polylab.apo { fill: hsl(150 50% 28%); }
 .polymark { stroke-width: 2.2; stroke-linecap: round; } .polymark.iso, .polyarc.iso { stroke: hsl(212 70% 46%); } .polymark.rt, .polyarc.rt { stroke: hsl(28 85% 42%); } .polyarc { fill: none; stroke-width: 1.8; }
-.polystmt { font-size: 1.02rem; min-height: 4.6em; max-width: 34em; } .polystep { font: 700 .78rem var(--font); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; } .polyfam { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: .82rem; } .polyfam span { opacity: .6; } .polyfam span.on { opacity: 1; } .polyfam span > i:first-child { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; background: currentColor; } .polyfam i.it { font-family: var(--math); }
-.btn.hextint { background: hsl(var(--h) 70% 91%); border-color: hsl(var(--h) 45% 72%); color: hsl(var(--h) 45% 24%); } .hexring { border-bottom: 2px dotted currentColor; cursor: ns-resize; padding: 0 2px; }
-.tmode { display: block; margin: 2px auto -4px; border: 0; background: transparent; font: 600 .95rem var(--font); letter-spacing: .02em; color: var(--muted); opacity: .7; cursor: pointer; text-align: center; width: 100%; max-width: 430px; } .tmode.hit { animation: tmode 1.6s ease-out; } @keyframes tmode { 0%, 35% { color: var(--ink); opacity: 1; font-weight: 800; } 100% { color: var(--muted); opacity: .7; font-weight: 600; } }
+.polystmt { font-size: 1.08rem; min-height: 4.6em; max-width: 36em; } .polystep { font: 700 .78rem var(--font); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; } .polyfam { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: .82rem; } .polyfam span { opacity: .6; } .polyfam span.on { opacity: 1; } .polyfam span > i:first-child { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; background: currentColor; } .polyfam i.it { font-family: var(--math); }
+.btn.hextint { background: hsl(var(--h) 70% 91%); border-color: hsl(var(--h) 45% 72%); color: hsl(var(--h) 45% 24%); } .hexring { border: 1px solid color-mix(in srgb, currentColor 28%, transparent); background: color-mix(in srgb, currentColor 7%, transparent); border-radius: 7px; cursor: ns-resize; padding: 2px 5px; display: inline-block; } .hexring:hover { border-color: color-mix(in srgb, currentColor 60%, transparent); }
+.hexl { background: hsl(235 70% 90%); border-radius: 9px; padding: 3px 6px; display: inline-block; } .cpow { font: 600 .68rem var(--font); color: var(--muted); border: 1px dashed var(--line); border-radius: 6px; padding: 1px 4px; margin-left: 4px; cursor: pointer; } .cbox.pw > .cpow { color: var(--ink); border-style: solid; border-color: var(--ink); }
+.ring.long { display: inline; overflow: visible; -webkit-box-decoration-break: clone; box-decoration-break: clone; padding: 1px 7px 2px; line-height: 1.7; } .ring.long .rg { display: inline; } .ring.long .rl { display: inline; margin-left: 6px; vertical-align: 1px; }
+.tmode { display: block; margin: 4px auto -2px; border: 0; background: transparent; font: 600 1.45rem var(--font); letter-spacing: .01em; color: var(--muted); opacity: .5; cursor: pointer; text-align: center; width: 100%; max-width: 580px; } .tmode.hit { animation: tmode .75s ease-out; } @keyframes tmode { 0%, 30% { color: var(--ink); opacity: 1; font-weight: 900; -webkit-text-stroke: 1.1px var(--ink); } 100% { color: var(--muted); opacity: .5; font-weight: 600; -webkit-text-stroke: 0 transparent; } }
 .tbound { fill: none; stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 5; opacity: .5; pointer-events: none; } svg.fig.table { overflow: visible; }
 .ctile.const { border-style: dotted; font-style: italic; } .csep { display: inline-block; width: 1px; align-self: stretch; background: var(--line); margin: 0 4px; }
-.frsib { font-size: 1.05rem; color: var(--ink); padding: 2px 8px; border-left: 3px solid var(--line); } .hexid { padding: 12px 16px; border-radius: 13px; background: hsl(235 70% 90%); color: hsl(235 45% 22%); font-size: 1.25rem; cursor: ns-resize; min-width: 210px; text-align: center; }
-.hexidnote { margin-top: 8px; font-size: .74rem; color: hsl(235 30% 35%); }
+.frsib.walk { cursor: ns-resize; border-left-color: hsl(212 60% 55%); } .frtag { font-size: .72rem; font-weight: 650; padding: 1px 7px; border-radius: 8px; background: hsl(212 70% 50% / .12); color: hsl(212 60% 34%); } .frway { font-size: .8rem; }
+.frsib { font-size: 1.05rem; color: var(--ink); padding: 2px 8px; border-left: 3px solid var(--line); } .hexid { padding: 12px 16px; border-radius: 13px; background: var(--paper); border: 1.5px solid var(--line); color: var(--ink); font-size: 1.25rem; cursor: ns-resize; min-width: 210px; text-align: center; }
+.hexidnote { margin-top: 8px; font-size: .74rem; color: var(--muted); }
 .wrapsvg { width: min(100%, 340px); height: auto; cursor: crosshair; } .wrapspiral { fill: none; stroke-width: 5; stroke-linecap: butt; } .wrapbase { fill: none; stroke: var(--line); stroke-width: 2; }
 .wraprange { fill: none; stroke: hsl(44 95% 56% / .8); stroke-width: 9; stroke-linecap: round; } .wrapzero { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 3; } .wrapzdot { fill: var(--muted); }
 .wrapray { stroke: var(--muted); opacity: .55; stroke-width: 2; } .wrapkept { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; } .wrapguide { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 4 4; opacity: .6; }
@@ -458,7 +461,7 @@ const SyntaxLib = (() => { const module = { exports: {} };
 // Relations share one archetype: eq (or equal), ne, lt, gt, le, ge.
 //         product(a, b)  ratio(a, b)  square(a)       operators, in nominal or read-aloud form
 //         arc({equal length(_) the.radius})           a relative clause on a referent; _ is the referent itself
-// :v, :n or :p (passive) after a head pins which form is the first-authored wording.
+// :v, :n, :p (passive) or :c (causative) after a head pins which form is the first-authored wording.
 // Verb layers go on the head with dots: see.past  see.perf  see.prog  see.not  see.will  (any mix).
 // the.A.planet, the.B.planet are indexed referents: told apart by ordinals, "another" when new.
 
@@ -519,6 +522,20 @@ const english = {
     go: { past: 'went', pp: 'gone' },
     say: { past: 'said', pp: 'said' },
     break: { past: 'broke', pp: 'broken' },
+    make: { past: 'made', pp: 'made' }, let: { past: 'let', pp: 'let' }, choose: { past: 'chose', pp: 'chosen' },
+    draw: { past: 'drew', pp: 'drawn' }, find: { past: 'found', pp: 'found' }, hold: { past: 'held', pp: 'held' },
+    send: { past: 'sent', pp: 'sent' }, run: { past: 'ran', pp: 'run' }, get: { past: 'got', pp: 'gotten' },
+    put: { past: 'put', pp: 'put' }, set: { past: 'set', pp: 'set' }, cut: { past: 'cut', pp: 'cut' },
+    read: { past: 'read', pp: 'read' }, write: { past: 'wrote', pp: 'written' }, know: { past: 'knew', pp: 'known' },
+    think: { past: 'thought', pp: 'thought' }, keep: { past: 'kept', pp: 'kept' }, begin: { past: 'began', pp: 'begun' },
+    become: { past: 'became', pp: 'become' }, fall: { past: 'fell', pp: 'fallen' }, rise: { past: 'rose', pp: 'risen' },
+    grow: { past: 'grew', pp: 'grown' }, lose: { past: 'lost', pp: 'lost' }, win: { past: 'won', pp: 'won' },
+    meet: { past: 'met', pp: 'met' }, pay: { past: 'paid', pp: 'paid' }, sell: { past: 'sold', pp: 'sold' },
+    buy: { past: 'bought', pp: 'bought' }, bring: { past: 'brought', pp: 'brought' }, teach: { past: 'taught', pp: 'taught' },
+    leave: { past: 'left', pp: 'left' }, mean: { past: 'meant', pp: 'meant' }, show: { pp: 'shown' },
+    speak: { past: 'spoke', pp: 'spoken' }, stand: { past: 'stood', pp: 'stood' }, understand: { past: 'understood', pp: 'understood' },
+    feel: { past: 'felt', pp: 'felt' }, hear: { past: 'heard', pp: 'heard' }, lead: { past: 'led', pp: 'led' },
+    spend: { past: 'spent', pp: 'spent' }, throw: { past: 'threw', pp: 'thrown' }, sit: { past: 'sat', pp: 'sat' },
   },
   // attributive adjectives, written before the noun with dots: the.gravitational.force
   adjs: ['gravitational', 'net', 'initial', 'final', 'angular', 'constant'],
@@ -530,6 +547,9 @@ const english = {
     '3m': { p: 3, pl: false, subj: 'he', obj: 'him', poss: 'his' },
     '3f': { p: 3, pl: false, subj: 'she', obj: 'her', poss: 'her' },
     it: { p: 3, pl: false, subj: 'it', obj: 'it', poss: 'its' },
+    // a thing whose noun has a gender in another language: "it" here, il/elle and le/la in French
+    'it.m': { p: 3, pl: false, subj: 'it', obj: 'it', poss: 'its' },
+    'it.f': { p: 3, pl: false, subj: 'it', obj: 'it', poss: 'its' },
     '1p': { p: 1, pl: true, subj: 'we', obj: 'us', poss: 'our' },
     '2p': { p: 2, pl: true, subj: 'you', obj: 'you', poss: 'your' },
     '3p': { p: 3, pl: true, subj: 'they', obj: 'them', poss: 'their' },
@@ -636,7 +656,19 @@ const english = {
 
 english.pred.equal = english.pred.eq // the authored name used so far
 
-const syntax = (lex = english, con = concepts) => {
+// Role words an unlisted verb accepts: {multiply "x" by "3"}, {store the.value in the.list}
+const OPEN_ROLES = ['by', 'in', 'for', 'at', 'over', 'to', 'from', 'with', 'into', 'on', 'of']
+
+// strict: true refuses a verb that has no entry, as before. By default the lexicon is open: any
+// verb is accepted as a regular one taking an agent and a patient (or an agent alone), with entries
+// needed only for irregular forms and special frames. parse marks such a tree with open: true.
+const syntax = (lex = english, con = concepts, { strict = false } = {}) => {
+  const C = head => con[head] || (strict ? null : { frame: ['agent', 'patient'], roles: OPEN_ROLES })
+  const E = head => lex.pred[head] || {
+    v: head.replace(/_/g, ' '), pp: true,
+    roles: Object.fromEntries(OPEN_ROLES.map(r => [r, { v: r, wh: [`${r} what`] }])),
+  }
+
   // ---------- parse ----------
   const stop = /[\s\[\]{}()=,?"]/
   const tokenize = s => {
@@ -691,6 +723,7 @@ const syntax = (lex = english, con = concepts) => {
       if (t.k === '{') { p--; return pred() }
       if (t.k !== 'word') throw Error(`unexpected ${t.k}`)
       if (lex.pro[t.v]) return { t: 'pro', tag: t.v }
+      if (/^[0-9][a-z]{1,2}$/.test(t.v)) throw Error(`unknown pronoun tag: ${t.v} (the tags are ${Object.keys(lex.pro).join(' ')})`)
       if (t.v === '_') return { t: 'gap' }
       if (t.v === 'and' || t.v === 'or') return { t: 'coord', op: t.v, items: items() }
       const [name, form] = t.v.split(':')
@@ -727,14 +760,14 @@ const syntax = (lex = english, con = concepts) => {
       take('{')
       const [hw, form] = take('word').v.split(':')
       const [head, ...flags] = hw.split('.')
-      const entry = con[head], L = {}
+      const entry = C(head), L = {}
       flags.forEach(x => {
         if (lex.modals.includes(x)) L.modal = x
         else if (['past', 'perf', 'prog', 'not'].includes(x)) L[x] = true
         else throw Error(`unknown verb layer: ${x}`)
       })
       if (!entry) throw Error(`unknown predicate: ${head}`)
-      const node = { t: 'pred', head, form: form || null, L, roles: {}, args: [] }
+      const node = { t: 'pred', head, form: form || null, L, roles: {}, args: [], ...(con[head] ? {} : { open: true }) }
       const frame = entry.frame, bare = []
       while (peek().k !== '}') {
         const t = peek()
@@ -759,11 +792,11 @@ const syntax = (lex = english, con = concepts) => {
 
   // ---------- realize ----------
   // surface mapping: the first role present is the subject, the second the object
-  const present = n => con[n.head].frame.filter(r => n.roles[r])
-  const core = n => present(n).filter(r => !(lex.pred[n.head].io && r === 'recipient'))
+  const present = n => C(n.head).frame.filter(r => n.roles[r])
+  const core = n => present(n).filter(r => !(E(n.head).io && r === 'recipient'))
   const sub = n => n.roles[core(n)[0]]
   const ob = n => n.roles[core(n)[1]] || null
-  const third = n => (lex.pred[n.head].io ? n.roles.recipient : n.roles[core(n)[2]]) || null
+  const third = n => (E(n.head).io ? n.roles.recipient : n.roles[core(n)[2]]) || null
 
   const cross = (...lists) => lists.reduce((acc, l) => acc.flatMap(a => l.map(x => [...a, x])), [[]])
   const join = (...parts) => parts.filter(Boolean).join(' ')
@@ -792,11 +825,13 @@ const syntax = (lex = english, con = concepts) => {
   // one verb in the form its governor asks for: fin, base, pp or ing
   const shape = (v, need, L, f) => {
     const [w, ...rest] = v.split(' '), irr = lex.irr[w] || {}
-    const ed = /e$/.test(w) ? w + 'd' : /[^aeiou]y$/.test(w) ? w.slice(0, -1) + 'ied' : w + 'ed'
+    // a one-syllable verb ending consonant-vowel-consonant doubles its last letter: stopped, summing
+    const dbl = /^[^aeiou]*[aeiou][^aeiouwxy]$/.test(w) ? w + w[w.length - 1] : w
+    const ed = /e$/.test(w) ? w + 'd' : /[^aeiou]y$/.test(w) ? w.slice(0, -1) + 'ied' : dbl + 'ed'
     const word =
       need === 'base' ? w
       : need === 'pp' ? irr.pp || ed
-      : need === 'ing' ? irr.ing || (/[^e]e$/.test(w) ? w.slice(0, -1) : w) + 'ing'
+      : need === 'ing' ? irr.ing || (/[^e]e$/.test(w) ? w.slice(0, -1) : dbl) + 'ing'
       : !L.past ? conj(w, f)
       : typeof irr.past === 'function' ? irr.past(f) : irr.past || ed
     return [word, ...rest].join(' ')
@@ -811,7 +846,7 @@ const syntax = (lex = english, con = concepts) => {
     if (L.perf) put('have', 'pp')
     if (L.prog) put('be', 'ing')
     if (passive) put('be', 'pp')
-    out.push(need === 'pp' && pp ? pp : shape(v, need, L, f))
+    out.push(need === 'pp' && typeof pp === 'string' ? pp : shape(v, need, L, f))
     return out
   }
   // Linear order is read off the nest: inversion and "not" take the outermost word; a bare verb
@@ -942,7 +977,7 @@ const syntax = (lex = english, con = concepts) => {
 
   // the predication as a noun phrase; withMeasure adds "of M" after the head
   const nominalNP = (node, withMeasure = false) => {
-    const e = lex.pred[node.head], th = sub(node)
+    const e = E(node.head), th = sub(node)
     if (!e.n) return []
     const m = node.args.find(a => e.roles[a.role].measure && a.term.t !== 'q')
     const tail = join(
@@ -984,14 +1019,14 @@ const syntax = (lex = english, con = concepts) => {
   }
 
   // a relative clause: "whose length equals the radius" / "equal in length to the radius"
-  const relative = node => frames(node, lex.pred[node.head]).flatMap(f =>
+  const relative = node => frames(node, E(node.head)).flatMap(f =>
     f.on.t === 'gap' ? [...(f.red ? [f.red] : []), `that ${f.vp}`]
     : f.on.t === 'qty' && f.on.bearer && f.on.bearer.t === 'gap' ? [`whose ${lex.qty[f.on.name].n} ${f.vp}`]
     : [])
 
   // non-finite: "for its velocity to change by [12 m/s]", "for him to have seen us"
   const infinitive = node => {
-    const e = lex.pred[node.head]
+    const e = E(node.head)
     const tail = node.args.map(a => `${e.roles[a.role].v} ${obj(a.term)}`).join(' ')
     return np(sub(node), 'obj').map(s => join('for', s, vg(e.v, node.L).inf, ob(node) && obj(ob(node)), tail))
   }
@@ -1033,6 +1068,10 @@ const syntax = (lex = english, con = concepts) => {
     return 2 * words.length + (i < 0 ? 0 : words.length - i) > LIMIT
   }
   const weigh = (s, text) => (heavy(s) ? text + '\u0002' : text)
+  // A realization carries, out of sight, the build it belongs to (key: active, passive, causative,
+  // nominal) and what sets it apart within that build (label). variants() reads them back.
+  const tag = (kind, value) => text => `${text}\u0003${kind}=${value}\u0004`
+  const keyed = (k, xs) => xs.map(tag('key', k))
 
   const verbal = (node, e) => {
     const sp = e.rel === 'eq' && spanOf(node)
@@ -1049,22 +1088,36 @@ const syntax = (lex = english, con = concepts) => {
     const comps = (O ? (O.t === 'fn' ? fnForms(O, e).map(x => x.text) : np(O, 'obj')) : ['']).flatMap(o => (!R ? [o] : !o ? [to] : e.noDative ? [join(o, to)] : [join(o, to), join(obj(R), o)]))
       .map(o => (shift ? join(o, e.part) : o))
 
-    if (S.t === 'q') return comps.map(o => join(wh(S), vg(e.v, L).decl, o, tail()) + '?')
+    // The causative: for a verb whose patient can stand alone ("the ice melts"), the agent may be
+    // said to make it happen: "the sun makes the ice melt". Same tree as "the sun melts the ice".
+    const causal = C(node.head).mode === 'patientive' && node.roles.agent && node.roles.patient
+    const mk = f => vg('make', L, f)
+    // a choice among question phrases is labeled by the phrase
+    const asked = (ws, w) => (ws.length > 1 ? tag('label', `asks with "${w}"`) : x => x)
+    if (S.t === 'q') return [
+      ...comps.map(o => join(wh(S), vg(e.v, L).decl, o, tail()) + '?'),
+      ...(causal ? keyed('causative', [join(wh(S), mk(SG).decl, obj(O), e.v, tail()) + '?']) : []),
+    ]
     const subj = np(S)
-    if (qRole) return cross(e.roles[qRole.role].wh, subj).map(([w, s]) => weigh(s, join(w, g.inv(s, comps[0], tail(qRole))) + '?'))
-    // no passive with a pronoun agent ("subtended by it")
-    const order = (act, pas) => (S.t === 'pro' ? act : node.form === 'p' ? [...pas, ...act] : [...act, ...pas])
+    if (qRole) return cross(e.roles[qRole.role].wh, subj).map(([w, s]) => asked(e.roles[qRole.role].wh, w)(weigh(s, join(w, g.inv(s, comps[0], tail(qRole))) + '?')))
+    // no passive with a pronoun agent ("subtended by it"); :p puts the passive first, :c the causative
+    const order = (act, pas, cau = []) => {
+      const p = S.t === 'pro' ? [] : keyed('passive', pas), c = keyed('causative', cau)
+      return node.form === 'p' ? [...p, ...act, ...c] : node.form === 'c' ? [...c, ...act, ...p] : [...act, ...p, ...c]
+    }
     if (O && O.t === 'q') return order(
-      cross(whs(O, e), subj).map(([w, s]) => weigh(s, join(w, g.inv(s, R && obj(R), tail())) + '?')),
-      e.pp ? np(S, 'obj').map(s => join(wh(O), pas(SG), to, 'by', s, tail()) + '?') : [])
+      cross(whs(O, e), subj).map(([w, s]) => asked(whs(O, e), w)(weigh(s, join(w, g.inv(s, R && obj(R), tail())) + '?'))),
+      e.pp ? np(S, 'obj').map(s => join(wh(O), pas(SG), to, 'by', s, tail()) + '?') : [],
+      causal ? cross(whs(O, e), subj).map(([w, s]) => weigh(s, join(w, mk(feat(S)).inv(s, e.v, tail())) + '?')) : [])
     // a query inside a register entry: in situ always; fronted only where the form allows stranding
     if (O && O.t === 'fn' && O.args.length === 1 && O.args[0].t === 'q') return fnForms(O, e).flatMap(x => subj.flatMap(s => [
       join(s, g.decl, x.text, tail()) + '?',
       ...(x.gap ? [join(wh(O.args[0]), g.inv(s, x.gap, tail())) + '?'] : []),
     ]))
     return order(
-      cross(subj, comps).map(([s, o]) => join(s, g.decl, o, tail()) + '.'),
-      e.pp && O ? cross(np(O), np(S, 'obj')).map(([o, s]) => join(o, pas(feat(O)), to, 'by', s, tail()) + '.') : [])
+      cross(subj, comps.map((o, i) => (R && O && i % 2 ? tag('label', 'recipient first')(o) : o))).map(([s, o]) => join(s, g.decl, o, tail()) + '.'),
+      e.pp && O ? cross(np(O), np(S, 'obj')).map(([o, s]) => join(o, pas(feat(O)), to, 'by', s, tail()) + '.') : [],
+      causal ? cross(subj, np(O, 'obj')).map(([s, o]) => join(s, mk(feat(S)).decl, o, e.v, tail()) + '.') : [])
   }
 
   const nominal = (node, e) => {
@@ -1076,12 +1129,12 @@ const syntax = (lex = english, con = concepts) => {
     const tail = node.args.filter(a => a !== m).map(a => `${e.roles[a.role].n || e.roles[a.role].v} ${obj(a.term)}`).join(' ')
     const be = shape('be', 'fin', L, SG)
     const copular = nominalNP(node).map(n => (q ? `what ${be} ${n}?` : `${n} ${be} ${obj(m.term)}.`))
-    if (e.nominal !== 'support') return copular
+    if (e.nominal !== 'support') return keyed('nominal', copular)
     const subj = np(sub(node)), g = vg(e.support, L, feat(sub(node)))
     const light = q
       ? subj.map(s => weigh(s, join('what', e.n, g.inv(s, tail)) + '?'))
       : subj.map(s => join(s, g.decl, an(e.n), e.n, 'of', obj(m.term), tail) + '.')
-    return [...light, ...copular]
+    return keyed('nominal', [...light.map(tag('label', 'light verb')), ...copular.map(tag('label', 'noun as subject'))])
   }
 
   const cap = s => (s[0] === '\u0001' ? s : s[0].toUpperCase() + s.slice(1))
@@ -1095,29 +1148,64 @@ const syntax = (lex = english, con = concepts) => {
 
   const all = tree => {
     const asks = JSON.stringify(tree).includes('"t":"q"')
-    const mark = x => (asks ? x.replace(/\.$/, '?') : x) // a question word left in place still makes a question
-    const e0 = lex.pred[tree.head]
+    const mark = x => (asks ? x.replace(/\.((?:\u0003[^\u0004]*\u0004)*)$/, '?$1') : x) // a question word left in place still makes a question
+    const e0 = E(tree.head)
     if (e0.patterns) {
       const f = feat(sub(tree))
       const r = Object.fromEntries([...Object.entries(tree.roles), ...tree.args.map(a => [a.role, a.term])].map(([k, v]) => [k, np(v, k === present(tree)[0] ? 'subj' : 'obj')[0]]))
       return uniq(e0.patterns.map(p => mark(cap(join(...p(r).map(x => (x && x.v ? vg(x.v, tree.L, f).decl : x))) + '.'))))
     }
     const forms = tree.form === 'n' ? [nominal, verbal] : [verbal, nominal]
-    const heads = [tree.head, lex.pred[tree.head].alt].filter(Boolean) // the verb, then its register synonym
-    const one = heads.flatMap(h => forms.flatMap(f => f({ ...tree, head: h }, lex.pred[h]))).map(cap).map(mark)
+    const heads = [tree.head, E(tree.head).alt].filter(Boolean) // the verb, then its register synonym
+    const one = heads.flatMap(h => forms.flatMap(f => f({ ...tree, head: h }, E(h))).map(h === tree.head ? x => x : tag('label', `synonym: ${E(h).v}`))).map(cap).map(mark)
     // a relative clause may be promoted to its own sentence, the referent then picked up by "it"
     const r = [...Object.values(tree.roles), ...tree.args.map(a => a.term)].find(t => t && t.t === 'ref' && t.rel)
     const two = r
-      ? cross(all(swap(r.rel, x => x && x.t === 'gap', { ...r, rel: null })), all(swap(tree, x => x === r, { t: 'pro', tag: r.pl ? '3p' : 'it' }))).map(x => x.join(' '))
+      ? cross(all(swap(r.rel, x => x && x.t === 'gap', { ...r, rel: null })), all(swap(tree, x => x === r, { t: 'pro', tag: r.pl ? '3p' : 'it' }))).map(x => tag('label', 'two sentences')(x.join(' ')))
       : []
     return uniq([...one, ...two])
   }
 
-  const every = tree => {
+  // Every realization with its build and its labels, lighter ones first.
+  const tagged = tree => {
     ctx = scan(tree)
-    const xs = all(tree).map(x => x.replace(/\u0001/g, ''))
-    const heavyOnes = xs.filter(x => x.includes('\u0002'))
-    return [...xs.filter(x => !x.includes('\u0002')), ...heavyOnes].map(x => x.replace(/\u0002/g, ''))
+    const read = x => {
+      const tags = [...x.matchAll(/\u0003([^=\u0004]*)=([^\u0004]*)\u0004/g)].map(m => [m[1], m[2]])
+      const keys = tags.filter(t => t[0] === 'key').map(t => t[1])
+      const heavyOne = x.includes('\u0002')
+      return {
+        text: x.replace(/\u0003[^\u0004]*\u0004/g, '').replace(/[\u0001\u0002]/g, ''),
+        key: keys[0] || 'active',
+        labels: [...new Set([...tags.filter(t => t[0] === 'label').map(t => t[1]), ...(heavyOne ? ['heavy'] : [])])],
+      }
+    }
+    const xs = all(tree).map(read)
+    const seen = new Set(), out = []
+    ;[...xs.filter(v => !v.labels.includes('heavy')), ...xs.filter(v => v.labels.includes('heavy'))].forEach(v => {
+      if (out.some(o => o.text === v.text)) return
+      // two realizations that no label tells apart differ only in how a noun phrase or a verb phrase is worded
+      const sig = v.key + '|' + v.labels.join('|')
+      if (seen.has(sig)) v.labels.push('wording')
+      seen.add(sig)
+      out.push(v)
+    })
+    return out
+  }
+  const every = tree => tagged(tree).map(v => v.text)
+
+  // English tells a perfect from a simple past where French speech uses one form for both. For an
+  // event in one of the two, the other is this language's own alternate.
+  const tenseTwin = tree => {
+    const L = tree.L || {}, e = E(tree.head)
+    if (L.modal || L.prog || e.rel || ['be', 'have'].includes(tree.head) || !!L.perf === !!L.past) return null
+    return L.perf ? { tree: { ...tree, L: { ...L, perf: false, past: true } }, label: 'simple past' }
+      : { tree: { ...tree, L: { ...L, past: false, perf: true } }, label: 'perfect' }
+  }
+  // variants(tree): [{ text, key, labels }]. key is the build, shared across languages; labels say
+  // what sets a realization apart within its build, in this language.
+  const variants = tree => {
+    const twin = tenseTwin(tree)
+    return [...tagged(tree), ...(twin ? tagged(twin.tree).map(v => ({ ...v, labels: [twin.label, ...v.labels] })) : [])]
   }
 
   // fresh = false always gives the first-authored wording
@@ -1129,10 +1217,32 @@ const syntax = (lex = english, con = concepts) => {
   // realize every {tree} inside a course-file line, leaving the rest alone
   const render = (line, rnd, fresh) => line.replace(/\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}/g, m => realize(parse(m), rnd, fresh))
 
-  return { parse, all: every, realize, render }
+  return { parse, all: every, realize, render, variants }
 }
 
-if (typeof module !== 'undefined') module.exports = { syntax, english, concepts, list }
+// One central correspondence between two languages, with each language's own branches.
+//   correspond(en, fr, tree)          the first build both languages have
+//   correspond(en, fr, tree, 'causative')
+// Returns { key, keys, a, b }; keys lists the builds both have (the ones to walk between). Each
+// side has: central (the realization of this build), alternates (the same build said another way
+// in this language only, each with what differs), and elsewhere (builds the other language lacks).
+const correspond = (A, B, tree, key = null) => {
+  const va = A.variants(tree), vb = B.variants(tree)
+  const keys = [...new Set(va.map(v => v.key))].filter(k => vb.some(v => v.key === k))
+  const k = key || keys[0] || va[0].key
+  const side = (vs, other) => {
+    const mine = vs.filter(v => v.key === k)
+    const central = mine.find(v => !v.labels.length) || mine[0] || null
+    return {
+      central: central && central.text,
+      alternates: mine.filter(v => v !== central).map(v => ({ text: v.text, differs: v.labels })),
+      elsewhere: vs.filter(v => v.key !== k && !other.some(o => o.key === v.key)).map(v => ({ text: v.text, differs: [v.key, ...v.labels] })),
+    }
+  }
+  return { key: k, keys, a: side(va, vb), b: side(vb, va) }
+}
+
+if (typeof module !== 'undefined') module.exports = { syntax, english, concepts, list, correspond }
 
 return module.exports; })();
 const FrenchLib = (() => { const module = { exports: {} }; const require = () => SyntaxLib;
@@ -1189,6 +1299,9 @@ const frenchLex = {
     '3m': { p: 3, pl: false, g: 'm', subj: 'il', do: 'le', io: 'lui', dis: 'lui', refl: 'se' },
     '3f': { p: 3, pl: false, g: 'f', subj: 'elle', do: 'la', io: 'lui', dis: 'elle', refl: 'se' },
     it: { p: 3, pl: false, g: 'm', subj: 'il', do: 'le', io: 'lui', dis: 'lui', refl: 'se' },
+    // a thing, by the gender of its noun (English says "it" for both)
+    'it.m': { p: 3, pl: false, g: 'm', subj: 'il', do: 'le', io: 'lui', dis: 'lui', refl: 'se' },
+    'it.f': { p: 3, pl: false, g: 'f', subj: 'elle', do: 'la', io: 'lui', dis: 'elle', refl: 'se' },
     '1p': { p: 1, pl: true, g: null, subj: 'nous', do: 'nous', io: 'nous', dis: 'nous', refl: 'nous' },
     '2p': { p: 2, pl: true, g: null, subj: 'vous', do: 'vous', io: 'vous', dis: 'vous', refl: 'vous' },
     '3p': { p: 3, pl: true, g: 'm', subj: 'ils', do: 'les', io: 'leur', dis: 'eux', refl: 'se' },
@@ -1196,7 +1309,7 @@ const frenchLex = {
   },
   // possessive determiners: masculine, feminine, plural of the thing possessed
   poss: {
-    '1s': ['mon', 'ma', 'mes'], '2s': ['ton', 'ta', 'tes'], '3m': ['son', 'sa', 'ses'], '3f': ['son', 'sa', 'ses'], it: ['son', 'sa', 'ses'],
+    '1s': ['mon', 'ma', 'mes'], '2s': ['ton', 'ta', 'tes'], '3m': ['son', 'sa', 'ses'], '3f': ['son', 'sa', 'ses'], it: ['son', 'sa', 'ses'], 'it.m': ['son', 'sa', 'ses'], 'it.f': ['son', 'sa', 'ses'],
     '1p': ['notre', 'notre', 'nos'], '2p': ['votre', 'votre', 'vos'], '3p': ['leur', 'leur', 'leurs'], '3pf': ['leur', 'leur', 'leurs'],
   },
   // quantities: gender, the adjective that compares them, how they are asked about, and (for a
@@ -1352,7 +1465,8 @@ const french = (fr = frenchLex, con = require('./syntax.js').concepts) => {
     idx(f) === 5 && /ent$/.test(w) ? [{ i: w.length - 3, j: w.length, paradigm: true }, tail(w, 1, { latent: true })] // -ent is silent as a whole
     : /[stxzd]$/.test(w) ? [tail(w, 1, { paradigm: true, latent: true })]
     : []
-  const present = n => con[n.head].frame.filter(r => n.roles[r])
+  const C = head => con[head] || { frame: ['agent', 'patient'], roles: [] } // a verb from the open English lexicon
+  const present = n => C(n.head).frame.filter(r => n.roles[r])
   const verbNamed = inf => Object.values(fr.verb).find(v => v.inf === inf) || fr.helper[inf]
   const vowel = w => /^[aeiouyàâéèêëîïôûh]/i.test(w)
   const M = { p: 3, pl: false, g: 'm' }
@@ -1608,7 +1722,7 @@ const french = (fr = frenchLex, con = require('./syntax.js').concepts) => {
     after.push(...roleToks(node, v, askedArg))
     // Unit 5: with no agent, a patientive verb has its patient as subject. The 'se' class marks
     // this with the reflexive pronoun; the labile class leaves it unmarked.
-    const patientive = con[node.head].mode === 'patientive' && !node.roles.agent
+    const patientive = C(node.head).mode === 'patientive' && !node.roles.agent
     const refl = patientive && v.class === 'se'
     // the transitive of a labile verb may go through faire: the subject causes, the infinitive names what happens
     const faire = how === 'faire' ? fr.helper.faire : null
@@ -1658,14 +1772,15 @@ const french = (fr = frenchLex, con = require('./syntax.js').concepts) => {
     return 2 * words.length + (i < 0 ? 0 : words.length - i) > LIMIT
   }
   const ask = (p, S, wh, alts = subjAlts(S)) => alts.flatMap(subj => [
-    { toks: [...wh, ...ESTCE(), ...stmt(p, subj)], end: ' ?', heavy: heavy(subj) },
-    ...(S && S.t === 'pro' && S.tag === '1s' ? [] : [{ toks: inverted(p, S, subj, wh), end: ' ?', heavy: heavy(subj) }]),
+    { toks: [...wh, ...ESTCE(), ...stmt(p, subj)], end: ' ?', heavy: heavy(subj), labels: ['est-ce que'] },
+    ...(S && S.t === 'pro' && S.tag === '1s' ? [] : [{ toks: inverted(p, S, subj, wh), end: ' ?', heavy: heavy(subj), labels: ['inversion'] }]),
   ])
 
   // the ways a tree may be built: a labile verb with an agent follows its entry's trans list
   const hows = node => {
     const v = fr.verb[node.head]
-    return v && v.class === 'labile' && node.roles.agent && node.roles.patient ? v.trans : ['direct']
+    const ways = v && v.class === 'labile' && node.roles.agent && node.roles.patient ? v.trans : ['direct']
+    return node.form === 'c' ? [...ways.filter(w => w === 'faire'), ...ways.filter(w => w !== 'faire')] : ways // :c puts faire first
   }
 
   const verbClauses = (node, how) => {
@@ -1690,8 +1805,8 @@ const french = (fr = frenchLex, con = require('./syntax.js').concepts) => {
     else if (p.asked === 'recipient') throw Error('a queried recipient is not in the French realizer yet')
     else if (p.asked && !node.roles[p.asked].restr) {
       const QUE = () => T('que', 'the thing asked about is the object', { role: 'direct object' })
-      act = subjAlts(p.S).map(subj => ({ toks: [FRAME(), QUE(), ...stmt(p, subj)], end: ' ?' }))
-      if (p.S.t === 'pro' && p.S.tag !== '1s') act.push({ toks: inverted(p, p.S, [], [QUE()]), end: ' ?' })
+      act = subjAlts(p.S).map(subj => ({ toks: [FRAME(), QUE(), ...stmt(p, subj)], end: ' ?', labels: ['est-ce que'] }))
+      if (p.S.t === 'pro' && p.S.tag !== '1s') act.push({ toks: inverted(p, p.S, [], [QUE()]), end: ' ?', labels: ['inversion'] })
     }
     else if (p.asked) act = ask(p, p.S, whOf(node.roles[p.asked]).toks)
     else if (p.askedArg) act = v.roles[p.askedArg.role].wh.flatMap(w => ask(p, p.S, W(w, 'question phrase')))
@@ -1706,6 +1821,10 @@ const french = (fr = frenchLex, con = require('./syntax.js').concepts) => {
       const subjects = O.t === 'q' ? [whOf(O).toks] : nps(O)
       pas = subjects.flatMap(s => nps(p.S).map(agent => ({ toks: [...s, ...vp(agent)], end: O.t === 'q' ? ' ?' : '.' })))
     }
+    // the build each clause belongs to, shared with the English library
+    const keyed = (k, cs) => cs.map(c => ({ ...c, key: k }))
+    act = keyed(how === 'faire' ? 'causative' : 'active', act)
+    pas = keyed('passive', pas)
     const verbal = node.form === 'p' ? [...pas, ...act] : [...act, ...pas]
 
     // the noun forms: "Quelle est sa variation de vitesse ?", "... a une accélération de [3 m/s²]"
@@ -1723,8 +1842,9 @@ const french = (fr = frenchLex, con = require('./syntax.js').concepts) => {
         const light = asks
           ? ask({ ...have, after: rest }, p.S, [quel(fN), ...nounTok(v.n, false)])
           : subjAlts(p.S).map(subj => ({ toks: stmt({ ...have, after: [detTok(false, v.n.g, false), ...nounTok(v.n, false), DE(), ...np(m.term), ...rest] }, subj), end: '.' }))
-        nominal = [...light, ...copular]
+        nominal = [...light.map(c => ({ ...c, labels: [...(c.labels || []), 'light verb'] })), ...copular.map(c => ({ ...c, labels: ['noun as subject'] }))]
       } else nominal = copular
+      nominal = keyed('nominal', nominal)
     }
     return node.form === 'n' ? [...nominal, ...verbal] : [...verbal, ...nominal]
   }
@@ -1867,8 +1987,23 @@ const french = (fr = frenchLex, con = require('./syntax.js').concepts) => {
   // the sentence one layer up: every contraction and elision undone, links dropped
   const opened = toks => toks.filter(t => t.kind !== 'link').flatMap(t => (t.from ? t.from.map(x => x.w) : [t.w]))
 
-  // every realization, as text
-  const all = tree => [...new Set(clauses(tree).map(c => finish(c.toks, c.end).text))]
+  // every realization with its text, its build (key) and what sets it apart in French (labels)
+  const built = tree => {
+    const seen = new Set(), out = []
+    clauses(tree).forEach((c, n) => {
+      const text = finish(c.toks, c.end).text
+      if (out.some(o => o.text === text)) return
+      const labels = [...(c.labels || []), ...(c.heavy ? ['heavy'] : [])], key = c.key || 'active'
+      const sig = key + '|' + labels.join('|')
+      if (seen.has(sig)) labels.push('wording') // differs only in how a phrase is worded
+      seen.add(sig)
+      out.push({ text, key, labels, n })
+    })
+    return out
+  }
+  // variants(tree): [{ text, key, labels, n }]; n is the index to pass to explain and open
+  const variants = tree => built(tree)
+  const all = tree => built(tree).map(v => v.text)
   const realize = (tree, rnd = Math.random, fresh = false) => {
     const xs = all(tree)
     return fresh ? xs[Math.floor(rnd() * xs.length)] : xs[0]
@@ -1885,7 +2020,7 @@ const french = (fr = frenchLex, con = require('./syntax.js').concepts) => {
     return finish([...(p.L.not ? [NE(), T('pas', 'both halves of the negation stand before an infinitive')] : []), ...p.core, ...p.after]).text
   }
 
-  return { all, realize, explain, open, infinitive }
+  return { all, realize, explain, open, infinitive, variants }
 }
 
 if (typeof module !== 'undefined') module.exports = { french, frenchLex }
@@ -2561,7 +2696,7 @@ const Core = (() => {
   const sayHits = (item, lex) => Object.keys(lex || {}).some(k => lex[k].re && (lex[k].re.lastIndex = 0, lex[k].re.test([item.prompt, ...item.rows.map(r => r.variant || ''), ...item.steps.map(st => st.prompt)].join(' '))));
   // Predication trees from the syntax model. A brace group is a tree when its head is a known concept;
   // other braces (the {term :: note} form) are left for the page to draw. fr{...} asks for French.
-  const SYN = typeof SyntaxLib !== 'undefined' ? SyntaxLib.syntax() : null, FR = typeof FrenchLib !== 'undefined' ? FrenchLib.french() : null;
+  const SYN = typeof SyntaxLib !== 'undefined' ? SyntaxLib.syntax() : null, FR = typeof FrenchLib !== 'undefined' ? FrenchLib.french() : null; const CORR = typeof SyntaxLib !== 'undefined' && SyntaxLib.correspond ? SyntaxLib.correspond : null;
   const treeSpans = text => {
     const out = [], s = String(text || ''); if (!SYN) return out;
     for (let i = 0; i < s.length; i++) {
@@ -2718,7 +2853,7 @@ const Core = (() => {
     return out;
   };
 
-  return { parseQ, parseUnit, compare, judge, parseCourse, makeProgress, pool, fmtUnit, fmtQ, fmtIn, close, sameD, zeroD, expand, DIRS, dimName, mergeCourses, formants, analyze, vowelFit, vowelMap, tractScale, renderTrees, treeSpans, syn: SYN, fr: FR, instantiate, rerollable, friendly, evalQ, tosup };
+  return { parseQ, parseUnit, compare, judge, parseCourse, makeProgress, pool, fmtUnit, fmtQ, fmtIn, close, sameD, zeroD, expand, DIRS, dimName, mergeCourses, formants, analyze, vowelFit, vowelMap, tractScale, renderTrees, treeSpans, syn: SYN, fr: FR, corr: CORR, instantiate, rerollable, friendly, evalQ, tosup };
 })();
 
 if (typeof module !== 'undefined') module.exports = Core;
@@ -2732,7 +2867,7 @@ if (typeof document !== 'undefined') (() => {
   const WORD = { ok: 'Mastered', no: 'Not yet mastered' };
   // Development aid: nodes whose features are new or changed in the current pass. Each gets a small arrow off the left end of its
   // title card, and so does every node on the way down to it. Reset this list at the start of each pass.
-  const FRESH = ['@m3.trig.use.poly', '@m3.trig.pairs.two', '@table.rel.locate', '@fr.sent.valency.shift', '@table.vars.mom'];
+  const FRESH = ['@m3.trig.use.poly', '@m3.trig.pairs.two', '@table.rel.locate', '@fr.sent.valency.shift', '@fr.sent.valency.same', '@fr.sent.valency.se', '@table.vars.mom'];
   const prefs = { auto: false, save: () => {} };   // set from saved state when a course starts
 
   // ---------- rich text: [boxed givens], {term :: note}, $maths$ ----------
@@ -2795,7 +2930,7 @@ if (typeof document !== 'undefined') (() => {
     let s = String(text || '').replace(/`([^`]+)`/g, (_, m) => { held.push('<code>' + esc(m) + '</code>'); return '\u0000' + (held.length - 1) + '\u0000'; })
       .replace(/\$([^$]+)\$/g, (_, m) => { held.push(tex(m)); return '\u0000' + (held.length - 1) + '\u0000'; });
     // ((je | me)) or ((subject: je | object: me)): one form shown at a time; the wheel walks the ring. Equal forms still turn.
-    s = s.replace(/\(\(([^()]*\|[^()]*)\)\)/g, (_, body) => { const alts = body.split('|').map(a => { const m = a.match(/^\s*([^:|]+?)\s*:\s*(.+?)\s*$/); return m ? [m[2], m[1]] : [a.trim(), '']; }); held.push('<span class="ring" tabindex="0" data-k="0" data-w="' + esc(alts.map(a => a[0]).join('|')) + '" data-l="' + esc(alts.map(a => a[1]).join('|')) + '"><span class="rg">' + esc(alts[0][0]) + '</span>' + (alts[0][1] ? '<span class="rl">' + esc(alts[0][1]) + '</span>' : '') + '</span>'); return '\u0000' + (held.length - 1) + '\u0000'; });
+    s = s.replace(/\(\(([^()]*\|[^()]*)\)\)/g, (_, body) => { const alts = body.split('|').map(a => { const m = a.match(/^\s*([^:|]+?)\s*:\s*(.+?)\s*$/); return m ? [m[2], m[1]] : [a.trim(), '']; }); held.push('<span class="ring' + (alts.some(a => /\s/.test(a[0])) ? ' long' : '') + '" tabindex="0" data-k="0" data-w="' + esc(alts.map(a => a[0]).join('|')) + '" data-l="' + esc(alts.map(a => a[1]).join('|')) + '"><span class="rg">' + esc(alts[0][0]) + '</span>' + (alts[0][1] ? '<span class="rl">' + esc(alts[0][1]) + '</span>' : '') + '</span>'); return '\u0000' + (held.length - 1) + '\u0000'; });
     s = withTerms(esc(s));
     const box = t => t.replace(/\[([^\[\]]+)\]/g, (_, x, off, all) => { const plain = x.replace(/&[a-z]+;/g, ''), h = dimHue(plain), attr = /(^|[^A-Za-z])(a|an|A|An)\s+$/.test(all.slice(Math.max(0, off - 6), off)) && /^\s+(?:<[^>]+>|[\u0000-\u001f{])*[a-z]/.test(all.slice(off + _.length, off + _.length + 120)); return '<span class="given' + (h == null ? '' : ' dq" style="--q:' + h) + '">' + withUnitWords(x, plain, attr) + '</span>'; });
     s = s.replace(/\{([^{}]*?)\s*::\s*([^{}]*?)\}/g, (_, a, b) => '<span class="ruby"><span class="rb">' + box(a) + '</span><span class="rt">' + box(b) + '</span></span>');
@@ -2854,14 +2989,19 @@ if (typeof document !== 'undefined') (() => {
   // its right sectors (a half-edge, half that angle), the apothem, one right sector's area, and all 2n of them.
   // Only one sector of each family carries labels. Scrolling on the n chip changes the number of edges.
   const polygonFigure = spec => {
-    const el = $('div', 'figwrap polyfig'), bar = $('div', 'polybar'), box = $('div'), stmt = $('div', 'polystmt'), pips = $('span', 'coefpips'), chip = $('button', 'polyn'), fam = $('div', 'polyfam');
-    let n = Math.max(3, Math.min(15, parseInt((spec.match(/\d+/) || [8])[0], 10))), q = 0, was = 0; chip.type = 'button'; chip.title = 'Scroll here, or click, to change the number of edges';
-    const K = t => (typeof katex !== 'undefined' ? katex.renderToString(t, { throwOnError: false, strict: false }) : tex(t)), ISO = 212, RT = 28, cx = 150, cy = 138, R = 112;
+    const el = $('div', 'figwrap polyfig'), bar = $('div', 'polybar'), row = $('div', 'polyrow'), box = $('div', 'polymain'), zoom = $('div', 'polyzoom'), stmt = $('div', 'polystmt'), pips = $('span', 'coefpips'), chip = $('button', 'polyn'), fam = $('div', 'polyfam');
+    let n = Math.max(3, Math.min(15, parseInt((spec.match(/\d+/) || [8])[0], 10))), q = 0, was = 0, unit = 0; chip.type = 'button'; chip.title = 'Scroll here, or click, to change the number of edges';
+    const K = t => (typeof katex !== 'undefined' ? katex.renderToString(t, { throwOnError: false, strict: false, trust: true }) : tex(t)), cx = 150, cy = 142, R = 132;
     const NAME = ['The polygon', 'Isosceles sectors', 'Right sectors', 'The apothem', 'One right sector', 'All of them'];
+    // the n-th of the turn and its half, in degrees, radians or turns: one ring, shared by the drawing and the statement
+    const FULL = ['360°/<tspan font-style="italic">n</tspan>', '2π/<tspan font-style="italic">n</tspan>', '↺/<tspan font-style="italic">n</tspan>'], HALF = ['180°/<tspan font-style="italic">n</tspan>', 'π/<tspan font-style="italic">n</tspan>', '↺/2<tspan font-style="italic">n</tspan>'];
+    const TF = ['\\tfrac{360^\\circ}{n}', '\\tfrac{2\\pi}{n}', '\\tfrac{\\circlearrowleft}{n}'], TH = ['\\tfrac{180^\\circ}{n}', '\\tfrac{\\pi}{n}', '\\tfrac{\\circlearrowleft}{2n}'], RING = t => '\\htmlClass{hexring}{' + t + '}';
+    const T = (x, y, t, c, a) => '<text x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" class="polylab ' + c + '" text-anchor="' + (a || 'middle') + '">' + t + '</text>';
+    const P = pts => pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
     const draw = () => {
-      const h = Math.PI / n, v = i => [cx + R * Math.cos(Math.PI / 2 - h + 2 * h * i), cy + R * Math.sin(Math.PI / 2 - h + 2 * h * i)], V = Array.from({ length: n }, (_, i) => v(i)), mid = i => { const a = V[i], b = V[(i + n - 1) % n]; return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]; };
-      const P = pts => pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' '), ap = R * Math.cos(h), m0 = [cx, cy + ap], v0 = V[0], v1 = [2 * cx - v0[0], v0[1]], nw = k => (q === k && was < k ? ' polynew' : '');
-      let s = '<svg class="fig polysvg" viewBox="0 0 300 290" role="img" aria-label="A regular polygon with ' + n + ' edges, cut into sectors">';
+      const h = Math.PI / n, v = i => [cx + R * Math.cos(Math.PI / 2 - h + 2 * h * i), cy + R * Math.sin(Math.PI / 2 - h + 2 * h * i)], V = Array.from({ length: n }, (_, i) => v(i));
+      const ap = R * Math.cos(h), m0 = [cx, cy + ap], v0 = V[0], v1 = [2 * cx - v0[0], v0[1]], nw = k => (q === k && was < k ? ' polynew' : '');
+      let s = '<svg class="fig polysvg" viewBox="0 0 300 312" role="img" aria-label="A regular polygon with ' + n + ' edges, cut into sectors">';
       if (q === 5) for (let i = 0; i < n; i++) { const a = V[i], b = V[(i + 1) % n], m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]; s += '<polygon class="polyrt all' + nw(5) + '" style="animation-delay:' + (i * 40) + 'ms" points="' + P([[cx, cy], a, m]) + '"/><polygon class="polyrt all alt' + nw(5) + '" style="animation-delay:' + (i * 40 + 20) + 'ms" points="' + P([[cx, cy], m, b]) + '"/>'; }
       if (q >= 1 && q < 5) s += '<polygon class="polyiso' + nw(1) + (q >= 2 ? ' back' : '') + '" points="' + P([[cx, cy], v0, v1]) + '"/>';
       if (q >= 2 && q < 5) s += '<polygon class="polyrt' + nw(2) + '" points="' + P([[cx, cy], m0, v0]) + '"/>';
@@ -2869,35 +3009,48 @@ if (typeof document !== 'undefined') (() => {
       if (q >= 1) V.forEach(p => { s += '<line class="polyspoke' + nw(1) + '" x1="' + cx + '" y1="' + cy + '" x2="' + p[0].toFixed(1) + '" y2="' + p[1].toFixed(1) + '"/>'; });
       if (q >= 2) for (let i = 0; i < n; i++) { const a = V[i], b = V[(i + 1) % n]; s += '<line class="polyapo' + nw(2) + '" x1="' + cx + '" y1="' + cy + '" x2="' + ((a[0] + b[0]) / 2).toFixed(1) + '" y2="' + ((a[1] + b[1]) / 2).toFixed(1) + '"/>'; }
       if (q >= 3 && q < 5) s += '<line class="polyapo strong' + nw(3) + '" x1="' + cx + '" y1="' + cy + '" x2="' + m0[0] + '" y2="' + m0[1].toFixed(1) + '"/>';
-      // labels, on the one sector at the bottom only
-      const T = (x, y, t, c, a) => '<text x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" class="polylab ' + c + '" text-anchor="' + (a || 'middle') + '">' + t + '</text>';
+      // On the whole polygon only the edge is labeled; the sector's own labels are on its blown-up sibling.
       if (q <= 1) s += '<line class="polymark iso" x1="' + v1[0].toFixed(1) + '" y1="' + (v0[1] + 9).toFixed(1) + '" x2="' + v0[0].toFixed(1) + '" y2="' + (v0[1] + 9).toFixed(1) + '"/>' + T(cx, v0[1] + 27, 'L', 'iso it');
       if (q >= 2 && q < 5) s += '<line class="polymark rt" x1="' + cx + '" y1="' + (v0[1] + 9).toFixed(1) + '" x2="' + v0[0].toFixed(1) + '" y2="' + (v0[1] + 9).toFixed(1) + '"/>' + T((cx + v0[0]) / 2, v0[1] + 27, '<tspan font-style="italic">L</tspan>/2', 'rt');
-      const arc = (a0, a1, r, c) => '<path class="polyarc ' + c + '" d="M' + (cx + r * Math.cos(a0)).toFixed(1) + ' ' + (cy + r * Math.sin(a0)).toFixed(1) + 'A' + r + ' ' + r + ' 0 0 1 ' + (cx + r * Math.cos(a1)).toFixed(1) + ' ' + (cy + r * Math.sin(a1)).toFixed(1) + '"/>';
-      if (q === 1) s += arc(Math.PI / 2 - h, Math.PI / 2 + h, 26, 'iso') + T(cx, cy + 46, '360°/<tspan font-style="italic">n</tspan>', 'iso small');
-      if (q >= 2 && q < 5) s += arc(Math.PI / 2 - h, Math.PI / 2, 30, 'rt') + T(cx + 40 * Math.sin(h + 0.22) + 3, cy + 40 * Math.cos(h + 0.22) + 4, '180°/<tspan font-style="italic">n</tspan>', 'rt small', 'start');
-      if (q === 3 || q === 4) s += T(cx - 7, cy + ap * 0.62, 'apothem', 'apo small', 'end');
       s += '<circle cx="' + cx + '" cy="' + cy + '" r="2.6" class="fdot"/>';
       box.innerHTML = s + '</svg>';
-      const hd = 180 / n, cot = 1 / Math.tan(h), f = x => String(parseFloat(x.toFixed(3))), A = '\\tfrac{180^\\circ}{n}', CT = '(\\cot ' + A + ')';
+      // The sibling: the one highlighted sector, blown up, while a step is about one sector. It fades out otherwise.
+      const one = q >= 1 && q <= 4; zoom.classList.toggle('off', !one);
+      if (one) { const H = Math.min(190, 210 / (2 * Math.tan(h))), w = H * Math.tan(h), ax = 130, ay = 36 + (190 - H) / 2, by = ay + H, A0 = [ax, ay], BL = [ax - w, by], BR = [ax + w, by], M = [ax, by];
+        const arc = (a0, a1, r, c) => '<path class="polyarc ' + c + '" d="M' + (ax + r * Math.cos(a0)).toFixed(1) + ' ' + (ay + r * Math.sin(a0)).toFixed(1) + 'A' + r + ' ' + r + ' 0 0 1 ' + (ax + r * Math.cos(a1)).toFixed(1) + ' ' + (ay + r * Math.sin(a1)).toFixed(1) + '"/>';
+        let z = '<svg class="fig polyzsvg" viewBox="0 0 260 290" role="img" aria-label="The highlighted sector, enlarged">';
+        z += '<polygon class="polyiso' + (q >= 2 ? ' back' : '') + '" points="' + P([A0, BR, BL]) + '"/>';
+        if (q >= 2) z += '<polygon class="polyrt" points="' + P([A0, M, BR]) + '"/><path class="polysq" d="M' + (ax + 9) + ' ' + by + 'v-9h-9"/>';
+        if (q >= 3) z += '<line class="polyapo strong" x1="' + ax + '" y1="' + ay + '" x2="' + ax + '" y2="' + by + '"/>';
+        const ar = Math.max(24, Math.min(40, H * 0.3));
+        if (q === 1) z += '<line class="polymark iso" x1="' + BL[0].toFixed(1) + '" y1="' + (by + 10) + '" x2="' + BR[0].toFixed(1) + '" y2="' + (by + 10) + '"/>' + T(ax, by + 32, 'L', 'iso it big') + arc(Math.PI / 2 - h, Math.PI / 2 + h, ar, 'iso') + T(ax, ay - 10, FULL[unit], 'iso');
+        else z += '<line class="polymark rt" x1="' + ax + '" y1="' + (by + 10) + '" x2="' + BR[0].toFixed(1) + '" y2="' + (by + 10) + '"/>' + T(ax + w / 2, by + 32, '<tspan font-style="italic">L</tspan>/2', 'rt big') + arc(Math.PI / 2 - h, Math.PI / 2, ar, 'rt') + T(ax + 8, ay - 10, HALF[unit], 'rt', 'start');
+        if (q >= 3) z += T(ax - 8, ay + H * 0.6, q === 3 ? 'apothem' : '<tspan font-style="italic">a</tspan>', 'apo', 'end');
+        zoom.innerHTML = z + '</svg>'; }
+      const hd = 180 / n, cot = 1 / Math.tan(h), f = x => String(parseFloat(x.toFixed(3))), A = RING(TH[unit]), CT = '(\\cot ' + A + ')';
+      const val = d => (unit === 0 ? ' = ' + f(d) + '^\\circ' : unit === 1 ? ' \\approx ' + f(d * Math.PI / 180) : '');
       const lines = [
         K('n = ' + n) + ' equal edges, each of length ' + K('L') + '.',
-        '<b class="iso">Isosceles sector</b>: a full edge ' + K('L') + ' across from the central angle ' + K('\\tfrac{360^\\circ}{n} = ' + f(2 * hd) + '^\\circ') + '. There are ' + K('n') + ' of them.',
-        '<b class="rt">Right sector</b>: a half-edge ' + K('\\tfrac{L}{2}') + ' across from half that angle, ' + K(A + ' = ' + f(hd) + '^\\circ') + '. There are ' + K('2n') + ' of them.',
+        '<b class="iso">Isosceles sector</b>: a full edge ' + K('L') + ' across from the central angle ' + K(RING(TF[unit]) + val(2 * hd)) + '. There are ' + K('n') + ' of them.',
+        '<b class="rt">Right sector</b>: a half-edge ' + K('\\tfrac{L}{2}') + ' across from half that angle, ' + K(A + val(hd)) + '. There are ' + K('2n') + ' of them.',
         'The apothem is the right sector’s other leg: ' + K('a = \\tfrac{L}{2}\\,' + CT + ' \\approx ' + f(cot / 2) + '\\,L'),
         'Half of leg times leg: ' + K('\\tfrac12\\cdot\\tfrac{L}{2}\\cdot a = \\tfrac12\\left(\\tfrac{L}{2}\\right)^{2}' + CT),
         K('2n') + ' right sectors: ' + K('2n\\cdot\\tfrac12\\left(\\tfrac{L}{2}\\right)^{2}' + CT + ' = \\tfrac{n}{4}L^{2}' + CT + ' \\approx ' + f(n * cot / 4) + '\\,L^{2}'),
       ];
       stmt.innerHTML = '<div class="polystep">' + NAME[q] + '</div>' + lines[q];
       pips.innerHTML = NAME.map((_, i) => '<i class="' + (i === q ? 'on' : '') + '"></i>').join(''); chip.innerHTML = K('n = ' + n);
-      fam.innerHTML = q >= 1 ? '<span class="iso' + (q === 1 ? ' on' : '') + '"><i></i>isosceles sector: full edge, <i class="it">n</i>-th of the turn</span>' + (q >= 2 ? '<span class="rt on"><i></i>right sector: half-edge, half the angle</span>' : '') : '<span class="quiet">Scroll on the figure to walk the steps.</span>';
+      fam.innerHTML = q >= 1 ? '<span class="iso' + (q === 1 ? ' on' : '') + '"><i></i>isosceles sector: full edge, <i class="it">n</i>-th of the turn</span>' + (q >= 2 ? '<span class="rt on"><i></i>right sector: half-edge, half the angle</span>' : '') : '<span class="quiet">Scroll on the figure to walk the steps. Scroll on an angle to change its unit.</span>';
       was = q;
     };
     let lock = 0;
-    el.addEventListener('wheel', ev => { eat(ev); const t = performance.now(); if (Math.abs(ev.deltaY) < 4 || t < lock) return; const d = ev.deltaY > 0 ? 1 : -1; if (ev.target.closest && ev.target.closest('.polyn')) { lock = t + 120; const m = Math.max(3, Math.min(15, n + d)); if (m !== n) { n = m; was = q; draw(); } return; } lock = t + 240; const to = Math.max(0, Math.min(5, q + d)); if (to !== q) { q = to; draw(); } }, { passive: false });
+    el.addEventListener('wheel', ev => { eat(ev); const t = performance.now(); if (Math.abs(ev.deltaY) < 4 || t < lock) return; const d = ev.deltaY > 0 ? 1 : -1, on = c => ev.target.closest && ev.target.closest(c);
+      if (on('.polyn')) { lock = t + 120; const m = Math.max(3, Math.min(15, n + d)); if (m !== n) { n = m; was = q; draw(); } return; }
+      if (on('.hexring')) { lock = t + 200; unit = (unit + d + 3) % 3; was = q; draw(); return; }
+      lock = t + 240; const to = Math.max(0, Math.min(5, q + d)); if (to !== q) { q = to; draw(); } }, { passive: false });
     chip.onclick = () => { n = n >= 15 ? 3 : n + 1; draw(); }; pips.onclick = () => { q = (q + 1) % 6; if (!q) was = 0; draw(); }; pips.title = 'Scroll on the figure, or click here, for the next step';
+    let byTouch = false; stmt.addEventListener('pointerdown', ev => { byTouch = ev.pointerType === 'touch'; }); stmt.addEventListener('click', ev => { if (byTouch && ev.target.closest('.hexring')) { unit = (unit + 1) % 3; draw(); } });
     el.tabIndex = 0; el.addEventListener('keydown', ev => { const d = ev.key === 'ArrowRight' || ev.key === 'ArrowDown' ? 1 : ev.key === 'ArrowLeft' || ev.key === 'ArrowUp' ? -1 : 0; if (!d) return; ev.preventDefault(); q = Math.max(0, Math.min(5, q + d)); draw(); });
-    bar.append(chip, pips); el.append(bar, box, stmt, fam); draw(); return { el };
+    bar.append(chip, pips); row.append(box, zoom); el.append(bar, row, stmt, fam); draw(); return { el };
   };
   const fx = n => (Math.abs(n) >= 100 ? n.toFixed(0) : Math.abs(n) >= 10 ? n.toFixed(1) : n.toFixed(2)).replace('-', '−');
 
@@ -3011,11 +3164,11 @@ if (typeof document !== 'undefined') (() => {
     const center = () => { let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9; for (let k = 0; k < 3; k++) for (let j = 0; j < 2; j++) for (let i = 0; i < 2; i++) { const x = S * (i * A[0] + j * B[0] + k * C[0]), y = -S * (i * A[1] + j * B[1] + k * C[1]); x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); } ox = 215 - (x0 + x1) / 2; oy = 170 - (y0 + y1) / 2; };
     let hov = null;   // the shared word under the pointer, opened into its two frame-specific words
     // An opened field grows along the frame axis until both words fit side by side, each on its own frame layer.
-    const half = (k, j) => { const w = T[k][j][0][1].length + T[k][j][1][1].length; return Math.max(0.47, (w * 5.9 + 26) / (2 * S * Math.hypot(A[0], A[1]))); };
+    const half = (k, j) => { const w = T[k][j][0][1].length + T[k][j][1][1].length; return (w * 6.1 + 34) / (2 * S * Math.hypot(A[0], A[1])); };   // the gap between the two words is the same for every pair
     const pt = (i, j, k) => [ox + S * (i * A[0] + j * B[0] + k * C[0]), oy - S * (i * A[1] + j * B[1] + k * C[1])];
     // [order][kind][frame]: symbol, word, unit, dimension, power of length
     const T = [
-      [[['x', 'position', 'm', 'L', 1], ['θ', 'angle', 'rad', '1', 0]], [['mr', 'first moment', 'kg m', 'M L', 1], ['mr²', 'moment of inertia', 'kg m²', 'M L²', 2]]],
+      [[['x', 'position', 'm', 'L', 1], ['θ', 'angle', 'rad', '1', 0]], [['mr', '1st MOI', 'kg m', 'M L', 1], ['mr²', '2nd MOI', 'kg m²', 'M L²', 2]]],
       [[['v', 'velocity', 'm/s', 'L T⁻¹', 1], ['ω', 'angular velocity', 's⁻¹', 'T⁻¹', 0]], [['p', 'momentum', 'kg m/s', 'M L T⁻¹', 1], ['L', 'angular momentum', 'kg m²/s', 'M L² T⁻¹', 2]]],
       [[['a', 'acceleration', 'm/s²', 'L T⁻²', 1], ['α', 'angular acceleration', 's⁻²', 'T⁻²', 0]], [['F', 'force', 'kg m/s²', 'M L T⁻²', 1], ['τ', 'torque', 'kg m²/s²', 'M L² T⁻²', 2]]],
     ];
@@ -3038,10 +3191,10 @@ if (typeof document !== 'undefined') (() => {
       H.planes.forEach((pl, n) => { s += '<polygon points="' + pl.map(P).join(' ') + '" style="stroke:' + H.col[n] + ';fill:' + H.col[n] + '" class="tplane"/>'; });
       for (let k = 0; k < 3; k++) for (let j = 0; j < 2; j++) {
         // In "shared words" each word sits in a field, a strip along the frame axis. The field, not the text, takes the pointer and the wheel, so nothing slips out from under the cursor when the word opens.
-        const e = lab === 2 ? prog(k + ',' + j) : 0, hh = 0.47 + (half(k, j) - 0.47) * e, ang = (-Math.atan2(A[1], A[0]) * 180 / Math.PI).toFixed(1);
+        const e = lab === 2 ? prog(k + ',' + j) : 0, h0 = Math.min(0.47, (SHARED[k][j].length * 6.9 + 22) / (2 * S * Math.hypot(A[0], A[1]))), hh = h0 + (half(k, j) - h0) * e, ang = (-Math.atan2(A[1], A[0]) * 180 / Math.PI).toFixed(1);
         if (lab === 2) { const b0 = (j === 0 ? 0.2 : 0.8), q = [pt(0.5 - hh, b0 - 0.13, k), pt(0.5 + hh, b0 - 0.13, k), pt(0.5 + hh, b0 + 0.13, k), pt(0.5 - hh, b0 + 0.13, k)]; s += '<polygon class="tfield' + (e > 0 ? ' on' : '') + '" data-sh="' + k + ',' + j + '" points="' + q.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ') + '"/>'; }
-        if (lab === 2 && e < 1) { const m = pt(0.5, j === 0 ? 0.2 : 0.8, k); s += '<text x="' + m[0].toFixed(1) + '" y="' + (m[1] + 4).toFixed(1) + '" transform="rotate(' + ang + ' ' + m[0].toFixed(1) + ' ' + m[1].toFixed(1) + ')" text-anchor="middle" class="tlab word tsh" style="opacity:' + Math.pow(1 - e, 2).toFixed(2) + ';fill:' + (hl === 'frame' || hl === 'length' ? 'var(--ink)' : H.col[H.of(0, j, k)]) + '">' + SHARED[k][j] + '</text>'; if (e === 0) continue; }
-        for (let i = 0; i < 2; i++) { const c = T[k][j][i], p = lab === 2 ? pt(0.5 + (i ? 1 : -1) * (hh - 0.05), 0.2 + 0.6 * j, k) : pt(0.2 + 0.6 * i, 0.2 + 0.6 * j, k), anchor = lab === 2 ? (i ? 'end' : 'start') : 'middle', txt = lab === 0 ? c[0] : lab === 1 || lab === 2 ? c[1] : lab === 3 ? c[2] : '[' + c[3].replace(/ /g, '') + ']', turn = lab === 1 || lab === 2 ? ' data-sh="' + k + ',' + j + '" transform="rotate(' + (-Math.atan2(A[1], A[0]) * 180 / Math.PI).toFixed(1) + ' ' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + ')"' : ''; s += '<text x="' + p[0] + '" y="' + (p[1] + 5) + '"' + turn + ' text-anchor="' + anchor + '" class="tlab ' + (lab === 0 ? 'sym' : lab === 1 ? 'word small' : lab === 2 ? 'word small tsh' : lab === 4 ? 'dim' : 'unit') + '" style="' + (lab === 2 ? 'opacity:' + e.toFixed(2) + ';' : '') + 'fill:' + H.col[H.of(i, j, k)] + '">' + txt + '</text>'; }
+        if (lab === 2 && e < 1) { const m = pt(0.5, j === 0 ? 0.2 : 0.8, k); s += '<text x="' + m[0].toFixed(1) + '" y="' + (m[1] + 4).toFixed(1) + '" transform="rotate(' + ang + ' ' + m[0].toFixed(1) + ' ' + m[1].toFixed(1) + ')" text-anchor="middle" class="tlab word tsh" style="opacity:' + (Math.pow(1 - e, 2) * (k === 0 && j === 1 ? 0.45 : 1)).toFixed(2) + ';fill:' + (hl === 'frame' || hl === 'length' ? 'var(--ink)' : H.col[H.of(0, j, k)]) + '">' + SHARED[k][j] + '</text>'; if (e === 0) continue; }
+        for (let i = 0; i < 2; i++) { const c = T[k][j][i], p = lab === 2 ? pt(0.5 + (i ? 1 : -1) * (hh - 0.05), 0.2 + 0.6 * j, k) : pt(0.2 + 0.6 * i, 0.2 + 0.6 * j, k), anchor = lab === 2 ? (i ? 'end' : 'start') : 'middle', txt = lab === 0 ? c[0] : lab === 1 || lab === 2 ? c[1] : lab === 3 ? c[2] : '[' + c[3].replace(/ /g, '') + ']', turn = lab === 1 || lab === 2 ? ' data-sh="' + k + ',' + j + '" transform="rotate(' + (-Math.atan2(A[1], A[0]) * 180 / Math.PI).toFixed(1) + ' ' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + ')"' : ''; s += '<text x="' + p[0] + '" y="' + (p[1] + 5) + '"' + turn + ' text-anchor="' + anchor + '" class="tlab ' + (lab === 0 ? 'sym' : lab === 1 ? 'word small' : lab === 2 ? 'word small tsh' : lab === 4 ? 'dim' : 'unit') + '" style="' + (lab === 2 ? 'opacity:' + (e * (k === 0 && j === 1 ? 0.45 : 1)).toFixed(2) + ';' : k === 0 && j === 1 ? 'opacity:.45;' : '') + 'fill:' + H.col[H.of(i, j, k)] + '">' + txt + '</text>'; }
       }
       if (grab) s += '<circle class="tbound" cx="' + TO[0] + '" cy="' + TO[1] + '" r="' + (TS * REACH) + '"/>';
       Object.keys(AX).forEach(a => { const x = TO[0] + TS * AX[a][0], y = TO[1] - TS * AX[a][1]; s += '<line class="taxis" x1="' + TO[0] + '" y1="' + TO[1] + '" x2="' + x.toFixed(1) + '" y2="' + y.toFixed(1) + '"/><circle class="thandle" data-ax="' + a + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="9"><title>Drag to turn the ' + AXN[a] + ' axis</title></circle><text class="taxn" x="' + (x + 13 * Math.sign(AX[a][0] || 1)).toFixed(1) + '" y="' + (y + 4).toFixed(1) + '" text-anchor="' + (AX[a][0] < 0 ? 'end' : 'start') + '">' + AXN[a] + '</text>'; });
@@ -3250,7 +3403,7 @@ if (typeof document !== 'undefined') (() => {
       if (x !== a) thick(a, x, 0); if (y !== b) thick(b, y, 0); thick(x, y, 1);
       // which of p^2 + q^2 = r^2 each one is: sin, cos are the legs with r = 1; tan (or cot) is a leg beside 1 with sec (or csc) as r
       { const ta = { f: a, rec: x !== a }, tb = { f: b, rec: y !== b }, one = { one: true }, isR = i => i === 4 || i === 5, isLeg = i => !isR(i);
-        const terms = isLeg(x) && isLeg(y) ? (x === 2 ? [ta, tb, one] : [tb, ta, one]) : isR(x) ? [tb, one, ta] : [ta, one, tb]; idt = { a: ta, b: tb, terms }; identity(); }
+        const terms = isLeg(x) && isLeg(y) ? (x === 2 ? [ta, tb, one] : [tb, ta, one]) : isR(x) ? [tb, one, ta] : [ta, one, tb]; idt = { a: ta, b: tb, terms }; idn = 1; identity(); }
       cap.innerHTML = '<b>' + A + '</b> and <b>' + B + '</b>: ' + (steps ? [x !== a ? 'flip ' + A + ' to ' + F[x][0] : '', y !== b ? 'flip ' + B + ' to ' + F[y][0] : ''].filter(Boolean).join(' and ') + ' (' + steps + ' reciprocal step' + (steps > 1 ? 's' : '') + '). Then ' : 'no reciprocal step is needed: ') + '<b>' + F[x][0] + '</b> and <b>' + F[y][0] + '</b> are a Pythagorean pair.'; };
     // The identity behind two chosen functions, in Pythagorean form, with reciprocated terms marked. It lies on a path
     // of equivalent forms: the origin has all three terms on one side; each scroll notch one way is a step toward
@@ -3259,23 +3412,23 @@ if (typeof document !== 'undefined') (() => {
     const FN = F.map(f => '\\' + f[0]), V = i => '(' + FN[i] + '\\,\\theta)', W = (i, pw) => FN[i] + (pw ? '^' + pw : '') + '\\,\\theta', UNITS = ['90^\\circ', '\\tfrac{\\pi}{2}', '\\tfrac{\\circlearrowleft}{4}'], KX = t => (typeof katex !== 'undefined' ? katex.renderToString(t, { throwOnError: false, strict: false, trust: true }) : tex(t)); let comp = false, unit = 0;
     // A function term alone in a horizontal run (a whole side of the equals sign, a whole numerator or denominator) is written bare, with its power on the name; inside a longer run it keeps its parentheses.
     const identity = () => {
-      if (!idt) { idbox.hidden = true; return; } idbox.hidden = false; idbox.classList.toggle('recip', !!idt.recip); idbox.classList.toggle('comp', !!idt.comp);
+      if (!idt) { idbox.hidden = true; return; } idbox.hidden = false; idbox.classList.toggle('comp', !!idt.comp);
       // Direct reciprocals have no Pythagorean layer: only the green one, holding the reciprocal relation. Scrolling isolates one or the other.
-      if (idt.recip) { const [ra, rb] = idt.recip, k = Math.max(-1, Math.min(1, idn)), t = !k ? V(ra) + V(rb) + '=1' : W(k > 0 ? ra : rb) + '=\\htmlClass{hexg}{\\dfrac{1}{' + W(k > 0 ? rb : ra) + '}}'; idbox.classList.toggle('recip', !k);
+      if (idt.recip) { const [ra, rb] = idt.recip, k = Math.max(-1, Math.min(1, idn)), t = !k ? V(ra) + V(rb) + '=1' : W(k > 0 ? ra : rb) + '=\\htmlClass{hexg}{\\dfrac{1}{' + W(k > 0 ? rb : ra) + '}}';
         idbox.innerHTML = KX(t) + '<div class="hexidnote">' + (k ? 'Isolated ' + F[k > 0 ? ra : rb][0] + '.' : 'Scroll on this box: one way isolates ' + F[ra][0] + ', the other ' + F[rb][0] + '.') + '</div>'; return; }
       // Complementary mode: the co-function of an angle is the function of its complement. Scrolling swaps which one is written plainly.
       if (idt.comp) { const [ca, cb] = idt.comp, k = idn > 0 ? 1 : 0, p = k ? cb : ca, q = k ? ca : cb, t = W(p) + '=' + FN[q] + '\\,(\\htmlClass{hexring}{' + UNITS[unit] + '}-\\theta)';
         idbox.innerHTML = KX(t) + '<div class="hexidnote">Scroll on the box to swap the two. Scroll on the quarter turn for degrees, radians or turns.</div>'; return; }
-      const G = '\\htmlClass{hexg}{', E = '}', sq = (t, alone) => (t.one ? '1' : t.rec ? G + '\\dfrac{1}{' + W(t.f, 2) + '}' + E : alone ? W(t.f, 2) : V(t.f) + '^2'), plain = t => (t.rec ? G + '\\dfrac{1}{' + W(t.f) + '}' + E : W(t.f));
+      const G = '\\htmlClass{hexg}{', E = '}', LV = '\\htmlClass{hexl}{', sq = t => (t.one ? '1' : t.rec ? G + '\\dfrac{1}{' + W(t.f, 2) + '}' + E : W(t.f, 2)), plain = t => (t.rec ? G + '\\dfrac{1}{' + W(t.f) + '}' + E : W(t.f));
       // p^2 + q^2 = r^2: terms carries the three in that order
       const [p, q, r] = idt.terms, signed = [[p, 1], [q, 1], [r, -1]], side = n => (n > 0 ? idt.a : idt.b), steps = Math.abs(idn);
-      let t;
-      if (!steps) t = sq(p) + '+' + sq(q) + '-' + sq(r) + '=0';
-      else { const T = side(idn), me = signed.find(s => s[0] === T), others = signed.filter(s => s[0] !== T).map(s => [s[0], -s[1] * me[1]]).sort((x, y) => y[1] - x[1]), rhs = others.map((s, i) => (s[1] < 0 ? '-' : i ? '+' : '') + sq(s[0])).join('');
-        t = steps === 1 ? sq(T, true) + '=' + rhs : steps === 2 ? plain(T) + '=\\sqrt{' + rhs + '}' : W(T.f) + '=' + G + '\\dfrac{1}{\\sqrt{' + rhs + '}}' + E; }
-      idbox.innerHTML = KX(t) + '<div class="hexidnote">' + (steps ? 'Step ' + steps + ' toward ' + F[side(idn).f][0] + '.' : 'Scroll on this box: one way isolates ' + F[idt.a.f][0] + ', the other ' + F[idt.b.f][0] + '.') + '</div>';
+      // No gathered form any more: the two-and-one arrangements walk straight into each other. The square root of the two-term side is
+      // the Pythagorean layer, in its own lavender box; a reciprocal of it sits in a green box around the lavender one.
+      const T = side(idn), me = signed.find(x => x[0] === T), others = signed.filter(x => x[0] !== T).map(x => [x[0], -x[1] * me[1]]).sort((x, y) => y[1] - x[1]), rhs = others.map((x, i) => (x[1] < 0 ? '-' : i ? '+' : '') + sq(x[0])).join(''), root = LV + '\\sqrt{' + rhs + '}' + E;
+      const t = steps === 1 ? sq(T) + '=' + rhs : steps === 2 ? plain(T) + '=' + root : W(T.f) + '=' + G + '\\dfrac{1}{' + root + '}' + E;
+      idbox.innerHTML = KX(t) + '<div class="hexidnote">Scroll on this box: one way works toward ' + F[idt.a.f][0] + ', the other toward ' + F[idt.b.f][0] + '.</div>';
     };
-    idbox.addEventListener('wheel', ev => { eat(ev); if (!idt || Math.abs(ev.deltaY) < 4 || idbox._lock) return; idbox._lock = true; setTimeout(() => { idbox._lock = false; }, 180); const lim = t => (t.rec ? 3 : 2); if (idt.comp && ev.target.closest && ev.target.closest('.hexring')) { unit = (unit + (ev.deltaY > 0 ? 1 : 2)) % 3; identity(); return; } idn = idt.comp ? (ev.deltaY > 0 ? 1 : 0) : idt.recip ? Math.max(-1, Math.min(1, idn + (ev.deltaY > 0 ? 1 : -1))) : Math.max(-lim(idt.b), Math.min(lim(idt.a), idn + (ev.deltaY > 0 ? 1 : -1))); identity(); }, { passive: false });
+    idbox.addEventListener('wheel', ev => { eat(ev); if (!idt || Math.abs(ev.deltaY) < 4 || idbox._lock) return; idbox._lock = true; setTimeout(() => { idbox._lock = false; }, 180); const lim = t => (t.rec ? 3 : 2); if (idt.comp && ev.target.closest && ev.target.closest('.hexring')) { unit = (unit + (ev.deltaY > 0 ? 1 : 2)) % 3; identity(); return; } idn = idt.comp ? (ev.deltaY > 0 ? 1 : 0) : idt.recip ? Math.max(-1, Math.min(1, idn + (ev.deltaY > 0 ? 1 : -1))) : (() => { const d = ev.deltaY > 0 ? 1 : -1; let v = idn + d; if (v === 0) v += d; return Math.max(-lim(idt.b), Math.min(lim(idt.a), v)); })(); identity(); }, { passive: false });
     let sel = [];
     const mark = () => labs.forEach((g, i) => g.setAttribute('class', 'hexlab' + (sel.includes(i) ? ' sel' : '')));
     // Pair pick, variation G.b: with nothing chosen, pointing at a function chooses it; with one chosen, pointing at another shows the pair,
@@ -3462,8 +3615,8 @@ if (typeof document !== 'undefined') (() => {
   };
   const frenchFigure = spec => {
     const src = spec.replace(/^french\s*/, ''), el = $('div', 'figwrap frfig'), line = $('div', 'frline'), note = $('div', 'quiet frnote'), bar = $('div', 'figbar');
-    let tree, all; try { tree = Core.syn.parse(src); all = Core.fr.all(tree); } catch (e) { el.textContent = '⟦' + e.message + '⟧'; return { el }; }
-    const idle = 'Point at a word to see why it is there. Faint letters are silent.'; let n = 0;
+    let tree, all, vs; try { tree = Core.syn.parse(src); vs = Core.fr.variants ? Core.fr.variants(tree) : Core.fr.all(tree).map((text, i) => ({ text, key: 'active', labels: [], n: i })); all = vs.map(v => v.text); } catch (e) { el.textContent = '⟦' + e.message + '⟧'; return { el }; }
+    const idle = 'Point at a word to see why it is there. Faint letters are silent.'; let n = 0, m = 0, ens = [];
     const letters = (r, cap) => {
       const w = r.w, cls = [...w].map(() => ''), tip = [];
       (r.marks || []).forEach(m => { const c = m.paradigm || m.scribal || m.latent ? 'mute' : m.grapheme ? 'graph' : m.relic ? 'relic' : m.as ? 'as' : m.sounded ? 'snd' : ''; for (let i = m.i; i < m.j; i++) cls[i] = (cls[i] + ' ' + c).trim();
@@ -3484,7 +3637,7 @@ if (typeof document !== 'undefined') (() => {
       return b;
     };
     const draw = () => {
-      const recs = Core.fr.explain(tree, n), text = all[n] || '', end = (text.match(/\s?[.?!]$/) || [''])[0];
+      const recs = Core.fr.explain(tree, vs[n].n), text = all[n] || '', end = (text.match(/\s?[.?!]$/) || [''])[0];
       line.replaceChildren(); recs.forEach((r, i) => {
         const prev = recs[i - 1];
         if (i && !r.join) line.append(prev && prev.liaison && prev.liaison.sounded && /^[aeiouyhàâéèêëîïôûœ]/i.test(r.w) ? $('span', 'frtie', '‿<sub>' + esc(prev.liaison.c) + '</sub>') : ' ');
@@ -3492,13 +3645,20 @@ if (typeof document !== 'undefined') (() => {
       });
       line.append(end); note.textContent = idle;
       // A sibling presentation of the same tree: its English, standing beside the French and following it.
-      let en = ''; try { en = Core.syn.realize(tree); } catch (e) { /* no English for this tree */ } sib.hidden = !en; sib.innerHTML = en ? '<span class="quiet">English</span> ' + esc(en) + (all.length > 1 ? ' <span class="quiet">(way ' + (n + 1) + ' of ' + all.length + ' in French; scroll to change)</span>' : '') : '';
+      // The central correspondence: the English of the same build (active, causative, passive, nominal) as the French now shown.
+      // English's own alternates of that build (its simple past beside its perfect, say) are walked by scrolling on the English line alone.
+      const key = vs[n].key; ens = []; let lacks = false;
+      try { const c = Core.corr ? Core.corr(Core.syn, Core.fr, tree, key) : null; if (c && c.keys.includes(key) && c.a.central) ens = [{ text: c.a.central, differs: [] }, ...c.a.alternates]; else { ens = [{ text: Core.syn.realize(tree), differs: [] }]; lacks = !!c; } } catch (e) { /* no English for this tree */ }
+      m = Math.min(m, Math.max(0, ens.length - 1)); const en = ens[m]; sib.hidden = !en; sib.classList.toggle('walk', ens.length > 1);
+      sib.innerHTML = en ? '<span class="quiet">English</span> ' + esc(en.text) + (en.differs.length ? ' <span class="frtag">' + esc(en.differs.join(', ')) + '</span>' : '') + (ens.length > 1 ? ' <span class="quiet">(' + (m + 1) + ' of ' + ens.length + ' in English alone; scroll here)</span>' : '') + (lacks ? ' <span class="quiet">(English has no ' + esc(key) + ' wording of this)</span>' : '') : '';
+      way.innerHTML = all.length > 1 ? 'French way ' + (n + 1) + ' of ' + all.length + ': <b>' + esc([key, ...vs[n].labels].join(', ')) + '</b>. Scroll on the French to change.' : '';
     };
-    const sib = $('div', 'frsib'); if (all.length > 1) el.addEventListener('wheel', ev => { eat(ev); if (Math.abs(ev.deltaY) < 4 || el._lock) return; el._lock = true; setTimeout(() => { el._lock = false; }, 220); n = (n + (ev.deltaY > 0 ? 1 : all.length - 1)) % all.length; draw(); }, { passive: false });
-    if (all.length > 1) { const other = btn('btn', 'Say it another way'); other.onclick = () => { n = (n + 1) % all.length; draw(); }; bar.append(other); }
+    const sib = $('div', 'frsib'); if (all.length > 1) el.addEventListener('wheel', ev => { eat(ev); if (Math.abs(ev.deltaY) < 4 || el._lock) return; el._lock = true; setTimeout(() => { el._lock = false; }, 220); n = (n + (ev.deltaY > 0 ? 1 : all.length - 1)) % all.length; m = 0; draw(); }, { passive: false });
+    const way = $('div', 'quiet frway'); sib.addEventListener('wheel', ev => { if (ens.length < 2) return; eat(ev); ev.stopPropagation(); if (Math.abs(ev.deltaY) < 4 || sib._lock) return; sib._lock = true; setTimeout(() => { sib._lock = false; }, 220); m = (m + (ev.deltaY > 0 ? 1 : ens.length - 1)) % ens.length; draw(); }, { passive: false });
+    if (all.length > 1) { const other = btn('btn', 'Say it another way'); other.onclick = () => { n = (n + 1) % all.length; m = 0; draw(); }; bar.append(other); }
     let inf = ''; try { inf = Core.fr.infinitive(tree); } catch (e) { /* no infinitive for this tree */ }
     if (inf) bar.append($('span', 'quiet', 'Infinitive: <i lang="fr">' + esc(inf) + '</i>'));
-    line.lang = 'fr'; draw(); el.append(line, sib, note, bar);
+    line.lang = 'fr'; draw(); el.append(line, sib, way, note, bar);
     return { el };
   };
   const makeFigure = spec => { const s = String(spec || '').trim(); return /^polygon/.test(s) ? polygonFigure(s) : /^arcs/.test(s) ? arcsFigure(s) : /^tabulate/.test(s) ? tabulateFigure(s) : /^hexagon/.test(s) ? hexagonFigure() : /^structure/.test(s) ? structureFigure(s) : /^coef/.test(s) ? coefFigure(s) : /^wrap/.test(s) ? wrapFigure() : /^french/.test(s) ? frenchFigure(s) : /^vowels/.test(s) ? vowelFigure() : /^table/.test(s) ? tableFigure(s) : /^rings/.test(s) ? pulleyFigure(s) : /^roll/.test(s) ? rollFigure(s) : /^spin/.test(s) ? spinFigure(s) : /^components/.test(s) ? componentsFigure(s) : null; };
@@ -3587,10 +3747,10 @@ if (typeof document !== 'undefined') (() => {
     const seen = new Set(), tiles = []; String(it.prompt).replace(/\[([^\[\]=|]+)\]/g, (_, x) => { const q = Core.parseQ(x.trim()); if (q && !q.vec && isFinite(q.num) && !seen.has(x.trim())) { seen.add(x.trim()); tiles.push({ text: x.trim(), num: q.num, unit: q.unit || '' }); } return _; });
     if (tiles.length < 2) return null;
     // Constants sit in the tray beside the givens: a bare 2 (for halves and doubles), π, and g when the problem does not already give it.
-    const consts = [{ text: '2', num: 2, unit: '', c: 1 }, { text: 'π', num: Math.PI, unit: '', c: 1, pi: 1 }].concat(tiles.some(t => t.num === 9.8) ? [] : [{ text: 'g = 9.8 m/s²', num: 9.8, unit: 'm/s²', c: 1 }]);
+    const consts = [{ text: '2', num: 2, unit: '', c: 1 }, { text: 'π', num: Math.PI, unit: '', c: 1, pi: 1 }].concat(tiles.some(t => t.num === 9.8) ? [] : [{ text: 'g = 9.8 m/s²', num: 9.8, unit: 'm/s²', c: 1 }], [{ text: 'G = 6.67×10⁻¹¹ N m²/kg²', num: 6.67e-11, unit: 'N m²/kg²', c: 1 }, { text: 'k = 8.99×10⁹ N m²/C²', num: 8.99e9, unit: 'N m²/C²', c: 1 }]);
     const el = $('details', 'calc', '<summary>Work it out with tiles</summary>'), body = $('div', 'calcbody'), tray = $('div', 'ctray'), frac = $('div', 'cfrac'), top = $('div', 'czone'), bot = $('div', 'czone'), lcd = $('div', 'lcd'), keys = $('div', 'ckeys'), unitLine = $('div', 'quiet');
     top.dataset.z = 'num'; bot.dataset.z = 'den'; frac.append(top, $('div', 'cbar'), bot); const scr = $('div', 'calcscreen'); scr.append(lcd, keys);
-    body.append($('div', 'quiet', 'Click a given to place it above the bar; drag it below the bar to divide by it. Click a placed tile to change its power. Drag a sum or a difference in, then drop givens into it. Drop a given onto a term to multiply that term. Any tile can be dragged out again, to the other side of the bar or back to the tray.'), tray, frac, scr, unitLine); el.append(body);
+    body.append($('div', 'quiet', 'Click a given to place it above the fraction bar; drag it below the fraction bar to divide by it. Click a placed tile to change its power. Drag a sum or a difference in, then drop givens into it. Drop a given onto a term to multiply that term. Any tile can be dragged out again, to the other side of the bar or back to the tray.'), tray, frac, scr, unitLine); el.append(body);
     // The work is a tree. Each side of the bar is a product of nodes. A node is a tile, a sum (any number of terms) or a difference (two slots).
     // A term is a bare tile until something is dropped onto it; only then does it become a product, and it goes back to a bare tile when one factor is left.
     const Z = { num: [], den: [] }; let drag = null, aim = null;   // aim: the container that clicked givens go into
@@ -3619,10 +3779,11 @@ if (typeof document !== 'undefined') (() => {
     const nodeEl = (n, arr, i, zone) => { const put = r => { arr[i] = r; if (r.k !== 'tile') aim = r; }; put.zone = zone;
       if (n.k === 'tile') return tileNode(n, put, false);
       const g = $('span', 'cbox ' + n.k + (aim === n ? ' aim' : '')); g.title = 'Click to send clicked givens here'; g.onclick = () => { aim = aim === n ? null : n; draw(); };
+      const pw = $('span', 'cpow', n.p === 2 ? '( )²' : n.p === 0.5 ? '√( )' : '( )¹'); pw.title = 'Click to square this whole box or take its square root'; pw.onclick = ev => { ev.stopPropagation(); n.p = n.p === 2 ? 0.5 : n.p === 0.5 ? 1 : 2; draw(); }; g.classList.toggle('pw', !!n.p && n.p !== 1);
       const x = $('span', 'cx', '×'); x.title = 'Take this away'; x.onclick = ev => { ev.stopPropagation(); detach(n); draw(); };
       if (n.k === 'sum') { n.terms.forEach((t, j) => { if (j) g.append($('i', 'cop', '+')); g.append(termEl(t, r => { n.terms[j] = r; })); }); if (!n.terms.length) g.append($('span', 'quiet', 'sum: drop givens here')); dropOn(g, () => { const t = take(); if (t) n.terms.push(t); }); }
       else { ['a', 'b'].forEach((s, j) => { if (j) g.append($('i', 'cop', '−')); if (n[s]) g.append(termEl(n[s], r => { n[s] = r; })); else { const slot = $('span', 'cslot2', j ? 'second' : 'first'); dropOn(slot, () => { const t = take(); if (t) n[s] = t; }); g.append(slot); } }); }
-      g.append(x); g.draggable = true; g.ondragstart = ev => { if (ev.target !== g) return; drag = { node: n }; ev.dataTransfer.setData('text/plain', n.k); ev.dataTransfer.effectAllowed = 'move'; };
+      g.append(pw, x); g.draggable = true; g.ondragstart = ev => { if (ev.target !== g) return; drag = { node: n }; ev.dataTransfer.setData('text/plain', n.k); ev.dataTransfer.effectAllowed = 'move'; };
       return g; };
     [top, bot].forEach(z => dropOn(z, () => { const arr = Z[z.dataset.z]; if (drag.tile) arr.push(fresh()); else if (drag.make) { const n = drag.make === 'sum' ? { k: 'sum', terms: [] } : { k: 'diff', a: null, b: null }; arr.push(n); aim = n; } else if (drag.node) { detach(drag.node); arr.push(drag.node); } }));
     dropOn(tray, () => { if (drag.node) detach(drag.node); });
@@ -3635,23 +3796,23 @@ if (typeof document !== 'undefined') (() => {
       tray.replaceChildren(...tiles.map(trayTile), $('i', 'csep'), ...consts.map(trayTile), $('i', 'csep'), trayBox('sum', '( + )', 'A sum: any number of terms'), trayBox('diff', '( − )', 'A difference: first minus second'));
       const N = Z.num, D = Z.den, any = N.length + D.length > 0;
       top.replaceChildren(...N.map((n, i) => nodeEl(n, N, i, 'num'))); bot.replaceChildren(...D.map((n, i) => nodeEl(n, D, i, 'den')));
-      if (!N.length) top.append($('span', 'quiet', any ? '1' : 'above the bar')); if (!D.length) bot.append($('span', 'quiet', 'below the bar'));
+      if (!N.length) top.append($('span', 'quiet', any ? '1' : 'above the fraction bar')); if (!D.length) bot.append($('span', 'quiet', 'below the fraction bar'));
       // the typed line and the keys, built side by side
       let line = ''; const ks = [];
       const digits = s => { if (s[0] === '-') ks.push(K('(-)'), T(s.slice(1))); else ks.push(T(s)); };
       const numKeys = w => { const e = sci(w.t); if (w.t.pi) { ks.push(CH('π', K('2nd', 'second'), K('^'))); return 'π'; } if (!e) { const n = numText(w.t.num); digits(n); return n; } digits(e[0]); ks.push(CH('ᴇ', K('2nd', 'second'), K(','))); digits(e[1]); return e[0] + 'ᴇ' + e[1]; };
       const factor = w => { if (w.t.pi || sci(w.t)) { if (w.p === 0.5) { line += '√('; ks.push(CH('√(', K('2nd', 'second'), K('x²'))); line += numKeys(w) + ')'; ks.push(K(')')); } else { line += numKeys(w) + sup(w.p); if (w.p === 2) ks.push(K('x²')); else if (w.p === 3) ks.push(K('^'), T('3')); } return; } const n = numText(w.t.num); if (w.p === 0.5) { line += '√(' + n + ')'; ks.push(CH('√(', K('2nd', 'second'), K('x²'))); digits(n); ks.push(K(')')); } else { line += n + sup(w.p); digits(n); if (w.p === 2) ks.push(K('x²')); else if (w.p === 3) ks.push(K('^'), T('3')); } };
       const term = t => { if (!t) { line += '?'; ks.push(T('?')); } else if (t.k === 'tile') factor(t); else t.f.forEach((w, i) => { if (i) { line += '*'; ks.push(K('×', 'op')); } factor(w); }); };
-      const node = (n, bare) => { if (n.k === 'tile') return factor(n); if (!bare) { line += '('; ks.push(K('(')); } const ts = n.k === 'sum' ? n.terms : [n.a, n.b]; if (!ts.length) { line += '?'; ks.push(T('?')); } ts.forEach((t, i) => { if (i) { line += n.k === 'sum' ? '+' : '-'; ks.push(K(n.k === 'sum' ? '+' : '−', 'op')); } term(t); }); if (!bare) { line += ')'; ks.push(K(')')); } };
+      const node = (n, bare) => { if (n.k === 'tile') return factor(n); const bp = n.p && n.p !== 1 ? n.p : 0; if (bp) bare = false; if (bp === 0.5) { line += '√('; ks.push(CH('√(', K('2nd', 'second'), K('x²'))); } else if (!bare) { line += '('; ks.push(K('(')); } const ts = n.k === 'sum' ? n.terms : [n.a, n.b]; if (!ts.length) { line += '?'; ks.push(T('?')); } ts.forEach((t, i) => { if (i) { line += n.k === 'sum' ? '+' : '-'; ks.push(K(n.k === 'sum' ? '+' : '−', 'op')); } term(t); }); if (!bare) { line += ')'; ks.push(K(')')); } if (bp === 2) { line += '²'; ks.push(K('x²')); } };
       const group = (list, wrap, alone) => { if (wrap) { line += '('; ks.push(K('(')); } list.forEach((w, i) => { if (i) { line += '*'; ks.push(K('×', 'op')); } node(w, alone && list.length === 1); }); if (wrap) { line += ')'; ks.push(K(')')); } };
       if (N.length) group(N, D.length > 0 && N.length > 1, !D.length); else if (D.length) { line += '1'; ks.push(T('1')); }
       if (D.length) { line += '/'; ks.push(K('÷', 'op')); group(D, D.length > 1, false); }
-      const tv = w => Math.pow(w.t.num, w.p), termV = t => (!t ? NaN : t.k === 'tile' ? tv(t) : t.f.reduce((p, w) => p * tv(w), 1)), nv = n => (n.k === 'tile' ? tv(n) : n.k === 'sum' ? (n.terms.length ? n.terms.reduce((p, t) => p + termV(t), 0) : NaN) : termV(n.a) - termV(n.b));
+      const tv = w => Math.pow(w.t.num, w.p), termV = t => (!t ? NaN : t.k === 'tile' ? tv(t) : t.f.reduce((p, w) => p * tv(w), 1)), nv = n => (n.k === 'tile' ? tv(n) : Math.pow(nv0(n), n.p || 1)), nv0 = n => (n.k === 'sum' ? (n.terms.length ? n.terms.reduce((p, t) => p + termV(t), 0) : NaN) : termV(n.a) - termV(n.b));
       const val = list => list.reduce((p, n) => p * nv(n), 1), result = any ? val(N) / val(D) : null, whole = result !== null && !isNaN(result);
       lcd.innerHTML = '<div class="lcdin">' + (line ? esc(line) : '') + '<i class="lcdcur"></i></div><div class="lcdout">' + (whole ? esc(tiNum(result)) : '') + '</div>';
       keys.innerHTML = any ? keysHtml(whole ? ks.concat(K('ENTER', 'enter')) : ks) : '<span class="quiet">The keys to press appear here.</span>';
       const u1 = w => (w.t.unit ? (w.p === 0.5 ? '√' : '') + (/\//.test(w.t.unit) ? '(' + w.t.unit + ')' : w.t.unit) + sup(w.p) : ''), ut = t => (!t ? '' : t.k === 'tile' ? u1(t) : t.f.map(u1).filter(Boolean).join('·'));
-      let clash = false; const un = n => { if (n.k === 'tile') return u1(n); const ts = (n.k === 'sum' ? n.terms : [n.a, n.b]).filter(Boolean).map(ut); if (new Set(ts).size > 1) clash = true; return ts[0] || ''; };
+      let clash = false; const un = n => { if (n.k === 'tile') return u1(n); const ts = (n.k === 'sum' ? n.terms : [n.a, n.b]).filter(Boolean).map(ut); if (new Set(ts).size > 1) clash = true; const u0 = ts[0] || ''; return !u0 || !n.p || n.p === 1 ? u0 : n.p === 0.5 ? '√(' + u0 + ')' : '(' + u0 + ')²'; };
       const us = list => list.map(un).filter(Boolean).join('·'), dn = us(D);
       unitLine.textContent = any ? 'The calculator sees only the numbers. The units are yours to carry: ' + ((us(N) || '1') + (dn ? ' / ' + (/·/.test(dn) ? '(' + dn + ')' : dn) : '')) + '. ' + (clash ? 'The terms of a sum or difference must share one unit; these do not yet.' : 'Convert first if the units do not match.') : '';
     };
