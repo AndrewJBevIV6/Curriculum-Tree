@@ -504,8 +504,8 @@
     ( ) part of the verb aller
 
 - Verbs that take se: casser, ouvrir, fermer   @fr.sent.valency.se
-  can: Add se when no agent is named, and switch to être in the past.
-  bite: Other verbs need help when no agent is named: they take se. Le verre se casse. La fenêtre s'ouvre. In the past, se brings être with it, and the participle agrees with the subject: La fenêtre s'est ouverte. Name an agent and se disappears, with avoir back in place: Il l'a ouverte.
+  can: Add se when no agent is named, and take être instead of avoir in the past.
+  bite: Other verbs need help when no agent is named: they take se. Le verre se casse. La fenêtre s'ouvre. In the past, a verb with se is one of the verbs that take être (instead of avoir), and the participle agrees with the subject: La fenêtre s'est ouverte. Name an agent and se disappears, with avoir back in place: Il l'a ouverte.
   figure: french {open.perf the.window}
   links: @fr.sent.small.clitic
   ? choice: "The glass breaks."
@@ -555,6 +555,37 @@
     | vous  = vous
     | il    = se
     | elles = se
+
+- From il me souvient to je me souviens   @fr.sent.valency.shift
+  scope: extra
+  can: Explain how a verb with an empty subject became a verb that always wears se.
+  bite: Se souvenir comes from Latin subvenire, to come up from below. A memory was something that came up to you, so the person was not the agent. Older French often said it that way, with the empty il in the subject seat and the person as an object: Il me souvient de ce jour. English has the same frame: ((occur: it occurs to me | come back: it comes back to me)). Today that wording is rare and literary. The person has moved into the subject seat, and the object pronoun stayed behind as a se that can no longer be dropped: Je me souviens de ce jour. That is why se souvenir always wears se: the me was there before the je.
+  links: @fr.sent.valency.il @fr.sent.valency.always
+  ? choice: In the older "Il me souvient de ce jour", who is "il"?
+    (x) Nobody; it is the empty subject, as in "il pleut"
+    ( ) The person who remembers
+    ( ) The day
+    ( ) A man mentioned earlier
+  ? choice: In "Il me souvient", what is "me"?
+    (x) the person the memory comes to, as an object
+    ( ) the subject
+    ( ) a possessive
+    ( ) part of the verb's ending
+  ? choice: Which English sentence is built like "Il me souvient"?
+    (x) It occurs to me.
+    ( ) I remember.
+    ( ) He reminds me.
+    ( ) I remind myself.
+  ? pick: The modern wording of "%%":
+    | Il me souvient.     = Je me souviens. / je me souviens
+    | Il te souvient.     = Tu te souviens. / tu te souviens
+    | Il nous souvient.   = Nous nous souvenons. / nous nous souvenons
+    | Il vous souvient.   = Vous vous souvenez. / vous vous souvenez
+  ? choice: Why can se souvenir never drop its se?
+    (x) The pronoun was the verb's object before the person became its subject, and it stayed
+    ( ) Because remembering is done to yourself on purpose
+    ( ) Because every verb about the mind takes se
+    ( ) It can; "je souviens" is also correct
 
 ## Shared roots   @fr.roots
    standard: MOD.COD.NL.1.2 MOD.CLL.NH.2.3

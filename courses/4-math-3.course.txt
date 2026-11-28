@@ -195,6 +195,7 @@
 
 - Regular polygons   @m3.trig.use.poly
   can: Find the area of a regular polygon from its edge length.
+  figure: polygon 8
   bite: Cut a regular polygon with $n$ sides into $n$ equal triangles meeting at the center. Each has the edge $L$ as its base and a central angle of $360°/n$. Halve one and you have a right triangle with the angle $180°/n$ at the center and $L/2$ across from it. Its other leg, the height of the triangle, is $\tfrac{L}{2}\cot(180°/n)$. That center-to-edge-midpoint length is the apothem. The hypotenuse, from the center to a vertex, is the circumradius: $\tfrac{L}{2}\csc(180°/n)$. So each triangle has area $\tfrac{L^2}{4}\cot(180°/n)$, and the polygon has $n$ of them.
   ? row: For a regular pentagon cut this way, how many degrees is:
     | the central angle of one triangle        = 72
