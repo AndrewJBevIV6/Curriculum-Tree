@@ -480,7 +480,7 @@
 - Verbs that stay the same: fondre, bouillir   @fr.sent.valency.same
   can: Use fondre and bouillir with and without an agent.
   bite: Some verbs work like English "melt": the same form whether or not an agent is named. La glace fond. Le soleil fond la glace. French increasingly brings in faire when there is an agent: Le soleil fait fondre la glace. With bouillir that is the only way: J'ai fait bouillir l'eau.
-  figure: french {melt the.sun the.ice}
+  figure: french {melt the.sun the.ice} ;; french {boil.perf 1s the.water}
   ? choice: "The ice melts."
     (x) La glace fond.
     ( ) La glace se fond.

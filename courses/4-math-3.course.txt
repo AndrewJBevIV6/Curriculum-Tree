@@ -38,7 +38,7 @@
     ( ) it triples
     ( ) it becomes a third
     ( ) it grows by nine
-  ? choice: Two right triangles share an acute angle of 35°. What must be true?
+  ? choice: Take two right triangles. {share the.triangle+ "an acute angle of 35°"} What must be true?
     (x) the ratios between corresponding sides are equal
     ( ) the triangles are the same size
     ( ) their hypotenuses are equal
@@ -113,7 +113,7 @@
     | sine and cosine            = ramp and fan
     | tangent and secant         = elbow and fan
     | cotangent and cosecant     = elbow and ramp
-  ? choice: What do the two members of a reciprocal pair have in common?
+  ? choice: Take the two members of a reciprocal pair. {share the.member+ ?}
     (x) they live on the same shape
     ( ) they are neighbors on the hexagon
     ( ) they both start with "co-"

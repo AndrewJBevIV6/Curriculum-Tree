@@ -538,7 +538,7 @@
     ( ) tcp://
     ( ) ws://
     (x) wss://
-  ? choice: A chat server receives a message from one socket in room "physics". What is its job?
+  ? choice: {receive "a chat server" "a message from one socket in room “physics”"} What is the server's job?
     ( ) Close the socket
     (x) Forward it to every other open socket in that room
     ( ) Send it back only to the sender
@@ -629,7 +629,7 @@
     ( ) Email cannot show a sender name at all
     (x) The friend's account was taken over earlier, and its contact list is being worked through
     ( ) They guess names at random
-  ? choice: The message copies the look of Evite, Paperless Post, or Google Calendar. What does copying a known brand buy the scammer?
+  ? choice: {copy the.message "the look of Evite, Paperless Post, or Google Calendar"} What does copying a known brand buy the scammer?
     ( ) Legal protection
     ( ) Faster delivery
     ( ) Access to the brand's servers
@@ -744,7 +744,7 @@
 - Sender checks   @cs.ph.mail.auth
   can: Match each email mechanism to what it checks.
   bite: Three mechanisms check where a message came from, and all three are about domains. SPF is a list, published in DNS, of the servers allowed to send for a domain. DKIM is a signature over the message that anyone can check with a key published in DNS. DMARC asks whether the domain you see in the From line agrees with what SPF or DKIM vouched for. None of them checks the display name, which is free text. And a message from a stolen account passes all of them, because it really did come from that domain.
-  ? choice: The invitation comes from your friend's real Gmail account, so it passes the sender checks (SPF, DKIM, DMARC). What do those checks really prove?
+  ? choice: The invitation comes from your friend's real Gmail account, so it passes the sender checks (SPF, DKIM, DMARC). {prove the.check+ ?}
     (x) The mail came from a server allowed to send for that domain, so it is not forged, though the account itself may be stolen
     ( ) The sender is honest
     ( ) Nothing at all
@@ -847,7 +847,7 @@
     (x) Automated domain validation (ACME): prove control of the domain by serving a token or adding a DNS record; no identity is checked
     ( ) They can't; new domains have no certificates
     ( ) By paying a certificate authority to vouch for them
-  ? choice: Every publicly trusted certificate is recorded in public Certificate Transparency logs. How can defenders use that against this scheme?
+  ? choice: {record "a public Certificate Transparency log" "every publicly trusted certificate"} How can defenders use that against this scheme?
     ( ) Read the scammers' traffic
     ( ) Revoke all .vu certificates
     (x) Watch the logs for new certificates on lookalike names, and block those domains before the emails go out
